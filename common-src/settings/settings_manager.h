@@ -209,6 +209,10 @@ public:
 
     std::vector<TextBlockStyle> getLogStyles(const QString &a_logName) const;
 
+    bool getUseDarkMode() const;
+
+    bool setUseDarkMode(bool a_use);
+
     bool setLogStyles(const QString &a_logName,
                       const std::vector<TextBlockStyle> a_styles);
 

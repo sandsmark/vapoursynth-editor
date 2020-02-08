@@ -255,6 +255,8 @@ void ScriptEditor::slotLoadSettings()
 
     QKeySequence hotkey;
 
+    m_pSyntaxHighlighter->rehighlight();
+
     for (QAction *pAction : m_settableActionsList) {
         hotkey = m_pSettingsManager->getHotkey(pAction->data().toString());
         pAction->setShortcut(hotkey);

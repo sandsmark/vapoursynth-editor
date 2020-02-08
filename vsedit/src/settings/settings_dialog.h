@@ -30,6 +30,8 @@ signals:
 
     void signalSettingsChanged();
 
+    void darkModeChanged();
+
 private:
 
     void addThemeElements();
@@ -73,6 +75,8 @@ private slots:
     void slotFontButtonClicked();
 
     void slotColourButtonClicked();
+
+    void slotDarkModeChanged();
 };
 
 #endif // SETTINGSDIALOG_H

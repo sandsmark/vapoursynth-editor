@@ -77,6 +77,8 @@ private slots:
 
     void slotSaveGeometry();
 
+    void slotChangeDarkMode();
+
 private:
 
     void createActionsAndMenus();
@@ -98,6 +100,8 @@ private:
     void destroyOrphanQObjects();
 
     void saveGeometryDelayed();
+
+    void loadStyleSheet();
 
     Ui::MainWindow m_ui;
 

@@ -122,6 +122,7 @@ INCLUDEPATH += $${COMMON_DIRECTORY}
 #TRANSLATIONS
 
 RESOURCES = $${COMMON_DIRECTORY}/resources/vsedit.qrc
+RESOURCES += $${COMMON_DIRECTORY}/qdarkstyle/style.qrc
 
 FORMS += $${COMMON_DIRECTORY}/common-src/log/styled_log_view_settings_dialog.ui
 

@@ -123,6 +123,8 @@ MainWindow::MainWindow() : QMainWindow()
             this, SLOT(slotInsertTextIntoScriptAtCursor(const QString &)));
     connect(m_pSettingsDialog, SIGNAL(signalSettingsChanged()),
             m_pPreviewDialog, SLOT(slotSettingsChanged()));
+    connect(m_pSettingsDialog, SIGNAL(darkModeChanged()),
+        this, SLOT(slotChangeDarkMode()));
 
     m_pBenchmarkDialog =
         new ScriptBenchmarkDialog(m_pSettingsManager, m_pVSScriptLibrary);
@@ -180,6 +182,9 @@ MainWindow::MainWindow() : QMainWindow()
         showMaximized();
     }
 
+    if (m_pSettingsManager->getUseDarkMode()) {
+        loadStyleSheet();
+    }
     loadStartUpScript();
 }
 
@@ -193,7 +198,7 @@ MainWindow::~MainWindow()
         slotSaveGeometry();
     }
 
-    qInstallMessageHandler(0);
+    qInstallMessageHandler(nullptr);
     destroyOrphanQObjects();
 }
 
@@ -627,6 +632,18 @@ void MainWindow::slotSaveGeometry()
     m_pSettingsManager->setMainWindowGeometry(m_windowGeometry);
 }
 
+void MainWindow::slotChangeDarkMode()
+{
+    m_ui.scriptEdit->slotLoadSettings();
+
+    if (!m_pSettingsManager->getUseDarkMode()) {
+        qApp->setStyleSheet(QString());
+        return;
+    }
+
+    loadStyleSheet();
+}
+
 // END OF void MainWindow::slotSaveGeometry()
 //==============================================================================
 
@@ -963,6 +980,16 @@ void MainWindow::saveGeometryDelayed()
         m_windowGeometry = saveGeometry();
         m_pGeometrySaveTimer->start();
     }
+}
+
+void MainWindow::loadStyleSheet()
+{
+    QFile stylesheetFile(":qdarkstyle/style.qss");
+    if (!stylesheetFile.open(QIODevice::ReadOnly)) {
+        qWarning() << "Failed to open stylesheet file" << stylesheetFile.errorString();
+        return;
+    }
+    qApp->setStyleSheet(QString::fromUtf8(stylesheetFile.readAll()));
 }
 
 // END OF void MainWindow::saveGeometryDelayed()

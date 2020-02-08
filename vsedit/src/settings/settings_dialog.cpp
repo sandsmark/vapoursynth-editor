@@ -80,6 +80,8 @@ SettingsDialog::SettingsDialog(SettingsManager *a_pSettingsManager,
             this, SLOT(slotFontButtonClicked()));
     connect(m_ui.colourButton, SIGNAL(clicked()),
             this, SLOT(slotColourButtonClicked()));
+
+    connect(m_ui.darkMode, &QCheckBox::stateChanged, this, &SettingsDialog::slotDarkModeChanged);
 }
 
 // END OF SettingsDialog::SettingsDialog(SettingsManager * a_pSettingsManager,
@@ -142,6 +144,10 @@ void SettingsDialog::slotCall()
 
     QModelIndex firstElement = m_pActionsHotkeyEditModel->index(0, 0);
     m_ui.themeElementsList->setCurrentIndex(firstElement);
+
+    QSignalBlocker blocker(m_ui.darkMode);
+    m_ui.darkMode->setChecked(m_pSettingsManager->getUseDarkMode());
+    blocker.unblock();
 
     show();
 }
@@ -552,6 +558,13 @@ void SettingsDialog::slotColourButtonClicked()
     }
 
     m_pThemeElementsModel->saveThemeElementData(themeElementData);
+}
+
+void SettingsDialog::slotDarkModeChanged()
+{
+    m_pSettingsManager->setUseDarkMode(m_ui.darkMode->isChecked());
+
+    emit darkModeChanged();
 }
 
 // END OF void SettingsDialog::slotColourButtonClicked()

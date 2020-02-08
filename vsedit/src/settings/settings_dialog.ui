@@ -634,6 +634,13 @@
         <number>6</number>
        </property>
        <item>
+        <widget class="QCheckBox" name="darkMode">
+         <property name="text">
+          <string>Dark mode</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QLabel" name="themeElementsLabel">
          <property name="text">
           <string>Theme elements</string>

@@ -99,6 +99,7 @@ const char ACTION_ID_TOGGLE_COMMENT[] = "toggle_comment";
 const char ACTION_ID_SHUTDOWN_SERVER_AND_EXIT[] = "shutdown_server_and_exit";
 const char ACTION_ID_SET_TRUSTED_CLIENTS_ADDRESSES[] =
     "set_trusted_clients_addresses";
+const char ACTION_ID_ENABLE_DARK_MODE[] = "enable_dark_mode";
 
 //==============================================================================
 

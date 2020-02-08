@@ -246,14 +246,13 @@ MainWindow::~MainWindow()
 
     m_pServerSocket->close(QWebSocketProtocol::CloseCodeNormal,
                            tr("Closing watcher."));
-
     for (QLocalSocket *pClient : m_taskClients) {
         disconnect(pClient, &QLocalSocket::disconnected,
                    this, &MainWindow::slotTaskClientDisconnected);
         delete pClient;
     }
 
-    qInstallMessageHandler(0);
+    qInstallMessageHandler(nullptr);
 }
 
 // END OF MainWindow::~MainWindow()

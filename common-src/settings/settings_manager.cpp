@@ -7,6 +7,7 @@
 #include <QPalette>
 #include <QFontMetricsF>
 #include <QRegExp>
+#include <QDebug>
 
 //==============================================================================
 
@@ -47,6 +48,7 @@ const char HIGHLIGHT_SELECTION_MATCHES_MIN_LENGTH_KEY[] =
 const char TIMELINE_PANEL_VISIBLE_KEY[] = "timeline_panel_visible";
 const char ALWAYS_KEEP_CURRENT_FRAME_KEY[] = "always_keep_current_frame";
 const char LAST_SNAPSHOT_EXTENSION_KEY[] = "last_snapshot_extension";
+const char USE_DARK_MODE_KEY[] = "use_dark_mode";
 
 //==============================================================================
 
@@ -55,6 +57,7 @@ const char HOTKEYS_GROUP[] = "hotkeys";
 //==============================================================================
 
 const char THEME_GROUP[] = "theme";
+const char THEME_GROUP_DARK[] = "theme_dark";
 
 //==============================================================================
 
@@ -300,6 +303,10 @@ void SettingsManager::initializeStandardActions()
             ACTION_ID_SET_TRUSTED_CLIENTS_ADDRESSES,
             tr("Set trusted clients addresses"), QIcon(), QKeySequence()
         },
+        {
+            ACTION_ID_ENABLE_DARK_MODE,
+            tr("Use a dark color scheme"), QIcon(), QKeySequence()
+        },
     };
 }
 
@@ -372,6 +379,8 @@ QTextCharFormat SettingsManager::getDefaultTextFormat(
 {
     // Standard "Icecream" theme
 
+    const bool dark = getUseDarkMode();
+
     QTextCharFormat defaultFormat;
 
     if (a_textFormatID == TEXT_FORMAT_ID_COMMON_SCRIPT_TEXT) {
@@ -383,26 +392,30 @@ QTextCharFormat SettingsManager::getDefaultTextFormat(
         commonScriptFont.setPointSize(10);
         defaultFormat.setFont(commonScriptFont);
 
+        if (dark) {
+            defaultFormat.setForeground(QColor("#F0F0F0"));
+        }
+
         return defaultFormat;
     } else if (a_textFormatID == TEXT_FORMAT_ID_KEYWORD) {
-        defaultFormat.setForeground(QColor("#0EAA95"));
+        defaultFormat.setForeground(dark ? QColor("#d9874a") : QColor("#b9672a"));
         defaultFormat.setFontWeight(QFont::Bold);
     } else if (a_textFormatID == TEXT_FORMAT_ID_OPERATOR) {
-        defaultFormat.setForeground(QColor("#b9672a"));
+        defaultFormat.setForeground(dark ? QColor("#d9874a") : QColor("#b9672a"));
     } else if (a_textFormatID == TEXT_FORMAT_ID_STRING) {
-        defaultFormat.setForeground(QColor("#a500bc"));
+        defaultFormat.setForeground(dark ? QColor("#e550fc") : QColor("#a500bc"));
     } else if (a_textFormatID == TEXT_FORMAT_ID_NUMBER) {
-        defaultFormat.setForeground(QColor("#3f8300"));
+        defaultFormat.setForeground(dark ? QColor("#6fb330") : QColor("#3f8300"));
     } else if (a_textFormatID == TEXT_FORMAT_ID_COMMENT) {
-        defaultFormat.setForeground(QColor("#808080"));
+        defaultFormat.setForeground(dark ? QColor("#a0a0a0") : QColor("#808080"));
     } else if (a_textFormatID == TEXT_FORMAT_ID_VS_CORE) {
-        defaultFormat.setForeground(QColor("#0673E0"));
+        defaultFormat.setForeground(dark ? QColor("#26A3F0") : QColor("#0673E0"));
         defaultFormat.setFontWeight(QFont::Bold);
     } else if (a_textFormatID == TEXT_FORMAT_ID_VS_NAMESPACE) {
-        defaultFormat.setForeground(QColor("#0673E0"));
+        defaultFormat.setForeground(dark ? QColor("#26A3F0") : QColor("#0673E0"));
         defaultFormat.setFontWeight(QFont::Bold);
     } else if (a_textFormatID == TEXT_FORMAT_ID_VS_FUNCTION) {
-        defaultFormat.setForeground(QColor("#0673E0"));
+        defaultFormat.setForeground(dark ? QColor("#26A3F0") : QColor("#0673E0"));
         defaultFormat.setFontWeight(QFont::Bold);
     } else if (a_textFormatID == TEXT_FORMAT_ID_VS_ARGUMENT) {
         defaultFormat.setForeground(QColor("#a500bc"));
@@ -451,7 +464,11 @@ QColor SettingsManager::getDefaultColor(const QString &a_colorID) const
     QPalette defaultPalette;
 
     if (a_colorID == COLOR_ID_TEXT_BACKGROUND) {
-        return defaultPalette.color(QPalette::Active, QPalette::Base);
+        if (getUseDarkMode()) {
+            return QColor("#32414B");
+        } else {
+            return defaultPalette.color(QPalette::Active, QPalette::Base);
+        }
     }
 
     if (a_colorID == COLOR_ID_ACTIVE_LINE) {
@@ -459,7 +476,7 @@ QColor SettingsManager::getDefaultColor(const QString &a_colorID) const
         defaultColor = getColor(COLOR_ID_TEXT_BACKGROUND);
         qreal lightness = defaultColor.lightnessF();
 
-        if (lightness >= 0.5) {
+        if (lightness >= 0.5 && !getUseDarkMode()) {
             return defaultColor.darker(110);
         } else {
             return defaultColor.lighter(150);
@@ -479,19 +496,22 @@ QColor SettingsManager::getDefaultColor(const QString &a_colorID) const
 
 QColor SettingsManager::getColor(const QString &a_colorID) const
 {
-    QVariant colorValue = valueInGroup(THEME_GROUP, a_colorID);
+    const char *group = getUseDarkMode() ? THEME_GROUP_DARK : THEME_GROUP;
 
-    if (colorValue.isNull()) {
+    QVariant colorValue = valueInGroup(group, a_colorID);
+
+    if(colorValue.isNull()) {
         return getDefaultColor(a_colorID);
     }
-
     return QColor(colorValue.toString());
 }
 
 bool SettingsManager::setColor(const QString &a_colorID,
                                const QColor &a_color)
 {
-    return setValueInGroup(THEME_GROUP, a_colorID, a_color.name());
+    const char *group = getUseDarkMode() ? THEME_GROUP_DARK : THEME_GROUP;
+
+    return setValueInGroup(group, a_colorID, a_color.name());
 }
 
 //==============================================================================
@@ -1088,6 +1108,16 @@ bool SettingsManager::getAlwaysKeepCurrentFrame() const
 bool SettingsManager::setAlwaysKeepCurrentFrame(bool a_keep)
 {
     return setValue(ALWAYS_KEEP_CURRENT_FRAME_KEY, a_keep);
+}
+
+bool SettingsManager::getUseDarkMode() const
+{
+    return value(USE_DARK_MODE_KEY).toBool();
+}
+
+bool SettingsManager::setUseDarkMode(bool a_use)
+{
+    return setValue(USE_DARK_MODE_KEY, a_use);
 }
 
 //==============================================================================
