@@ -204,7 +204,7 @@ public slots:
 
     void requestSetBlockSelection(const QTextCursor &tc)
     {
-        QTextEdit *ed = qobject_cast<QTextEdit *>(m_widget);
+        QPlainTextEdit *ed = qobject_cast<QPlainTextEdit *>(m_widget);
         if (!ed)
             return;
 
@@ -237,10 +237,10 @@ public slots:
             m_blockSelection.append(selection);
         }
 
-        disconnect( ed, &QTextEdit::selectionChanged,
+        disconnect( ed, &QPlainTextEdit::selectionChanged,
                     this, &Proxy::updateBlockSelection );
         ed->setTextCursor(tc);
-        connect( ed, &QTextEdit::selectionChanged,
+        connect( ed, &QPlainTextEdit::selectionChanged,
                  this, &Proxy::updateBlockSelection );
 
         QPalette pal2 = ed->palette();
@@ -253,7 +253,7 @@ public slots:
 
     void requestDisableBlockSelection()
     {
-        QTextEdit *ed = qobject_cast<QTextEdit *>(m_widget);
+        QPlainTextEdit *ed = qobject_cast<QPlainTextEdit *>(m_widget);
         if (!ed)
             return;
 
@@ -265,7 +265,7 @@ public slots:
 
         ed->setPalette(pal);
 
-        disconnect( ed, &QTextEdit::selectionChanged,
+        disconnect( ed, &QPlainTextEdit::selectionChanged,
                     this, &Proxy::updateBlockSelection );
 
         updateExtraSelections();
@@ -273,7 +273,7 @@ public slots:
 
     void updateBlockSelection()
     {
-        QTextEdit *ed = qobject_cast<QTextEdit *>(m_widget);
+        QPlainTextEdit *ed = qobject_cast<QPlainTextEdit *>(m_widget);
         if (!ed)
             return;
 
@@ -287,7 +287,7 @@ public slots:
 
     void indentRegion(int beginBlock, int endBlock, QChar typedChar)
     {
-        QTextEdit *ed = qobject_cast<QTextEdit *>(m_widget);
+        QPlainTextEdit *ed = qobject_cast<QPlainTextEdit *>(m_widget);
         if (!ed)
             return;
 
@@ -347,7 +347,7 @@ private:
 
     void updateExtraSelections()
     {
-        QTextEdit *ed = qobject_cast<QTextEdit *>(m_widget);
+        QPlainTextEdit *ed = qobject_cast<QPlainTextEdit *>(m_widget);
         if (ed)
             ed->setExtraSelections(m_clearSelection + m_searchSelection + m_blockSelection);
     }
