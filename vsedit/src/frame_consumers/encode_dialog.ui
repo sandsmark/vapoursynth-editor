@@ -269,11 +269,11 @@
   <customwidget>
    <class>VSEditorLog</class>
    <extends>QTextEdit</extends>
-   <header>../../common-src/log/vs_editor_log.h</header>
+   <header>common-src/log/vs_editor_log.h</header>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../resources/vsedit.qrc"/>
+  <include location="resources/vsedit.qrc"/>
  </resources>
  <connections/>
 </ui>

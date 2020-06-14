@@ -82,7 +82,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../resources/vsedit-job-server-watcher.qrc"/>
+  <include location="resources/vsedit-job-server-watcher.qrc"/>
  </resources>
  <connections/>
 </ui>

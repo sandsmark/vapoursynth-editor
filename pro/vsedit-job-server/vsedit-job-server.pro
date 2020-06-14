@@ -85,6 +85,9 @@ include($${COMMON_DIRECTORY}/pro/common.pri)
 QMAKE_TARGET_PRODUCT = 'VapourSynth Editor Job Server'
 QMAKE_TARGET_DESCRIPTION = 'VapourSynth Editor job server'
 
+INCLUDEPATH += $${PROJECT_DIRECTORY}
+INCLUDEPATH += $${COMMON_DIRECTORY}
+
 #SUBDIRS
 
 #MOC_DIR = $${PROJECT_DIRECTORY}/generated/moc

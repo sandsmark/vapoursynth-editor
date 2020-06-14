@@ -1,6 +1,6 @@
 #include "frame_header_writer_y4m.h"
 
-#include "../../../common-src/helpers.h"
+#include "common-src/helpers.h"
 
 #include <string>
 #include <map>

@@ -1,13 +1,13 @@
 #ifndef JOB_H_INCLUDED
 #define JOB_H_INCLUDED
 
-#include "../../../common-src/settings/settings_definitions_core.h"
-#include "../../../common-src/chrono.h"
-#include "../../../common-src/helpers.h"
-#include "../../../common-src/log/styled_log_view_core.h"
-#include "../../../common-src/log/vs_editor_log_definitions.h"
-#include "../../../common-src/vapoursynth/vs_script_processor_structures.h"
-#include "../../../common-src/jobs/job_variables.h"
+#include "common-src/settings/settings_definitions_core.h"
+#include "common-src/chrono.h"
+#include "common-src/helpers.h"
+#include "common-src/log/styled_log_view_core.h"
+#include "common-src/log/vs_editor_log_definitions.h"
+#include "common-src/vapoursynth/vs_script_processor_structures.h"
+#include "common-src/jobs/job_variables.h"
 
 #include <QObject>
 #include <QUuid>

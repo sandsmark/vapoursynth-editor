@@ -1,6 +1,6 @@
 #include "connect_to_server_dialog.h"
 
-#include "../../common-src/settings/settings_manager.h"
+#include "common-src/settings/settings_manager.h"
 
 #include <QComboBox>
 

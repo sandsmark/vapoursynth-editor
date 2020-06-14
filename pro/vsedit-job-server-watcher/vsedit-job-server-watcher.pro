@@ -91,6 +91,9 @@ QMAKE_TARGET_DESCRIPTION = 'VapourSynth Editor job server watcher'
 
 #SUBDIRS
 
+INCLUDEPATH += $${PROJECT_DIRECTORY}
+INCLUDEPATH += $${COMMON_DIRECTORY}
+
 #MOC_DIR = $${PROJECT_DIRECTORY}/generated/moc
 #UI_DIR = $${PROJECT_DIRECTORY}/generated/ui
 #RCC_DIR = $${PROJECT_DIRECTORY}/generated/rcc
