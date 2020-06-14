@@ -47,6 +47,7 @@ signals:
     void handleInput(const QString &keys);
     void requestSave();
     void requestSaveAndQuit();
+    void requestRun();
 
 public slots:
     void changeStatusData(const QString &info);
@@ -83,6 +84,8 @@ private:
     bool wantSave(const FakeVim::Internal::ExCommand &cmd);
 
     bool wantQuit(const FakeVim::Internal::ExCommand &cmd);
+
+    bool wantRun(const FakeVim::Internal::ExCommand &cmd);
 
     bool save();
 

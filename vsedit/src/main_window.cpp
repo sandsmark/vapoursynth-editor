@@ -168,6 +168,7 @@ MainWindow::MainWindow() : QMainWindow()
     Proxy *vimProxy = connectSignals(vimHandler, this, m_ui.scriptEdit, QString());
     connect(vimProxy, &Proxy::requestSave, this, &MainWindow::slotSaveScript);
     connect(vimProxy, &Proxy::requestSaveAndQuit, this, &MainWindow::slotSaveAndQuit);
+    connect(vimProxy, &Proxy::requestRun, this, &MainWindow::slotPreview);
 
     m_windowGeometry = m_pSettingsManager->getMainWindowGeometry();
 
