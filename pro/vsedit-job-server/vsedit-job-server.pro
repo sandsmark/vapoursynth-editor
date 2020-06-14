@@ -87,8 +87,8 @@ QMAKE_TARGET_DESCRIPTION = 'VapourSynth Editor job server'
 
 #SUBDIRS
 
-MOC_DIR = $${PROJECT_DIRECTORY}/generated/moc
-RCC_DIR = $${PROJECT_DIRECTORY}/generated/rcc
+#MOC_DIR = $${PROJECT_DIRECTORY}/generated/moc
+#RCC_DIR = $${PROJECT_DIRECTORY}/generated/rcc
 
 #DEFINES
 
