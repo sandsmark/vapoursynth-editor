@@ -65,12 +65,6 @@ SC = $$replace(SC, /, $$S)
 
 E = $$escape_expand(\n\t)
 
-QMAKE_POST_LINK += $${QMAKE_COPY} $${SC}$${S}resources$${S}vsedit.ico $${D}$${S}vsedit.ico $${E}
-QMAKE_POST_LINK += $${QMAKE_COPY} $${SC}$${S}resources$${S}vsedit.svg $${D}$${S}vsedit.svg $${E}
-QMAKE_POST_LINK += $${QMAKE_COPY} $${SC}$${S}README $${D}$${S}README $${E}
-QMAKE_POST_LINK += $${QMAKE_COPY} $${SC}$${S}LICENSE $${D}$${S}LICENSE $${E}
-QMAKE_POST_LINK += $${QMAKE_COPY} $${SC}$${S}CHANGELOG $${D}$${S}CHANGELOG $${E}
-
 macx {
 	INCLUDEPATH += /usr/local/include
 	ICON = $${COMMON_DIRECTORY}/resources/vsedit.icns
@@ -78,6 +72,12 @@ macx {
 
 win32 {
 	QT += winextras
+QMAKE_POST_LINK += $${QMAKE_COPY} $${SC}$${S}resources$${S}vsedit.ico $${D}$${S}vsedit.ico $${E}
+QMAKE_POST_LINK += $${QMAKE_COPY} $${SC}$${S}resources$${S}vsedit.svg $${D}$${S}vsedit.svg $${E}
+QMAKE_POST_LINK += $${QMAKE_COPY} $${SC}$${S}README $${D}$${S}README $${E}
+QMAKE_POST_LINK += $${QMAKE_COPY} $${SC}$${S}LICENSE $${D}$${S}LICENSE $${E}
+QMAKE_POST_LINK += $${QMAKE_COPY} $${SC}$${S}CHANGELOG $${D}$${S}CHANGELOG $${E}
+
 
 	INCLUDEPATH += 'C:/Program Files (x86)/VapourSynth/sdk/include/'
 
@@ -171,9 +171,10 @@ HEADERS += $${PROJECT_DIRECTORY}/src/script_editor/syntax_highlighter.h
 HEADERS += $${PROJECT_DIRECTORY}/src/script_editor/script_completer_model.h
 HEADERS += $${PROJECT_DIRECTORY}/src/script_editor/script_completer.h
 HEADERS += $${PROJECT_DIRECTORY}/src/script_editor/script_editor.h
-SOURCES += $${PROJECT_DIRECTORY}/src/script_editor/fakevim/fakevimhandler.h
-SOURCES += $${PROJECT_DIRECTORY}/src/script_editor/fakevim/fakevimactions.h
-SOURCES += $${PROJECT_DIRECTORY}/src/script_editor/fakevim/fakevimtr.h
+HEADERS += $${PROJECT_DIRECTORY}/src/script_editor/fakevim/fakevimhandler.h
+HEADERS += $${PROJECT_DIRECTORY}/src/script_editor/fakevim/fakevimactions.h
+HEADERS += $${PROJECT_DIRECTORY}/src/script_editor/fakevim/fakevimtr.h
+HEADERS += $${PROJECT_DIRECTORY}/src/script_editor/fakevim/utils/qtcassert.h
 HEADERS += $${PROJECT_DIRECTORY}/src/vapoursynth/vs_plugin_data.h
 HEADERS += $${PROJECT_DIRECTORY}/src/vapoursynth/vapoursynth_plugins_manager.h
 HEADERS += $${PROJECT_DIRECTORY}/src/vapoursynth/vs_script_processor_dialog.h
@@ -223,6 +224,7 @@ SOURCES += $${PROJECT_DIRECTORY}/src/script_editor/script_completer.cpp
 SOURCES += $${PROJECT_DIRECTORY}/src/script_editor/script_editor.cpp
 SOURCES += $${PROJECT_DIRECTORY}/src/script_editor/fakevim/fakevimhandler.cpp
 SOURCES += $${PROJECT_DIRECTORY}/src/script_editor/fakevim/fakevimactions.cpp
+SOURCES += $${PROJECT_DIRECTORY}/src/script_editor/fakevim/utils/qtcassert.cpp
 SOURCES += $${PROJECT_DIRECTORY}/src/vapoursynth/vs_plugin_data.cpp
 SOURCES += $${PROJECT_DIRECTORY}/src/vapoursynth/vapoursynth_plugins_manager.cpp
 SOURCES += $${PROJECT_DIRECTORY}/src/vapoursynth/vs_script_processor_dialog.cpp
