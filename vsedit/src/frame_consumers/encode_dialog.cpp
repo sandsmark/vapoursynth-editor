@@ -39,8 +39,6 @@ EncodeDialog::EncodeDialog(SettingsManager *a_pSettingsManager,
     m_pJob = new vsedit::Job(JobProperties(), a_pSettingsManager,
                              a_pVSScriptLibrary, this);
 
-    setUpEncodingPresets();
-
     m_ui.feedbackTextEdit->setName("encode_log");
     m_ui.feedbackTextEdit->setSettingsManager(m_pSettingsManager);
     m_ui.feedbackTextEdit->loadSettings();
@@ -49,6 +47,8 @@ EncodeDialog::EncodeDialog(SettingsManager *a_pSettingsManager,
                                      (int)EncodingHeaderType::NoHeader);
     m_ui.headerTypeComboBox->addItem(tr("Y4M"),
                                      (int)EncodingHeaderType::Y4M);
+
+    setUpEncodingPresets();
 
     connect(m_ui.wholeVideoButton, SIGNAL(clicked()),
             this, SLOT(slotWholeVideoButtonPressed()));
