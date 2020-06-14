@@ -74,7 +74,7 @@ bool VapourSynthScriptProcessor::initialize(const QString& a_script,
 {
 	if(m_initialized || m_finalizing)
 	{
-		m_error = trUtf8("Script processor is already in use.");
+		m_error = tr("Script processor is already in use.");
 		emit signalWriteLogMessage(mtCritical, m_error);
 		return false;
 	}
@@ -85,7 +85,7 @@ bool VapourSynthScriptProcessor::initialize(const QString& a_script,
 
 	if(opresult)
 	{
-		m_error = trUtf8("Failed to evaluate the script");
+		m_error = tr("Failed to evaluate the script");
 		const char * vsError = m_pVSScriptLibrary->getError(m_pVSScript);
 		if(vsError)
 			m_error += QString(":\n") + vsError;
@@ -109,7 +109,7 @@ bool VapourSynthScriptProcessor::initialize(const QString& a_script,
 
 	if(m_cpCoreInfo->core < 29)
 	{
-		m_error = trUtf8("VapourSynth R29+ required for preview.");
+		m_error = tr("VapourSynth R29+ required for preview.");
 		emit signalWriteLogMessage(mtCritical, m_error);
 		finalize();
 		return false;
@@ -118,7 +118,7 @@ bool VapourSynthScriptProcessor::initialize(const QString& a_script,
 	VSNodeRef * pOutputNode = m_pVSScriptLibrary->getOutput(m_pVSScript, 0);
 	if(!pOutputNode)
 	{
-		m_error = trUtf8("Failed to get the script output node.");
+		m_error = tr("Failed to get the script output node.");
 		emit signalWriteLogMessage(mtCritical, m_error);
 		finalize();
 		return false;
@@ -213,7 +213,7 @@ const VSVideoInfo * VapourSynthScriptProcessor::videoInfo(int a_outputIndex)
 		m_pVSScriptLibrary->getOutput(m_pVSScript, a_outputIndex);
 	if(!pNode)
 	{
-		m_error = trUtf8("Couldn't resolve output node number %1.")
+		m_error = tr("Couldn't resolve output node number %1.")
 			.arg(a_outputIndex);
 		emit signalWriteLogMessage(mtCritical, m_error);
 		return nullptr;
@@ -238,7 +238,7 @@ bool VapourSynthScriptProcessor::requestFrameAsync(int a_frameNumber,
 
 	if(a_frameNumber < 0)
 	{
-		m_error = trUtf8("Requested frame number %1 is negative.")
+		m_error = tr("Requested frame number %1 is negative.")
 			.arg(a_outputIndex);
 		emit signalWriteLogMessage(mtCritical, m_error);
 		return false;
@@ -256,7 +256,7 @@ bool VapourSynthScriptProcessor::requestFrameAsync(int a_frameNumber,
 
 	if(a_frameNumber >= cpVideoInfo->numFrames)
 	{
-		m_error = trUtf8("Requested frame number %1 is outside the frame "
+		m_error = tr("Requested frame number %1 is outside the frame "
 			"range.").arg(a_outputIndex);
 		emit signalWriteLogMessage(mtCritical, m_error);
 		return false;
@@ -375,7 +375,7 @@ void VapourSynthScriptProcessor::receiveFrame(
 
 	if(!a_errorMessage.isEmpty())
 	{
-		m_error = trUtf8("Error on frame %1 request:\n%2")
+		m_error = tr("Error on frame %1 request:\n%2")
 			.arg(a_frameNumber).arg(a_errorMessage);
 		emit signalWriteLogMessage(mtCritical, m_error);
 	}
@@ -434,7 +434,7 @@ void VapourSynthScriptProcessor::receiveFrame(
 	}
 	else
 	{
-		QString warning = trUtf8("Warning: received frame not registered in "
+		QString warning = tr("Warning: received frame not registered in "
 			"processing. Frame number: %1; Node: %2\n")
 			.arg(a_frameNumber).arg((intptr_t)a_pNodeRef);
 		emit signalWriteLogMessage(mtCritical, warning);
@@ -485,7 +485,7 @@ void VapourSynthScriptProcessor::processFrameTicketsQueue()
 			validPair = validPair && (nodePair.pPreviewNode != nullptr);
 		if(!validPair)
 		{
-			QString reason = trUtf8("No nodes to produce the frame "
+			QString reason = tr("No nodes to produce the frame "
 				"%1 at output index %2.").arg(ticket.frameNumber)
 				.arg(ticket.outputIndex);
 			emit signalFrameRequestDiscarded(ticket.frameNumber,
@@ -673,7 +673,7 @@ bool VapourSynthScriptProcessor::recreatePreviewNode(NodePair & a_nodePair)
 
 	if(cpResultError)
 	{
-		m_error = trUtf8("Failed to convert to RGB:\n");
+		m_error = tr("Failed to convert to RGB:\n");
 		m_error += cpResultError;
 		emit signalWriteLogMessage(mtCritical, m_error);
 		m_cpVSAPI->freeMap(pResultMap);
@@ -743,7 +743,7 @@ NodePair & VapourSynthScriptProcessor::getNodePair(int a_outputIndex,
 			m_pVSScriptLibrary->getOutput(m_pVSScript, a_outputIndex);
 		if(!nodePair.pOutputNode)
 		{
-			m_error = trUtf8("Couldn't resolve output node number %1.")
+			m_error = tr("Couldn't resolve output node number %1.")
 				.arg(a_outputIndex);
 			emit signalWriteLogMessage(mtCritical, m_error);
 			return nodePair;
@@ -755,7 +755,7 @@ NodePair & VapourSynthScriptProcessor::getNodePair(int a_outputIndex,
 		bool previewNodeCreated = recreatePreviewNode(nodePair);
 		if(!previewNodeCreated)
 		{
-			m_error = trUtf8("Couldn't create preview node for output "
+			m_error = tr("Couldn't create preview node for output "
 				"number %1.").arg(a_outputIndex);
 			emit signalWriteLogMessage(mtCritical, m_error);
 			return nodePair;
@@ -773,7 +773,7 @@ QString VapourSynthScriptProcessor::framePropsString(
 	const VSFrameRef * a_cpFrame) const
 {
 	if(!a_cpFrame)
-		return trUtf8("Null frame.");
+		return tr("Null frame.");
 
 	Q_ASSERT(m_cpVSAPI);
 
@@ -875,7 +875,7 @@ QString VapourSynthScriptProcessor::framePropsString(
 
 void VapourSynthScriptProcessor::printFrameProps(const VSFrameRef * a_cpFrame)
 {
-	QString message = trUtf8("Frame properties:\n%1")
+	QString message = tr("Frame properties:\n%1")
 		.arg(framePropsString(a_cpFrame));
 	emit signalWriteLogMessage(mtDebug, message);
 }

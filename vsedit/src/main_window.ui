@@ -91,12 +91,12 @@
   <customwidget>
    <class>ScriptEditor</class>
    <extends>QPlainTextEdit</extends>
-   <header>../../src/script_editor/script_editor.h</header>
+   <header>src/script_editor/script_editor.h</header>
   </customwidget>
   <customwidget>
    <class>VSEditorLog</class>
    <extends>QTextEdit</extends>
-   <header>../../common-src/log/vs_editor_log.h</header>
+   <header>common-src/log/vs_editor_log.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
