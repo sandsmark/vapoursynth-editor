@@ -52,6 +52,8 @@ private slots:
     bool slotSaveScriptAs();
     bool slotOpenScript();
 
+    void slotSaveAndQuit();
+
     void slotTemplates();
 
     void slotPreview();

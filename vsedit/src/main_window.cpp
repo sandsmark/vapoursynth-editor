@@ -165,7 +165,9 @@ MainWindow::MainWindow() : QMainWindow()
 
     FakeVim::Internal::FakeVimHandler *vimHandler = new FakeVim::Internal::FakeVimHandler(m_ui.scriptEdit, this);
     initHandler(vimHandler);
-    connectSignals(vimHandler, this, m_ui.scriptEdit, QString());
+    Proxy *vimProxy = connectSignals(vimHandler, this, m_ui.scriptEdit, QString());
+    connect(vimProxy, &Proxy::requestSave, this, &MainWindow::slotSaveScript);
+    connect(vimProxy, &Proxy::requestSaveAndQuit, this, &MainWindow::slotSaveAndQuit);
 
     m_windowGeometry = m_pSettingsManager->getMainWindowGeometry();
 
@@ -403,6 +405,13 @@ bool MainWindow::slotOpenScript()
                        tr("VapourSynth script (*.vpy);;All files (*)"));
 
     return loadScriptFromFile(filePath);
+}
+
+void MainWindow::slotSaveAndQuit()
+{
+    if (slotSaveScript()) {
+        qApp->quit();
+    }
 }
 
 // END OF bool MainWindow::slotOpenScript()
