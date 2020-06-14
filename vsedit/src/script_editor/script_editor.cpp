@@ -803,6 +803,39 @@ void ScriptEditor::dropEvent(QDropEvent *a_pEvent)
     a_pEvent->acceptProposedAction();
 }
 
+void ScriptEditor::paintEvent(QPaintEvent *event)
+{
+    QPlainTextEdit::paintEvent(event);
+
+    if ( !m_cursorRect.isNull() && event->rect().intersects(m_cursorRect) ) {
+        QRect rect = m_cursorRect;
+        m_cursorRect = QRect();
+        QPlainTextEdit::viewport()->update(rect);
+    }
+
+    // Draw text cursor.
+    QRect rect = QPlainTextEdit::cursorRect();
+    if (event->rect().intersects(rect)) {
+        QPainter painter(QPlainTextEdit::viewport());
+
+        if ( QPlainTextEdit::overwriteMode() ) {
+            QFontMetrics fm(QPlainTextEdit::font());
+            const int position = QPlainTextEdit::textCursor().position();
+            const QChar c = QPlainTextEdit::document()->characterAt(position);
+            rect.setWidth(fm.horizontalAdvance(c));
+            painter.setPen(Qt::NoPen);
+            painter.setBrush(QPlainTextEdit::palette().color(QPalette::Base));
+            painter.setCompositionMode(QPainter::CompositionMode_Difference);
+        } else {
+            rect.setWidth(QPlainTextEdit::cursorWidth());
+            painter.setPen(QPlainTextEdit::palette().color(QPalette::Text));
+        }
+
+        painter.drawRect(rect);
+        m_cursorRect = rect;
+    }
+}
+
 // END OF void ScriptEditor::dropEvent(QDropEvent * a_pEvent)
 //==============================================================================
 

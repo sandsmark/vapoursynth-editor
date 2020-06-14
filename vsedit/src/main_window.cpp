@@ -13,6 +13,8 @@
 #include "frame_consumers/encode_dialog.h"
 #include "script_templates/templates_dialog.h"
 #include "job_server_watcher_socket.h"
+#include "script_editor/fakevim/editor.h"
+#include "script_editor/fakevim/fakevimhandler.h"
 
 #include <QCoreApplication>
 #include <QSettings>
@@ -160,6 +162,10 @@ MainWindow::MainWindow() : QMainWindow()
     createActionsAndMenus();
 
     slotChangeWindowTitle();
+
+    FakeVim::Internal::FakeVimHandler *vimHandler = new FakeVim::Internal::FakeVimHandler(m_ui.scriptEdit, this);
+    initHandler(vimHandler);
+    connectSignals(vimHandler, this, m_ui.scriptEdit, QString());
 
     m_windowGeometry = m_pSettingsManager->getMainWindowGeometry();
 

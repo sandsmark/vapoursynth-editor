@@ -88,17 +88,19 @@ signals:
 
 protected:
 
-    virtual bool eventFilter(QObject *a_pObject, QEvent *a_pEvent) override;
+    bool eventFilter(QObject *a_pObject, QEvent *a_pEvent) override;
 
-    virtual void resizeEvent(QResizeEvent *a_pEvent) override;
+    void resizeEvent(QResizeEvent *a_pEvent) override;
 
-    virtual void keyPressEvent(QKeyEvent *a_pEvent) override;
+    void keyPressEvent(QKeyEvent *a_pEvent) override;
 
-    virtual void dragEnterEvent(QDragEnterEvent *a_pEvent) override;
+    void dragEnterEvent(QDragEnterEvent *a_pEvent) override;
 
-    virtual void dragMoveEvent(QDragMoveEvent *a_pEvent) override;
+    void dragMoveEvent(QDragMoveEvent *a_pEvent) override;
 
-    virtual void dropEvent(QDropEvent *a_pEvent) override;
+    void dropEvent(QDropEvent *a_pEvent) override;
+
+    void paintEvent(QPaintEvent *event) override;
 
 private slots:
 
@@ -181,6 +183,7 @@ private:
 
     QString m_droppedFilePath;
     int m_droppedFileNumber;
+    QRect m_cursorRect;
 
     std::vector<vsedit::VariableToken> m_variables;
 };
