@@ -22,6 +22,7 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QMenu>
+#include <QStyleHints>
 #include <algorithm>
 
 //==============================================================================
@@ -61,6 +62,11 @@ ScriptEditor::ScriptEditor(QWidget *a_pParent) :
     , m_pActionMoveTextBlockDown(nullptr)
     , m_pActionToggleComment(nullptr)
 {
+    QGuiApplication::styleHints()->setCursorFlashTime(0);
+    QFont mono = font();
+    mono.setFamily("Monospace");
+    setFont(mono);
+
     m_pSideBox = new QWidget(this);
     m_pSideBox->installEventFilter(this);
 
@@ -818,13 +824,13 @@ void ScriptEditor::paintEvent(QPaintEvent *event)
     if (event->rect().intersects(rect)) {
         QPainter painter(QPlainTextEdit::viewport());
 
-        if ( QPlainTextEdit::overwriteMode() ) {
+        if (QPlainTextEdit::overwriteMode() ) {
             QFontMetrics fm(QPlainTextEdit::font());
             const int position = QPlainTextEdit::textCursor().position();
             const QChar c = QPlainTextEdit::document()->characterAt(position);
-            rect.setWidth(fm.horizontalAdvance(c));
+            rect.setWidth(qMax(fm.horizontalAdvance(c), rect.width()));
             painter.setPen(Qt::NoPen);
-            painter.setBrush(QPlainTextEdit::palette().color(QPalette::Base));
+            painter.setBrush(QPlainTextEdit::palette().color(QPalette::Text));
             painter.setCompositionMode(QPainter::CompositionMode_Difference);
         } else {
             rect.setWidth(QPlainTextEdit::cursorWidth());
