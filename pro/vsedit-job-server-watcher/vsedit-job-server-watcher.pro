@@ -1,4 +1,5 @@
 CONFIG += qt
+DEFINES += QT_NO_DEPRECATED_WARNINGS
 
 QT += widgets
 QT += websockets
