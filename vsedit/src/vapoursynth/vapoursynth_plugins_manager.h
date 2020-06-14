@@ -12,56 +12,56 @@ class SettingsManager;
 
 class VapourSynthPluginsManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
 
-	VapourSynthPluginsManager(SettingsManager * a_pSettingsManager,
-		QObject * a_pParent = nullptr);
+    VapourSynthPluginsManager(SettingsManager *a_pSettingsManager,
+                              QObject *a_pParent = nullptr);
 
-	virtual ~VapourSynthPluginsManager();
+    virtual ~VapourSynthPluginsManager();
 
-	void getCorePlugins();
+    void getCorePlugins();
 
-	void pollPaths(const QStringList & a_pluginsPaths);
+    void pollPaths(const QStringList &a_pluginsPaths);
 
-	QStringList functions() const;
+    QStringList functions() const;
 
-	VSPluginsList pluginsList() const;
+    VSPluginsList pluginsList() const;
 
-	static VSData::Function parseFunctionSignature(const QString & a_name,
-		const QString & a_arguments);
+    static VSData::Function parseFunctionSignature(const QString &a_name,
+            const QString &a_arguments);
 
-	friend void VS_CC fakeConfigPlugin(const char * a_identifier,
-		const char * a_defaultNamespace, const char * a_name,
-		int a_apiVersion, int a_readonly, VSPlugin * a_pPlugin);
+    friend void VS_CC fakeConfigPlugin(const char *a_identifier,
+                                       const char *a_defaultNamespace, const char *a_name,
+                                       int a_apiVersion, int a_readonly, VSPlugin *a_pPlugin);
 
-	friend void VS_CC fakeRegisterFunction(const char * a_name,
-		const char * a_args, VSPublicFunction a_argsFunc,
-		void * a_pFunctionData, VSPlugin * a_pPlugin);
+    friend void VS_CC fakeRegisterFunction(const char *a_name,
+                                           const char *a_args, VSPublicFunction a_argsFunc,
+                                           void *a_pFunctionData, VSPlugin *a_pPlugin);
 
 public slots:
 
-	void slotClear();
+    void slotClear();
 
-	void slotSort();
+    void slotSort();
 
-	void slotRefill();
+    void slotRefill();
 
 signals:
 
-	void signalWriteLogMessage(int a_messageType,
-		const QString & a_message);
+    void signalWriteLogMessage(int a_messageType,
+                               const QString &a_message);
 
 private:
 
-	VSPluginsList m_pluginsList;
+    VSPluginsList m_pluginsList;
 
-	QString m_currentPluginPath;
+    QString m_currentPluginPath;
 
-	bool m_pluginAlreadyLoaded;
+    bool m_pluginAlreadyLoaded;
 
-	SettingsManager * m_pSettingsManager;
+    SettingsManager *m_pSettingsManager;
 };
 
 #endif // VAPOURSYNTHPLUGINSMANAGER_H

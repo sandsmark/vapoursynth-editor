@@ -9,43 +9,43 @@ class LogStylesModel;
 
 class StyledLogViewSettingsDialog : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
 
-	StyledLogViewSettingsDialog(QWidget * a_pParent = nullptr);
+    StyledLogViewSettingsDialog(QWidget *a_pParent = nullptr);
 
-	virtual ~StyledLogViewSettingsDialog();
+    virtual ~StyledLogViewSettingsDialog();
 
-	virtual std::vector<TextBlockStyle> styles() const;
+    virtual std::vector<TextBlockStyle> styles() const;
 
-	virtual void setStyles(const std::vector<TextBlockStyle> & a_styles);
+    virtual void setStyles(const std::vector<TextBlockStyle> &a_styles);
 
 signals:
 
-	void signalSettingsChanged();
+    void signalSettingsChanged();
 
 protected slots:
 
-	virtual void slotOk();
+    virtual void slotOk();
 
-	virtual void slotApply();
+    virtual void slotApply();
 
-	virtual void slotStyleSelected(const QModelIndex & a_index);
+    virtual void slotStyleSelected(const QModelIndex &a_index);
 
-	virtual void slotFontButtonClicked();
+    virtual void slotFontButtonClicked();
 
-	virtual void slotTextColorButtonClicked();
+    virtual void slotTextColorButtonClicked();
 
-	virtual void slotBackgroundColorButtonClicked();
+    virtual void slotBackgroundColorButtonClicked();
 
 protected:
 
-	virtual void enableStyleSettingsControls(bool a_enable = true);
+    virtual void enableStyleSettingsControls(bool a_enable = true);
 
-	Ui::StyledLogViewSettingsDialog m_ui;
+    Ui::StyledLogViewSettingsDialog m_ui;
 
-	LogStylesModel * m_pLogStylesModel;
+    LogStylesModel *m_pLogStylesModel;
 };
 
 #endif // STYLED_LOG_VIEW_SETTINGS_DIALOG_H_INCLUDED

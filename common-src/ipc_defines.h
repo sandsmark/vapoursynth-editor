@@ -47,7 +47,7 @@ static const char SMSG_TRUSTED_CLIENTS_INFO[] = "TCI";
 // Editor <-> Watcher communication
 
 static const char JOB_SERVER_WATCHER_LOCAL_SERVER_NAME[] =
-	"vsedit_job_server_watcher";
+    "vsedit_job_server_watcher";
 
 static const char WMSG_SHOW_WINDOW[] = "S";
 static const char WMSG_CLI_ENCODE_JOB[] = "CEJ";

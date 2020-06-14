@@ -9,65 +9,58 @@
 
 //==============================================================================
 
-enum class ResamplingFilter : int
-{
-	Point,
-	Bilinear,
-	Bicubic,
-	Spline16,
-	Spline36,
-	Lanczos,
+enum class ResamplingFilter : int {
+    Point,
+    Bilinear,
+    Bicubic,
+    Spline16,
+    Spline36,
+    Lanczos,
 };
 
-enum class YuvMatrixCoefficients : int
-{
-	m709,
-	m470BG,
-	m170M,
-	m2020_NCL,
-	m2020_CL,
+enum class YuvMatrixCoefficients : int {
+    m709,
+    m470BG,
+    m170M,
+    m2020_NCL,
+    m2020_CL,
 };
 
-enum class ChromaPlacement : int
-{
-	MPEG1,
-	MPEG2,
-	DV,
+enum class ChromaPlacement : int {
+    MPEG1,
+    MPEG2,
+    DV,
 };
 
-enum class EncodingType
-{
-	CLI,
-	Raw,
-	VfW,
+enum class EncodingType {
+    CLI,
+    Raw,
+    VfW,
 };
 
-enum class EncodingHeaderType
-{
-	NoHeader,
-	Y4M,
+enum class EncodingHeaderType {
+    NoHeader,
+    Y4M,
 };
 
-enum class JobType
-{
-	EncodeScriptCLI,
-	RunProcess,
-	RunShellCommand,
+enum class JobType {
+    EncodeScriptCLI,
+    RunProcess,
+    RunShellCommand,
 };
 
-enum class JobState
-{
-	Waiting,
-	Running,
-	Pausing,
-	Paused,
-	Aborting,
-	Aborted,
-	FailedCleanUp,
-	Failed,
-	DependencyNotMet,
-	CompletedCleanUp,
-	Completed,
+enum class JobState {
+    Waiting,
+    Running,
+    Pausing,
+    Paused,
+    Aborting,
+    Aborted,
+    FailedCleanUp,
+    Failed,
+    DependencyNotMet,
+    CompletedCleanUp,
+    Completed,
 };
 
 extern const std::vector<JobState> ACTIVE_JOB_STATES;
@@ -91,56 +84,54 @@ extern const char JP_LAST_FRAME_REAL[];
 extern const char JP_FRAMES_PROCESSED[];
 extern const char JP_FPS[];
 
-struct JobProperties
-{
-	QUuid id;
-	JobType type;
-	JobState jobState;
-	std::vector<QUuid> dependsOnJobIds;
-	QDateTime timeStarted;
-	QDateTime timeEnded;
-	QString scriptName;
-	QString scriptText;
-	EncodingType encodingType;
-	EncodingHeaderType encodingHeaderType;
-	QString executablePath;
-	QString arguments;
-	QString shellCommand;
-	int firstFrame;
-	int firstFrameReal;
-	int lastFrame;
-	int lastFrameReal;
-	int framesProcessed;
-	double fps;
+struct JobProperties {
+    QUuid id;
+    JobType type;
+    JobState jobState;
+    std::vector<QUuid> dependsOnJobIds;
+    QDateTime timeStarted;
+    QDateTime timeEnded;
+    QString scriptName;
+    QString scriptText;
+    EncodingType encodingType;
+    EncodingHeaderType encodingHeaderType;
+    QString executablePath;
+    QString arguments;
+    QString shellCommand;
+    int firstFrame;
+    int firstFrameReal;
+    int lastFrame;
+    int lastFrameReal;
+    int framesProcessed;
+    double fps;
 
-	JobProperties();
-	JobProperties(const JobProperties &) = default;
-	JobProperties(JobProperties &&) = default;
-	JobProperties & operator=(const JobProperties &) = default;
-	JobProperties & operator=(JobProperties &&) = default;
+    JobProperties();
+    JobProperties(const JobProperties &) = default;
+    JobProperties(JobProperties &&) = default;
+    JobProperties &operator=(const JobProperties &) = default;
+    JobProperties &operator=(JobProperties &&) = default;
 
-	static QString typeName(JobType a_type);
-	static QString stateName(JobState a_state);
+    static QString typeName(JobType a_type);
+    static QString stateName(JobState a_state);
 
-	QString subject() const;
-	int framesTotal() const;
+    QString subject() const;
+    int framesTotal() const;
 
-	QJsonObject toJson() const;
-	static JobProperties fromJson(const QJsonObject & a_object);
+    QJsonObject toJson() const;
+    static JobProperties fromJson(const QJsonObject &a_object);
 };
 
-struct EncodingPreset
-{
-	QString name;
-	EncodingType type;
-	EncodingHeaderType headerType;
-	QString executablePath;
-	QString arguments;
+struct EncodingPreset {
+    QString name;
+    EncodingType type;
+    EncodingHeaderType headerType;
+    QString executablePath;
+    QString arguments;
 
-	EncodingPreset(const QString & a_name = QString());
-	bool operator==(const EncodingPreset & a_other) const;
-	bool operator<(const EncodingPreset & a_other) const;
-	bool isEmpty() const;
+    EncodingPreset(const QString &a_name = QString());
+    bool operator==(const EncodingPreset &a_other) const;
+    bool operator<(const EncodingPreset &a_other) const;
+    bool isEmpty() const;
 };
 
 //==============================================================================

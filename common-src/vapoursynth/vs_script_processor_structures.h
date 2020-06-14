@@ -5,53 +5,50 @@
 
 //==============================================================================
 
-struct Frame
-{
-	int number;
-	int outputIndex;
-	const VSFrameRef * cpOutputFrameRef;
-	const VSFrameRef * cpPreviewFrameRef;
+struct Frame {
+    int number;
+    int outputIndex;
+    const VSFrameRef *cpOutputFrameRef;
+    const VSFrameRef *cpPreviewFrameRef;
 
-	Frame(int a_number, int a_outputIndex,
-		const VSFrameRef * a_cpOutputFrameRef,
-		const VSFrameRef * a_cpPreviewFrameRef = nullptr);
-	bool operator==(const Frame & a_other) const;
+    Frame(int a_number, int a_outputIndex,
+          const VSFrameRef *a_cpOutputFrameRef,
+          const VSFrameRef *a_cpPreviewFrameRef = nullptr);
+    bool operator==(const Frame &a_other) const;
 };
 
 //==============================================================================
 
-struct FrameTicket
-{
-	int frameNumber;
-	int outputIndex;
-	VSNodeRef * pOutputNode;
-	bool needPreview;
-	VSNodeRef * pPreviewNode;
-	const VSFrameRef * cpOutputFrameRef;
-	const VSFrameRef * cpPreviewFrameRef;
-	bool discard;
+struct FrameTicket {
+    int frameNumber;
+    int outputIndex;
+    VSNodeRef *pOutputNode;
+    bool needPreview;
+    VSNodeRef *pPreviewNode;
+    const VSFrameRef *cpOutputFrameRef;
+    const VSFrameRef *cpPreviewFrameRef;
+    bool discard;
 
-	FrameTicket(int a_frameNumber, int a_outputIndex,
-		VSNodeRef * a_pOutputNode, bool a_needPreview = false,
-		VSNodeRef * a_pPreviewNode = nullptr);
+    FrameTicket(int a_frameNumber, int a_outputIndex,
+                VSNodeRef *a_pOutputNode, bool a_needPreview = false,
+                VSNodeRef *a_pPreviewNode = nullptr);
 
-	bool isComplete() const;
+    bool isComplete() const;
 };
 
 //==============================================================================
 
-struct NodePair
-{
-	int outputIndex;
-	VSNodeRef * pOutputNode;
-	VSNodeRef * pPreviewNode;
+struct NodePair {
+    int outputIndex;
+    VSNodeRef *pOutputNode;
+    VSNodeRef *pPreviewNode;
 
-	NodePair();
-	NodePair(int a_outputIndex, VSNodeRef * a_pOutputNode,
-		VSNodeRef * a_pPreviewNode);
+    NodePair();
+    NodePair(int a_outputIndex, VSNodeRef *a_pOutputNode,
+             VSNodeRef *a_pPreviewNode);
 
-	bool isNull() const;
-	bool isValid() const;
+    bool isNull() const;
+    bool isValid() const;
 };
 
 //==============================================================================

@@ -8,19 +8,19 @@ class ApplicationInstanceFileGuard
 {
 public:
 
-	ApplicationInstanceFileGuard(const QString & a_fileName = QString());
-	virtual ~ApplicationInstanceFileGuard();
-	bool lock(const QString & a_fileName);
-	bool unlock();
-	bool isLocked() const;
-	QString error() const;
+    ApplicationInstanceFileGuard(const QString &a_fileName = QString());
+    virtual ~ApplicationInstanceFileGuard();
+    bool lock(const QString &a_fileName);
+    bool unlock();
+    bool isLocked() const;
+    QString error() const;
 
 private:
 
-	QFile m_file;
-	QString m_error;
-	QString m_fileName;
-	QString m_tempDir;
+    QFile m_file;
+    QString m_error;
+    QString m_fileName;
+    QString m_tempDir;
 };
 
 #endif // APPLICATION_INSTANCE_FILE_GUARD_H_INCLUDED

@@ -9,77 +9,77 @@ class SettingsManager;
 class VSScriptLibrary;
 
 #ifdef Q_OS_WIN
-	class QWinTaskbarButton;
-	class QWinTaskbarProgress;
+class QWinTaskbarButton;
+class QWinTaskbarProgress;
 #endif
 
 class EncodeDialog : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
 
-	EncodeDialog(SettingsManager * a_pSettingsManager,
-		VSScriptLibrary * a_pVSScriptLibrary,
-		QWidget * a_pParent = nullptr);
-	virtual ~EncodeDialog();
+    EncodeDialog(SettingsManager *a_pSettingsManager,
+                 VSScriptLibrary *a_pVSScriptLibrary,
+                 QWidget *a_pParent = nullptr);
+    virtual ~EncodeDialog();
 
-	bool initialize(const QString & a_script, const QString & a_scriptName);
+    bool initialize(const QString &a_script, const QString &a_scriptName);
 
-	bool busy() const;
+    bool busy() const;
 
 public slots:
 
-	void showActive();
+    void showActive();
 
 signals:
 
-	void signalWriteLogMessage(const QString & a_style,
-		const QString & a_message);
+    void signalWriteLogMessage(const QString &a_style,
+                               const QString &a_message);
 
 protected:
 
-	virtual void showEvent(QShowEvent * a_pEvent) override;
-	virtual void closeEvent(QCloseEvent * a_pEvent) override;
+    virtual void showEvent(QShowEvent *a_pEvent) override;
+    virtual void closeEvent(QCloseEvent *a_pEvent) override;
 
 private slots:
 
-	void slotWholeVideoButtonPressed();
+    void slotWholeVideoButtonPressed();
 
-	void slotStartEncodeButtonPressed();
+    void slotStartEncodeButtonPressed();
 
-	void slotExecutableBrowseButtonPressed();
+    void slotExecutableBrowseButtonPressed();
 
-	void slotArgumentsHelpButtonPressed();
+    void slotArgumentsHelpButtonPressed();
 
-	void slotEncodingPresetSaveButtonPressed();
-	void slotEncodingPresetDeleteButtonPressed();
-	void slotEncodingPresetComboBoxActivated(const QString & a_text);
+    void slotEncodingPresetSaveButtonPressed();
+    void slotEncodingPresetDeleteButtonPressed();
+    void slotEncodingPresetComboBoxActivated(const QString &a_text);
 
-	void slotJobStateChanged(JobState a_newState, JobState a_oldState);
-	void slotJobProgressChanged();
-	void slotJobPropertiesChanged();
+    void slotJobStateChanged(JobState a_newState, JobState a_oldState);
+    void slotJobProgressChanged();
+    void slotJobPropertiesChanged();
 
-	void slotWriteLogMessage(const QString & a_message,
-		const QString & a_style);
+    void slotWriteLogMessage(const QString &a_message,
+                             const QString &a_style);
 
 private:
 
-	void setUpEncodingPresets();
+    void setUpEncodingPresets();
 
-	void setUiEnabled();
+    void setUiEnabled();
 
-	Ui::EncodeDialog m_ui;
+    Ui::EncodeDialog m_ui;
 
-	SettingsManager * m_pSettingsManager;
+    SettingsManager *m_pSettingsManager;
 
-	vsedit::Job * m_pJob;
+    vsedit::Job *m_pJob;
 
-	std::vector<EncodingPreset> m_encodingPresets;
+    std::vector<EncodingPreset> m_encodingPresets;
 
 #ifdef Q_OS_WIN
-	QWinTaskbarButton * m_pWinTaskbarButton;
-	QWinTaskbarProgress * m_pWinTaskbarProgress;
+    QWinTaskbarButton *m_pWinTaskbarButton;
+    QWinTaskbarProgress *m_pWinTaskbarProgress;
 #endif
 };
 

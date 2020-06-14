@@ -24,165 +24,165 @@ class SettingsDialog;
 
 class ScriptEditor : public QPlainTextEdit
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
 
-	ScriptEditor(QWidget * a_pParent = nullptr);
+    ScriptEditor(QWidget *a_pParent = nullptr);
 
-	virtual ~ScriptEditor();
+    virtual ~ScriptEditor();
 
-	QString text() const;
+    QString text() const;
 
-	QPoint cursorPosition() const;
+    QPoint cursorPosition() const;
 
-	void setCursorPosition(const QPoint & a_point);
+    void setCursorPosition(const QPoint &a_point);
 
-	void setCursorPosition(int a_line, int a_index);
+    void setCursorPosition(int a_line, int a_index);
 
-	bool isModified() const;
+    bool isModified() const;
 
-	void setModified(bool a_modified);
+    void setModified(bool a_modified);
 
-	void setPluginsList(const VSPluginsList & a_pluginsList);
+    void setPluginsList(const VSPluginsList &a_pluginsList);
 
-	void setSettingsManager(SettingsManager * a_pSettingsManager);
+    void setSettingsManager(SettingsManager *a_pSettingsManager);
 
-	std::vector<QAction *> actionsForMenu() const;
+    std::vector<QAction *> actionsForMenu() const;
 
-	std::vector<vsedit::VariableToken> variables() const;
+    std::vector<vsedit::VariableToken> variables() const;
 
 public slots:
 
-	void slotLoadSettings();
+    void slotLoadSettings();
 
-	void slotComplete();
+    void slotComplete();
 
-	void slotInsertCompletion(const QString & a_completionString);
+    void slotInsertCompletion(const QString &a_completionString);
 
-	void slotDuplicateSelection();
+    void slotDuplicateSelection();
 
-	void slotCommentSelection();
+    void slotCommentSelection();
 
-	void slotUncommentSelection();
+    void slotUncommentSelection();
 
-	void slotReplaceTabWithSpaces();
+    void slotReplaceTabWithSpaces();
 
-	void slotTab();
+    void slotTab();
 
-	void slotBackTab();
+    void slotBackTab();
 
-	void slotHome(bool a_select = false);
+    void slotHome(bool a_select = false);
 
-	void slotInsertTextAtNewLine(const QString & a_text);
+    void slotInsertTextAtNewLine(const QString &a_text);
 
-	void slotMoveTextBlockUp();
+    void slotMoveTextBlockUp();
 
-	void slotMoveTextBlockDown();
+    void slotMoveTextBlockDown();
 
-	void slotToggleComment();
+    void slotToggleComment();
 
 signals:
 
-	void signalScriptFileDropped(const QString & a_filePath, bool * a_pHandled);
+    void signalScriptFileDropped(const QString &a_filePath, bool *a_pHandled);
 
 protected:
 
-	virtual bool eventFilter(QObject * a_pObject, QEvent * a_pEvent) override;
+    virtual bool eventFilter(QObject *a_pObject, QEvent *a_pEvent) override;
 
-	virtual void resizeEvent(QResizeEvent * a_pEvent) override;
+    virtual void resizeEvent(QResizeEvent *a_pEvent) override;
 
-	virtual void keyPressEvent(QKeyEvent * a_pEvent) override;
+    virtual void keyPressEvent(QKeyEvent *a_pEvent) override;
 
-	virtual void dragEnterEvent(QDragEnterEvent * a_pEvent) override;
+    virtual void dragEnterEvent(QDragEnterEvent *a_pEvent) override;
 
-	virtual void dragMoveEvent(QDragMoveEvent * a_pEvent) override;
+    virtual void dragMoveEvent(QDragMoveEvent *a_pEvent) override;
 
-	virtual void dropEvent(QDropEvent * a_pEvent) override;
+    virtual void dropEvent(QDropEvent *a_pEvent) override;
 
 private slots:
 
-	void slotTextChanged();
+    void slotTextChanged();
 
-	void slotUpdateSideBoxWidth();
+    void slotUpdateSideBoxWidth();
 
-	void slotUpdateSideBox(const QRect & a_rect, int a_dy);
+    void slotUpdateSideBox(const QRect &a_rect, int a_dy);
 
-	void slotHighlightCurrentBlockAndMatches();
+    void slotHighlightCurrentBlockAndMatches();
 
-	void slotShowCustomMenu(const QPoint & a_position);
+    void slotShowCustomMenu(const QPoint &a_position);
 
 private:
 
-	void createActionsAndMenus();
+    void createActionsAndMenus();
 
-	QString getVapourSynthCoreName() const;
+    QString getVapourSynthCoreName() const;
 
-	void setChildrenCoreName(const QString & a_coreName);
+    void setChildrenCoreName(const QString &a_coreName);
 
-	int sideBoxWidth() const;
+    int sideBoxWidth() const;
 
-	void paintSideBox(QPaintEvent * a_pEvent);
+    void paintSideBox(QPaintEvent *a_pEvent);
 
-	void indentNewLine();
+    void indentNewLine();
 
-	void insertSelectedLinesBegin(const QString & a_text);
-	void removeSelectedLinesBegin(const QString & a_text);
+    void insertSelectedLinesBegin(const QString &a_text);
+    void removeSelectedLinesBegin(const QString &a_text);
 
-	void fillVariables();
+    void fillVariables();
 
-	SettingsManager * m_pSettingsManager;
+    SettingsManager *m_pSettingsManager;
 
-	QWidget * m_pSideBox;
+    QWidget *m_pSideBox;
 
-	int m_sideBoxLineWidth;
+    int m_sideBoxLineWidth;
 
-	int m_sideBoxTextMargin;
+    int m_sideBoxTextMargin;
 
-	ScriptCompleterModel * m_pCompleterModel;
+    ScriptCompleterModel *m_pCompleterModel;
 
-	ScriptCompleter * m_pCompleter;
+    ScriptCompleter *m_pCompleter;
 
-	SyntaxHighlighter * m_pSyntaxHighlighter;
+    SyntaxHighlighter *m_pSyntaxHighlighter;
 
-	int m_typedCharacters;
+    int m_typedCharacters;
 
-	int m_charactersTypedToStartCompletion;
+    int m_charactersTypedToStartCompletion;
 
-	QString m_plainText;
+    QString m_plainText;
 
-	QColor m_backgroundColor;
+    QColor m_backgroundColor;
 
-	QColor m_activeLineColor;
+    QColor m_activeLineColor;
 
-	QColor m_selectionMatchesColor;
+    QColor m_selectionMatchesColor;
 
-	bool m_highlightSelectionMatches;
+    bool m_highlightSelectionMatches;
 
-	int m_highlightSelectionMatchesMinLength;
+    int m_highlightSelectionMatchesMinLength;
 
-	QTextCharFormat m_commonScriptTextFormat;
+    QTextCharFormat m_commonScriptTextFormat;
 
-	QString m_tabText;
+    QString m_tabText;
 
-	int m_spacesInTab;
+    int m_spacesInTab;
 
-	QMenu * m_pContextMenu;
-	QAction * m_pActionDuplicateSelection;
-	QAction * m_pActionCommentSelection;
-	QAction * m_pActionUncommentSelection;
-	QAction * m_pActionReplaceTabWithSpaces;
-	QAction * m_pActionAutocomplete;
-	QAction * m_pActionMoveTextBlockUp;
-	QAction * m_pActionMoveTextBlockDown;
-	QAction * m_pActionToggleComment;
+    QMenu *m_pContextMenu;
+    QAction *m_pActionDuplicateSelection;
+    QAction *m_pActionCommentSelection;
+    QAction *m_pActionUncommentSelection;
+    QAction *m_pActionReplaceTabWithSpaces;
+    QAction *m_pActionAutocomplete;
+    QAction *m_pActionMoveTextBlockUp;
+    QAction *m_pActionMoveTextBlockDown;
+    QAction *m_pActionToggleComment;
 
-	std::vector<QAction *> m_settableActionsList;
+    std::vector<QAction *> m_settableActionsList;
 
-	QString m_droppedFilePath;
-	int m_droppedFileNumber;
+    QString m_droppedFilePath;
+    int m_droppedFileNumber;
 
-	std::vector<vsedit::VariableToken> m_variables;
+    std::vector<vsedit::VariableToken> m_variables;
 };
 
 #endif // SCRIPTEDITOR_H

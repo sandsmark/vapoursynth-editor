@@ -13,68 +13,68 @@ class QAction;
 
 class TemplatesDialog : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
 
-	TemplatesDialog(SettingsManager * a_pSettingsManager,
-		QWidget * a_pParent = nullptr,
-		Qt::WindowFlags a_flags =
-		(Qt::WindowFlags)0
-		| Qt::Window
-		| Qt::CustomizeWindowHint
-		| Qt::WindowMinimizeButtonHint
-		| Qt::WindowMaximizeButtonHint
-		| Qt::WindowCloseButtonHint);
+    TemplatesDialog(SettingsManager *a_pSettingsManager,
+                    QWidget *a_pParent = nullptr,
+                    Qt::WindowFlags a_flags =
+                        (Qt::WindowFlags)0
+                        | Qt::Window
+                        | Qt::CustomizeWindowHint
+                        | Qt::WindowMinimizeButtonHint
+                        | Qt::WindowMaximizeButtonHint
+                        | Qt::WindowCloseButtonHint);
 
-	virtual ~TemplatesDialog();
+    virtual ~TemplatesDialog();
 
-	void setPluginsList(const VSPluginsList & a_pluginsList);
+    void setPluginsList(const VSPluginsList &a_pluginsList);
 
 public slots:
 
-	void call();
+    void call();
 
-	void slotLoadSettings();
+    void slotLoadSettings();
 
 signals:
 
-	void signalPasteCodeSnippet(const QString & a_text);
+    void signalPasteCodeSnippet(const QString &a_text);
 
 private slots:
 
-	void slotSnippetPasteIntoScriptButtonClicked();
-	void slotSnippetSaveButtonClicked();
-	void slotSnippetDeleteButtonClicked();
-	void slotSnippetNameComboBoxActivated(const QString & a_text);
+    void slotSnippetPasteIntoScriptButtonClicked();
+    void slotSnippetSaveButtonClicked();
+    void slotSnippetDeleteButtonClicked();
+    void slotSnippetNameComboBoxActivated(const QString &a_text);
 
-	void slotNewScriptTemplateRevertButtonClicked();
-	void slotNewScriptTemplateLoadDefaultButtonClicked();
-	void slotNewScriptTemplateSaveButtonClicked();
+    void slotNewScriptTemplateRevertButtonClicked();
+    void slotNewScriptTemplateLoadDefaultButtonClicked();
+    void slotNewScriptTemplateSaveButtonClicked();
 
-	void slotSaveDropFileCategoriesButtonClicked();
-	void slotRevertDropFileCategoriesButtonClicked();
-	void slotAddDropFileCategoryButtonClicked();
-	void slotDeleteSelectedDropFileCategoryButtonClicked();
-	void slotDropFileCategoryViewPressed(const QModelIndex & a_index);
-	void slotDisplayCurrentDropFileCategoryTemplate();
-	void slotUpdateDropFileCategories();
+    void slotSaveDropFileCategoriesButtonClicked();
+    void slotRevertDropFileCategoriesButtonClicked();
+    void slotAddDropFileCategoryButtonClicked();
+    void slotDeleteSelectedDropFileCategoryButtonClicked();
+    void slotDropFileCategoryViewPressed(const QModelIndex &a_index);
+    void slotDisplayCurrentDropFileCategoryTemplate();
+    void slotUpdateDropFileCategories();
 
-	void slotSaveActionTriggered();
+    void slotSaveActionTriggered();
 
 private:
 
-	Ui::TemplatesDialog m_ui;
+    Ui::TemplatesDialog m_ui;
 
-	SettingsManager * m_pSettingsManager;
+    SettingsManager *m_pSettingsManager;
 
-	std::vector<CodeSnippet> m_codeSnippets;
+    std::vector<CodeSnippet> m_codeSnippets;
 
-	DropFileCategoryModel * m_pDropFileCategoryModel;
+    DropFileCategoryModel *m_pDropFileCategoryModel;
 
-	QAction * m_pSaveAction;
+    QAction *m_pSaveAction;
 
-	std::vector<ScriptEditor *> m_scriptEditors;
+    std::vector<ScriptEditor *> m_scriptEditors;
 };
 
 #endif // TEMPLATES_DIALOG_H_INCLUDED

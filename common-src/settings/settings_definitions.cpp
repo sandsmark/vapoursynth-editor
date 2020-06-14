@@ -19,10 +19,10 @@ const QStringList DEFAULT_DOCUMENTATION_PATHS("./documentation");
 const int DEFAULT_CHARACTERS_TYPED_TO_START_COMPLETION = 2;
 const double DEFAULT_TIME_STEP = 5.0;
 const TimeLineSlider::DisplayMode DEFAULT_TIMELINE_MODE =
-	TimeLineSlider::DisplayMode::Time;
+    TimeLineSlider::DisplayMode::Time;
 const bool DEFAULT_COLOR_PICKER_VISIBLE = false;
 const PlayFPSLimitMode DEFAULT_PLAY_FPS_LIMIT_MODE =
-	PlayFPSLimitMode::FromVideo;
+    PlayFPSLimitMode::FromVideo;
 const double DEFAULT_PLAY_FPS_LIMIT = 23.976;
 const bool DEFAULT_USE_SPACES_AS_TAB = false;
 const int DEFAULT_SPACES_IN_TAB = 4;
@@ -60,14 +60,14 @@ const char ACTION_ID_TOGGLE_ZOOM_PANEL[] = "toggle_zoom_panel";
 const char ACTION_ID_SET_ZOOM_MODE_NO_ZOOM[] = "set_zoom_mode_no_zoom";
 const char ACTION_ID_SET_ZOOM_MODE_FIXED_RATIO[] = "set_zoom_mode_fixed_ratio";
 const char ACTION_ID_SET_ZOOM_MODE_FIT_TO_FRAME[] =
-	"set_zoom_mode_fit_to_frame";
+    "set_zoom_mode_fit_to_frame";
 const char ACTION_ID_SET_ZOOM_SCALE_MODE_NEAREST[] =
-	"set_zoom_scale_mode_nearest";
+    "set_zoom_scale_mode_nearest";
 const char ACTION_ID_SET_ZOOM_SCALE_MODE_BILINEAR[] =
-	"set_zoom_scale_mode_bilinear";
+    "set_zoom_scale_mode_bilinear";
 const char ACTION_ID_TOGGLE_CROP_PANEL[] = "toggle_crop_panel";
 const char ACTION_ID_PASTE_CROP_SNIPPET_INTO_SCRIPT[] =
-	"paste_crop_snippet_into_script";
+    "paste_crop_snippet_into_script";
 const char ACTION_ID_FRAME_TO_CLIPBOARD[] = "frame_to_clipboard";
 const char ACTION_ID_TOGGLE_TIMELINE_PANEL[] = "toggle_timeline_panel";
 const char ACTION_ID_SET_TIMELINE_MODE_TIME[] = "set_timeline_mode_time";
@@ -84,21 +84,21 @@ const char ACTION_ID_REPLACE_TAB_WITH_SPACES[] = "replace_tab_with_spaces";
 const char ACTION_ID_TIMELINE_LOAD_CHAPTERS[] = "timeline_load_chapters";
 const char ACTION_ID_TIMELINE_CLEAR_BOOKMARKS[] = "timeline_clear_bookmarks";
 const char ACTION_ID_TIMELINE_BOOKMARK_CURRENT_FRAME[] =
-	"timeline_bookmark_current_frame";
+    "timeline_bookmark_current_frame";
 const char ACTION_ID_TIMELINE_UNBOOKMARK_CURRENT_FRAME[] =
-	"timeline_unbookmark_current_frame";
+    "timeline_unbookmark_current_frame";
 const char ACTION_ID_TIMELINE_GO_TO_PREVIOUS_BOOKMARK[] =
-	"timeline_go_to_previous_bookmark";
+    "timeline_go_to_previous_bookmark";
 const char ACTION_ID_TIMELINE_GO_TO_NEXT_BOOKMARK[] =
-	"timeline_go_to_next_bookmark";
+    "timeline_go_to_next_bookmark";
 const char ACTION_ID_PASTE_SHOWN_FRAME_NUMBER_INTO_SCRIPT[] =
-	"paste_shown_frame_number_into_script";
+    "paste_shown_frame_number_into_script";
 const char ACTION_ID_MOVE_TEXT_BLOCK_UP[] = "move_text_block_up";
 const char ACTION_ID_MOVE_TEXT_BLOCK_DOWN[] = "move_text_block_down";
 const char ACTION_ID_TOGGLE_COMMENT[] = "toggle_comment";
 const char ACTION_ID_SHUTDOWN_SERVER_AND_EXIT[] = "shutdown_server_and_exit";
 const char ACTION_ID_SET_TRUSTED_CLIENTS_ADDRESSES[] =
-	"set_trusted_clients_addresses";
+    "set_trusted_clients_addresses";
 
 //==============================================================================
 
@@ -121,37 +121,37 @@ const char COLOR_ID_TIMELINE_BOOKMARKS[] = "timeline_bookmarks";
 
 //==============================================================================
 
-bool StandardAction::operator==(const StandardAction & a_other) const
+bool StandardAction::operator==(const StandardAction &a_other) const
 {
-	return id == a_other.id;
+    return id == a_other.id;
 }
 
-bool StandardAction::operator<(const StandardAction & a_other) const
+bool StandardAction::operator<(const StandardAction &a_other) const
 {
-	return id < a_other.id;
+    return id < a_other.id;
 }
 
 //==============================================================================
 
-CodeSnippet::CodeSnippet(const QString & a_name, const QString & a_text) :
-	  name(a_name)
-	, text(a_text)
+CodeSnippet::CodeSnippet(const QString &a_name, const QString &a_text) :
+    name(a_name)
+    , text(a_text)
 {
 }
 
-bool CodeSnippet::operator==(const CodeSnippet & a_other) const
+bool CodeSnippet::operator==(const CodeSnippet &a_other) const
 {
-	return (name == a_other.name);
+    return (name == a_other.name);
 }
 
-bool CodeSnippet::operator<(const CodeSnippet & a_other) const
+bool CodeSnippet::operator<(const CodeSnippet &a_other) const
 {
-	return (name < a_other.name);
+    return (name < a_other.name);
 }
 
 bool CodeSnippet::isEmpty() const
 {
-	return (name.isEmpty() && text.isEmpty());
+    return (name.isEmpty() && text.isEmpty());
 }
 
 //==============================================================================

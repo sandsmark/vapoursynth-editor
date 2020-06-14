@@ -9,29 +9,29 @@ class QToolButton;
 
 class ClearableKeySequenceEditor : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
 
-	ClearableKeySequenceEditor(QWidget * a_pParent);
+    ClearableKeySequenceEditor(QWidget *a_pParent);
 
-	virtual ~ClearableKeySequenceEditor();
+    virtual ~ClearableKeySequenceEditor();
 
-	QKeySequence keySequence() const;
+    QKeySequence keySequence() const;
 
 public slots:
 
-	void slotSetKeySequence(const QKeySequence & a_keySequence);
+    void slotSetKeySequence(const QKeySequence &a_keySequence);
 
 signals:
 
-	void editingFinished();
+    void editingFinished();
 
 private:
 
-	QKeySequenceEdit * m_pKeySequenceEdit;
+    QKeySequenceEdit *m_pKeySequenceEdit;
 
-	QToolButton * m_pClearKeySequenceButton;
+    QToolButton *m_pClearKeySequenceButton;
 };
 
 #endif // CLEARABLE_KEY_SEQUENCE_EDITOR_H_INCLUDED

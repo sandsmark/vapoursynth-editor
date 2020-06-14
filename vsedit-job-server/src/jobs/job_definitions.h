@@ -3,16 +3,14 @@
 
 #include "../../../common-src/jobs/job.h"
 
-enum class JobWantTo
-{
-	Nothing,
-	RunNext,
+enum class JobWantTo {
+    Nothing,
+    RunNext,
 };
 
-struct JobTicket
-{
-	vsedit::Job * pJob;
-	JobWantTo whenDone;
+struct JobTicket {
+    vsedit::Job *pJob;
+    JobWantTo whenDone;
 };
 
 #endif // JOB_DEFINITIONS_H_INCLUDED

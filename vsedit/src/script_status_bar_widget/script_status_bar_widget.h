@@ -8,32 +8,32 @@
 
 class ScriptStatusBarWidget: public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
 
-	ScriptStatusBarWidget(QWidget * a_pParent = nullptr);
-	virtual ~ScriptStatusBarWidget();
+    ScriptStatusBarWidget(QWidget *a_pParent = nullptr);
+    virtual ~ScriptStatusBarWidget();
 
-	virtual bool colorPickerVisible() const;
+    virtual bool colorPickerVisible() const;
 
 public slots:
 
-	virtual void setColorPickerVisible(bool a_visible = true);
+    virtual void setColorPickerVisible(bool a_visible = true);
 
-	virtual void setColorPickerString(const QString & a_string);
+    virtual void setColorPickerString(const QString &a_string);
 
-	virtual void setQueueState(size_t a_inQueue, size_t a_inProcess,
-		size_t a_maxThreads);
+    virtual void setQueueState(size_t a_inQueue, size_t a_inProcess,
+                               size_t a_maxThreads);
 
-	virtual void setVideoInfo(const VSVideoInfo * a_cpVideoInfo);
+    virtual void setVideoInfo(const VSVideoInfo *a_cpVideoInfo);
 
 protected:
 
-	Ui::ScriptStatusBarWidget m_ui;
+    Ui::ScriptStatusBarWidget m_ui;
 
-	QPixmap m_readyPixmap;
-	QPixmap m_busyPixmap;
+    QPixmap m_readyPixmap;
+    QPixmap m_busyPixmap;
 };
 
 #endif // SCRIPT_STATUS_BAR_WIDGET_H_INCLUDED

@@ -3,10 +3,9 @@
 
 #include <QColor>
 
-namespace vsedit
-{
+namespace vsedit {
 
-QColor highlight(const QColor & a_color, int a_strength = 20);
+QColor highlight(const QColor &a_color, int a_strength = 20);
 
 }
 

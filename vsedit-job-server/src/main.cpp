@@ -11,35 +11,36 @@ Q_DECLARE_OPAQUE_POINTER(VSNodeRef *)
 
 int main(int argc, char *argv[])
 {
-	QCoreApplication application(argc, argv);
+    QCoreApplication application(argc, argv);
 
-	qRegisterMetaType<const VSFrameRef *>("const VSFrameRef *");
-	qRegisterMetaType<VSNodeRef *>("VSNodeRef *");
+    qRegisterMetaType<const VSFrameRef *>("const VSFrameRef *");
+    qRegisterMetaType<VSNodeRef *>("VSNodeRef *");
 
-	ApplicationInstanceFileGuard guard("vsedit_job_server_running");
-	if(!guard.isLocked())
-	{
-		qCritical("Couldn't start the server. "
-			"Another instance is probably already running.");
-		return 1;
-	}
+    ApplicationInstanceFileGuard guard("vsedit_job_server_running");
 
-	JobServer jobServer;
+    if (!guard.isLocked()) {
+        qCritical("Couldn't start the server. "
+                  "Another instance is probably already running.");
+        return 1;
+    }
 
-	application.connect(&jobServer, &JobServer::finish,
-		&application, &QCoreApplication::quit);
+    JobServer jobServer;
 
-	bool started = jobServer.start();
-	if(!started)
-	{
-		qCritical("Couldn't start the server.");
-		return 1;
-	}
+    application.connect(&jobServer, &JobServer::finish,
+                        &application, &QCoreApplication::quit);
 
-	int exitCode = application.exec();
+    bool started = jobServer.start();
 
-	if(!guard.unlock())
-		qCritical("%s", guard.error().toLocal8Bit().data());
+    if (!started) {
+        qCritical("Couldn't start the server.");
+        return 1;
+    }
 
-	return exitCode;
+    int exitCode = application.exec();
+
+    if (!guard.unlock()) {
+        qCritical("%s", guard.error().toLocal8Bit().data());
+    }
+
+    return exitCode;
 }

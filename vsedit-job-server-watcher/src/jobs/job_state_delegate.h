@@ -7,21 +7,21 @@
 
 class JobStateDelegate : public QStyledItemDelegate
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
 
-	JobStateDelegate(QObject * a_pParent = nullptr);
-	virtual ~JobStateDelegate();
+    JobStateDelegate(QObject *a_pParent = nullptr);
+    virtual ~JobStateDelegate();
 
-	virtual void paint(QPainter * a_pPainter,
-		const QStyleOptionViewItem & a_option,
-		const QModelIndex & a_index) const override;
+    virtual void paint(QPainter *a_pPainter,
+                       const QStyleOptionViewItem &a_option,
+                       const QModelIndex &a_index) const override;
 
 protected:
 
-	virtual QColor jobStateColor(JobState a_state,
-		const QStyleOptionViewItem & a_option) const;
+    virtual QColor jobStateColor(JobState a_state,
+                                 const QStyleOptionViewItem &a_option) const;
 };
 
 #endif // JOB_STATE_DELEGATE_H_INCLUDED

@@ -17,23 +17,22 @@ extern const char LE_STYLE[];
 
 //==============================================================================
 
-struct LogEntry
-{
-	bool isDivider;
-	QDateTime time;
-	QString text;
-	QString style;
+struct LogEntry {
+    bool isDivider;
+    QDateTime time;
+    QString text;
+    QString style;
 
-	LogEntry(bool a_isDivider = false, const QString & a_text = QString(),
-		const QString & a_style = LOG_STYLE_DEFAULT);
+    LogEntry(bool a_isDivider = false, const QString &a_text = QString(),
+             const QString &a_style = LOG_STYLE_DEFAULT);
 
-	LogEntry(const QString & a_text, const QString & a_style =
-		LOG_STYLE_DEFAULT);
+    LogEntry(const QString &a_text, const QString &a_style =
+                 LOG_STYLE_DEFAULT);
 
-	static LogEntry divider();
+    static LogEntry divider();
 
-	QJsonObject toJson() const;
-	static LogEntry fromJson(const QJsonObject & a_object);
+    QJsonObject toJson() const;
+    static LogEntry fromJson(const QJsonObject &a_object);
 };
 
 //==============================================================================

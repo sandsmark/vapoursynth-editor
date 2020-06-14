@@ -8,33 +8,33 @@ class SettingsManager;
 
 class VSEditorLog : public StyledLogView
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
 
-	VSEditorLog(QWidget * a_pParent = nullptr);
-	virtual ~VSEditorLog();
+    VSEditorLog(QWidget *a_pParent = nullptr);
+    virtual ~VSEditorLog();
 
-	virtual QString name() const;
-	virtual void setName(const QString & a_name);
+    virtual QString name() const;
+    virtual void setName(const QString &a_name);
 
-	virtual void setSettingsManager(SettingsManager * a_pSettingsManager);
+    virtual void setSettingsManager(SettingsManager *a_pSettingsManager);
 
-	virtual bool loadSettings();
+    virtual bool loadSettings();
 
-	virtual bool saveSettings();
+    virtual bool saveSettings();
 
 protected slots:
 
-	virtual void slotLogSettingsChanged() override;
+    virtual void slotLogSettingsChanged() override;
 
 protected:
 
-	virtual void initializeStyles();
+    virtual void initializeStyles();
 
-	QString m_name;
+    QString m_name;
 
-	SettingsManager * m_pSettingsManager;
+    SettingsManager *m_pSettingsManager;
 };
 
 #endif // VS_EDITOR_LOG_H_INCLUDED

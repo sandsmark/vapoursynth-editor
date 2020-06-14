@@ -2,9 +2,9 @@
 
 //==============================================================================
 
-FrameHeaderWriterNull::FrameHeaderWriterNull(const VSAPI * a_cpVSAPI,
-	const VSVideoInfo * a_cpVideoInfo, QObject * a_pParent) :
-	FrameHeaderWriter(a_cpVSAPI, a_cpVideoInfo, a_pParent)
+FrameHeaderWriterNull::FrameHeaderWriterNull(const VSAPI *a_cpVSAPI,
+        const VSVideoInfo *a_cpVideoInfo, QObject *a_pParent) :
+    FrameHeaderWriter(a_cpVSAPI, a_cpVideoInfo, a_pParent)
 {
 }
 
@@ -15,9 +15,12 @@ FrameHeaderWriterNull::FrameHeaderWriterNull(const VSAPI * a_cpVSAPI,
 bool FrameHeaderWriterNull::isCompatible()
 {
     Q_ASSERT(m_cpVideoInfo);
-    if(!m_cpVideoInfo)
-		return false;
-	return true;
+
+    if (!m_cpVideoInfo) {
+        return false;
+    }
+
+    return true;
 }
 
 // END OF bool FrameHeaderWriterNull::isCompatible()
@@ -25,7 +28,7 @@ bool FrameHeaderWriterNull::isCompatible()
 
 bool FrameHeaderWriterNull::needVideoHeader()
 {
-	return false;
+    return false;
 }
 
 // END OF bool FrameHeaderWriterNull::needVideoHeader()
@@ -33,8 +36,8 @@ bool FrameHeaderWriterNull::needVideoHeader()
 
 QByteArray FrameHeaderWriterNull::videoHeader(int a_totalFrames)
 {
-	(void)a_totalFrames;
-	return QByteArray();
+    (void)a_totalFrames;
+    return QByteArray();
 }
 
 // END OF QByteArray FrameHeaderWriterNull::videoHeader(int a_totalFrames)
@@ -42,16 +45,16 @@ QByteArray FrameHeaderWriterNull::videoHeader(int a_totalFrames)
 
 bool FrameHeaderWriterNull::needFramePrefix()
 {
-	return false;
+    return false;
 }
 
 // END OF bool FrameHeaderWriterNull::needFramePrefix()
 //==============================================================================
 
-QByteArray FrameHeaderWriterNull::framePrefix(const VSFrameRef * a_cpFrameRef)
+QByteArray FrameHeaderWriterNull::framePrefix(const VSFrameRef *a_cpFrameRef)
 {
-	(void)a_cpFrameRef;
-	return QByteArray();
+    (void)a_cpFrameRef;
+    return QByteArray();
 }
 
 // END OF QByteArray FrameHeaderWriterNull::framePrefix(
@@ -60,16 +63,16 @@ QByteArray FrameHeaderWriterNull::framePrefix(const VSFrameRef * a_cpFrameRef)
 
 bool FrameHeaderWriterNull::needFramePostfix()
 {
-	return false;
+    return false;
 }
 
 // END OF bool FrameHeaderWriterNull::needFramePostfix()
 //==============================================================================
 
-QByteArray FrameHeaderWriterNull::framePostfix(const VSFrameRef * a_cpFrameRef)
+QByteArray FrameHeaderWriterNull::framePostfix(const VSFrameRef *a_cpFrameRef)
 {
-	(void)a_cpFrameRef;
-	return QByteArray();
+    (void)a_cpFrameRef;
+    return QByteArray();
 }
 
 // END OF QByteArray FrameHeaderWriterNull::framePostfix(

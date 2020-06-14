@@ -7,27 +7,27 @@
 
 class TrustedClientsAddressesDialog : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
 
-	TrustedClientsAddressesDialog(QWidget * a_pParent = nullptr);
-	virtual ~TrustedClientsAddressesDialog();
+    TrustedClientsAddressesDialog(QWidget *a_pParent = nullptr);
+    virtual ~TrustedClientsAddressesDialog();
 
-	int call(const QStringList & a_addresses);
+    int call(const QStringList &a_addresses);
 
-	QStringList addresses() const;
+    QStringList addresses() const;
 
 private slots:
 
-	void slotAddButtonClicked();
-	void slotRemoveButtonClicked();
+    void slotAddButtonClicked();
+    void slotRemoveButtonClicked();
 
 private:
 
-	void checkAndAddAddress(const QString & a_address);
+    void checkAndAddAddress(const QString &a_address);
 
-	Ui::TrustedClientsAddressesDialog m_ui;
+    Ui::TrustedClientsAddressesDialog m_ui;
 };
 
 #endif // TRUSTED_CLIENTS_ADDRESSES_DIALOG_H_INCLUDED

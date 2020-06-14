@@ -2,8 +2,8 @@
 
 //==============================================================================
 
-ScriptCompleter::ScriptCompleter(QAbstractItemModel * a_pModel,
-	QObject * a_pParent) : QCompleter(a_pModel, a_pParent)
+ScriptCompleter::ScriptCompleter(QAbstractItemModel *a_pModel,
+                                 QObject *a_pParent) : QCompleter(a_pModel, a_pParent)
 {
 
 }
@@ -17,28 +17,29 @@ ScriptCompleter::~ScriptCompleter()
 
 //==============================================================================
 
-QString ScriptCompleter::pathFromIndex(const QModelIndex & a_index) const
+QString ScriptCompleter::pathFromIndex(const QModelIndex &a_index) const
 {
-	if(!a_index.isValid())
-		return QString();
+    if (!a_index.isValid()) {
+        return QString();
+    }
 
-	QString path = model()->data(a_index, Qt::EditRole).toString();
-	QModelIndex index = a_index;
-	while(index.parent().isValid())
-	{
-		index = index.parent();
-		path.prepend('.');
-		path.prepend(model()->data(index, Qt::EditRole).toString());
-	}
+    QString path = model()->data(a_index, Qt::EditRole).toString();
+    QModelIndex index = a_index;
 
-	return path;
+    while (index.parent().isValid()) {
+        index = index.parent();
+        path.prepend('.');
+        path.prepend(model()->data(index, Qt::EditRole).toString());
+    }
+
+    return path;
 }
 
 //==============================================================================
 
-QStringList ScriptCompleter::splitPath(const QString & a_path) const
+QStringList ScriptCompleter::splitPath(const QString &a_path) const
 {
-	return a_path.split('.');
+    return a_path.split('.');
 }
 
 //==============================================================================

@@ -9,31 +9,31 @@ class SettingsManager;
 
 class ConnectToServerDialog : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
 
-	ConnectToServerDialog(SettingsManager * a_pSettingsManager,
-		QWidget * a_pParent = nullptr);
-	virtual ~ConnectToServerDialog();
+    ConnectToServerDialog(SettingsManager *a_pSettingsManager,
+                          QWidget *a_pParent = nullptr);
+    virtual ~ConnectToServerDialog();
 
-	int call(const QHostAddress & a_address);
+    int call(const QHostAddress &a_address);
 
 signals:
 
-	void signalConnectToServer(const QHostAddress & a_address);
+    void signalConnectToServer(const QHostAddress &a_address);
 
 private slots:
 
-	void slotConnectButtonClicked();
+    void slotConnectButtonClicked();
 
 private:
 
-	void saveServersList();
+    void saveServersList();
 
-	Ui::ConnectToServerDialog m_ui;
+    Ui::ConnectToServerDialog m_ui;
 
-	SettingsManager * m_pSettingsManager;
+    SettingsManager *m_pSettingsManager;
 };
 
 #endif // CONNECT_TO_SERVER_DIALOG_H_INCLUDED

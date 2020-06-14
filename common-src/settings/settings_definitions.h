@@ -13,54 +13,48 @@
 
 //==============================================================================
 
-enum class ZoomMode
-{
-	NoZoom,
-	FixedRatio,
-	FitToFrame,
+enum class ZoomMode {
+    NoZoom,
+    FixedRatio,
+    FitToFrame,
 };
 
-enum class CropMode
-{
-	Absolute,
-	Relative,
+enum class CropMode {
+    Absolute,
+    Relative,
 };
 
-enum class PlayFPSLimitMode
-{
-	FromVideo,
-	NoLimit,
-	Custom,
+enum class PlayFPSLimitMode {
+    FromVideo,
+    NoLimit,
+    Custom,
 };
 
-struct StandardAction
-{
-	QString id;
-	QString title;
-	QIcon icon;
-	QKeySequence hotkey;
+struct StandardAction {
+    QString id;
+    QString title;
+    QIcon icon;
+    QKeySequence hotkey;
 
-	bool operator==(const StandardAction & a_other) const;
-	bool operator<(const StandardAction & a_other) const;
+    bool operator==(const StandardAction &a_other) const;
+    bool operator<(const StandardAction &a_other) const;
 };
 
-struct CodeSnippet
-{
-	QString name;
-	QString text;
+struct CodeSnippet {
+    QString name;
+    QString text;
 
-	CodeSnippet(const QString & a_name = QString(),
-		const QString & a_text = QString());
-	bool operator==(const CodeSnippet & a_other) const;
-	bool operator<(const CodeSnippet & a_other) const;
-	bool isEmpty() const;
+    CodeSnippet(const QString &a_name = QString(),
+                const QString &a_text = QString());
+    bool operator==(const CodeSnippet &a_other) const;
+    bool operator<(const CodeSnippet &a_other) const;
+    bool isEmpty() const;
 };
 
-struct DropFileCategory
-{
-	QString name;
-	QStringList maskList;
-	QString sourceTemplate;
+struct DropFileCategory {
+    QString name;
+    QStringList maskList;
+    QString sourceTemplate;
 };
 
 //==============================================================================

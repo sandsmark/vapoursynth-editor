@@ -11,68 +11,68 @@ class ThemeElementsModel;
 
 class SettingsDialog : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
 
-	SettingsDialog(SettingsManager * a_pSettingsManager,
-		QWidget * a_pParent = nullptr);
+    SettingsDialog(SettingsManager *a_pSettingsManager,
+                   QWidget *a_pParent = nullptr);
 
-	virtual ~SettingsDialog();
+    virtual ~SettingsDialog();
 
 public slots:
 
-	void slotCall();
+    void slotCall();
 
 protected:
 
 signals:
 
-	void signalSettingsChanged();
+    void signalSettingsChanged();
 
 private:
 
-	void addThemeElements();
+    void addThemeElements();
 
-	Ui::SettingsDialog m_ui;
+    Ui::SettingsDialog m_ui;
 
-	SettingsManager * m_pSettingsManager;
+    SettingsManager *m_pSettingsManager;
 
-	ActionsHotkeyEditModel * m_pActionsHotkeyEditModel;
+    ActionsHotkeyEditModel *m_pActionsHotkeyEditModel;
 
-	ItemDelegateForHotkey * m_pItemDelegateForHotkey;
+    ItemDelegateForHotkey *m_pItemDelegateForHotkey;
 
-	ThemeElementsModel * m_pThemeElementsModel;
+    ThemeElementsModel *m_pThemeElementsModel;
 
 private slots:
 
-	void slotOk();
+    void slotOk();
 
-	void slotApply();
+    void slotApply();
 
-	void slotAddVSLibraryPath();
+    void slotAddVSLibraryPath();
 
-	void slotRemoveVSLibraryPath();
+    void slotRemoveVSLibraryPath();
 
-	void slotSelectVSLibraryPath();
+    void slotSelectVSLibraryPath();
 
-	void slotAddVSPluginsPath();
+    void slotAddVSPluginsPath();
 
-	void slotRemoveVSPluginsPath();
+    void slotRemoveVSPluginsPath();
 
-	void slotSelectVSPluginsPath();
+    void slotSelectVSPluginsPath();
 
-	void slotAddVSDocumentationPath();
+    void slotAddVSDocumentationPath();
 
-	void slotRemoveVSDocumentationPath();
+    void slotRemoveVSDocumentationPath();
 
-	void slotSelectVSDocumentationPath();
+    void slotSelectVSDocumentationPath();
 
-	void slotThemeElementSelected(const QModelIndex & a_index);
+    void slotThemeElementSelected(const QModelIndex &a_index);
 
-	void slotFontButtonClicked();
+    void slotFontButtonClicked();
 
-	void slotColourButtonClicked();
+    void slotColourButtonClicked();
 };
 
 #endif // SETTINGSDIALOG_H
