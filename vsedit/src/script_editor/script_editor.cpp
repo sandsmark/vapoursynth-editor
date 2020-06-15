@@ -813,11 +813,13 @@ void ScriptEditor::paintEvent(QPaintEvent *event)
 {
     QPlainTextEdit::paintEvent(event);
 
+#if 0 // I don't think this is valid for QPlainTextEdit, only QTextEdit
     if ( !m_cursorRect.isNull() && event->rect().intersects(m_cursorRect) ) {
         QRect rect = m_cursorRect;
         m_cursorRect = QRect();
         QPlainTextEdit::viewport()->update(rect);
     }
+#endif
 
     // Draw text cursor.
     QRect rect = QPlainTextEdit::cursorRect();
