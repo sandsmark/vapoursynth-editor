@@ -10,9 +10,10 @@
 /// Base class that manages non-GUI related settings
 class SettingsManagerCore : public QObject
 {
-public:
+    Q_OBJECT
 
-    SettingsManagerCore(QObject *a_pParent);
+public:
+    explicit SettingsManagerCore(QObject *a_pParent);
     virtual ~SettingsManagerCore();
 
     //----------------------------------------------------------------------

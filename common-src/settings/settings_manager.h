@@ -13,9 +13,10 @@
 
 class SettingsManager : public SettingsManagerCore
 {
-public:
+    Q_OBJECT
 
-    SettingsManager(QObject *a_pParent);
+public:
+    explicit SettingsManager(QObject *a_pParent);
     virtual ~SettingsManager();
 
     //----------------------------------------------------------------------
@@ -214,7 +215,7 @@ public:
     bool setUseDarkMode(bool a_use);
 
     bool setLogStyles(const QString &a_logName,
-                      const std::vector<TextBlockStyle> a_styles);
+                      const std::vector<TextBlockStyle> &a_styles);
 
     QString getLastSnapshotExtension() const;
 

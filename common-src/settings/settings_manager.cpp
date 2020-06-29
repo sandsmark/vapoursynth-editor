@@ -438,7 +438,9 @@ QTextCharFormat SettingsManager::getDefaultTextFormat(
 QTextCharFormat SettingsManager::getTextFormat(const QString &a_textFormatID)
 const
 {
-    QVariant textFormatValue = valueInGroup(THEME_GROUP, a_textFormatID);
+    const char *group = getUseDarkMode() ? THEME_GROUP_DARK : THEME_GROUP;
+
+    QVariant textFormatValue = valueInGroup(group, a_textFormatID);
 
     if (textFormatValue.isNull()) {
         return getDefaultTextFormat(a_textFormatID);
@@ -451,7 +453,9 @@ const
 bool SettingsManager::setTextFormat(const QString &a_textFormatID,
                                     const QTextCharFormat &a_format)
 {
-    return setValueInGroup(THEME_GROUP, a_textFormatID,
+    const char *group = getUseDarkMode() ? THEME_GROUP_DARK : THEME_GROUP;
+
+    return setValueInGroup(group, a_textFormatID,
                            vsedit::toByteArray(a_format));
 }
 
@@ -1112,7 +1116,7 @@ bool SettingsManager::setAlwaysKeepCurrentFrame(bool a_keep)
 
 bool SettingsManager::getUseDarkMode() const
 {
-    return value(USE_DARK_MODE_KEY).toBool();
+    return value(USE_DARK_MODE_KEY, false).toBool();
 }
 
 bool SettingsManager::setUseDarkMode(bool a_use)
@@ -1171,7 +1175,7 @@ std::vector<TextBlockStyle> SettingsManager::getLogStyles(
 }
 
 bool SettingsManager::setLogStyles(const QString &a_logName,
-                                   const std::vector<TextBlockStyle> a_styles)
+                                   const std::vector<TextBlockStyle> &a_styles)
 {
     if (a_logName.isEmpty()) {
         return false;

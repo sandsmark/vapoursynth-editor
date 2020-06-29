@@ -563,6 +563,7 @@ void SettingsDialog::slotColourButtonClicked()
 void SettingsDialog::slotDarkModeChanged()
 {
     m_pSettingsManager->setUseDarkMode(m_ui.darkMode->isChecked());
+    m_pThemeElementsModel->reloadThemeSettings();
 
     emit darkModeChanged();
 }
