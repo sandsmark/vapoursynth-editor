@@ -54,7 +54,7 @@ template <typename TextEdit>
 class Editor : public TextEdit
 {
 public:
-    Editor(QWidget *parent = 0) : TextEdit(parent)
+    explicit Editor(QWidget *parent = nullptr) : TextEdit(parent)
     {
         TextEdit::setCursorWidth(0);
     }
@@ -98,7 +98,7 @@ private:
 
 QWidget *createEditorWidget(bool usePlainTextEdit)
 {
-    QWidget *editor = 0;
+    QWidget *editor = nullptr;
     if (usePlainTextEdit) {
         Editor<QPlainTextEdit> *w = new Editor<QPlainTextEdit>;
         w->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -205,21 +205,12 @@ Proxy  *connectSignals(
     QObject::connect(proxy, &Proxy::handleInput,
         handler, [handler] (const QString &text) { handler->handleInput(text); });
 
-    if (!fileToEdit.isEmpty())
-        proxy->openFile(fileToEdit);
-
     return proxy;
 }
 
 Proxy::Proxy(QWidget *widget, QMainWindow *mw, QObject *parent)
     : QObject(parent), m_widget(widget), m_mainWindow(mw)
 {
-}
-
-void Proxy::openFile(const QString &fileName)
-{
-    emit handleInput(QString(_(":r %1<CR>")).arg(fileName));
-    m_fileName = fileName;
 }
 
 void Proxy::changeStatusData(const QString &info)
@@ -231,10 +222,9 @@ void Proxy::changeStatusData(const QString &info)
 void Proxy::highlightMatches(const QString &pattern)
 {
     QTextEdit *ed = qobject_cast<QTextEdit *>(m_widget);
-    if (!ed)
+    if (!ed) {
         return;
-
-    QTextCursor cur = ed->textCursor();
+    }
 
     QTextEdit::ExtraSelection selection;
     selection.format.setBackground(Qt::yellow);
@@ -243,7 +233,7 @@ void Proxy::highlightMatches(const QString &pattern)
     // Highlight matches.
     QTextDocument *doc = ed->document();
     QRegExp re(pattern);
-    cur = doc->find(re);
+    QTextCursor cur = doc->find(re);
 
     m_searchSelection.clear();
 
@@ -291,18 +281,15 @@ void Proxy::updateStatusBar()
 void Proxy::handleExCommand(bool *handled, const ExCommand &cmd)
 {
     if ( wantSaveAndQuit(cmd) ) {
-        emit requestSaveAndQuit();
-//        // :wq
-//        if (save())
-//            cancel();
+        emit requestSaveAndQuit(); // :wq
     } else if ( wantSave(cmd) ) {
-        emit requestSave();
-//        save(); // :w
+        emit requestSave(); // :w
     } else if ( wantQuit(cmd) ) {
-        if (cmd.hasBang)
+        if (cmd.hasBang) {
             invalidate(); // :q!
-        else
-            cancel(); // :q
+        } else {
+            emit requestQuit(); // :q
+        }
     } else if ( wantRun(cmd) ) {
         emit requestRun();
     } else {
@@ -319,7 +306,7 @@ void Proxy::requestSetBlockSelection(const QTextCursor &tc)
     if (!ed)
         return;
 
-    QPalette pal = ed->parentWidget() != NULL ? ed->parentWidget()->palette()
+    QPalette pal = ed->parentWidget() != nullptr ? ed->parentWidget()->palette()
                                               : QApplication::palette();
 
     m_blockSelection.clear();
@@ -482,58 +469,9 @@ bool Proxy::wantRun(const ExCommand &cmd)
     return cmd.matches("r", "run") || cmd.matches("m", "make");
 }
 
-bool Proxy::save()
-{
-    if (!hasChanges())
-        return true;
-
-    QTemporaryFile tmpFile;
-    if (!tmpFile.open()) {
-        QMessageBox::critical(m_widget, tr("FakeVim Error"),
-                              tr("Cannot create temporary file: %1").arg(tmpFile.errorString()));
-        return false;
-    }
-
-    QTextStream ts(&tmpFile);
-    ts << content();
-    ts.flush();
-
-    QFile::remove(m_fileName);
-    if (!QFile::copy(tmpFile.fileName(), m_fileName)) {
-        QMessageBox::critical(m_widget, tr("FakeVim Error"),
-                              tr("Cannot write to file \"%1\"").arg(m_fileName));
-        return false;
-    }
-
-    return true;
-}
-
-void Proxy::cancel()
-{
-    if (hasChanges()) {
-        QMessageBox::critical(m_widget, tr("FakeVim Warning"),
-                              tr("File \"%1\" was changed").arg(m_fileName));
-    } else {
-        invalidate();
-    }
-}
-
 void Proxy::invalidate()
 {
     QApplication::quit();
-}
-
-bool Proxy::hasChanges()
-{
-    if (m_fileName.isEmpty() && content().isEmpty())
-        return false;
-
-    QFile f(m_fileName);
-    if (!f.open(QIODevice::ReadOnly))
-        return true;
-
-    QTextStream ts(&f);
-    return content() != ts.readAll();
 }
 
 QTextDocument *Proxy::document() const

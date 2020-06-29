@@ -15,6 +15,7 @@ class EncodeDialog;
 class TemplatesDialog;
 class JobServerWatcherSocket;
 class QTimer;
+class Proxy;
 
 class MainWindow : public QMainWindow
 {
@@ -143,6 +144,8 @@ private:
 
     QTimer *m_pGeometrySaveTimer;
     QByteArray m_windowGeometry;
+
+    Proxy *m_vimProxy = nullptr;
 };
 
 #endif // MAINWINDOW_H

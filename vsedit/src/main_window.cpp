@@ -167,10 +167,11 @@ MainWindow::MainWindow() : QMainWindow()
 
     FakeVim::Internal::FakeVimHandler *vimHandler = new FakeVim::Internal::FakeVimHandler(m_ui.scriptEdit, this);
     initHandler(vimHandler);
-    Proxy *vimProxy = connectSignals(vimHandler, this, m_ui.scriptEdit, QString());
-    connect(vimProxy, &Proxy::requestSave, this, &MainWindow::slotSaveScript);
-    connect(vimProxy, &Proxy::requestSaveAndQuit, this, &MainWindow::slotSaveAndQuit);
-    connect(vimProxy, &Proxy::requestRun, this, &MainWindow::slotPreview);
+    m_vimProxy = connectSignals(vimHandler, this, m_ui.scriptEdit, QString());
+    connect(m_vimProxy, &Proxy::requestSave, this, &MainWindow::slotSaveScript);
+    connect(m_vimProxy, &Proxy::requestSaveAndQuit, this, &MainWindow::slotSaveAndQuit);
+    connect(m_vimProxy, &Proxy::requestQuit, this, &MainWindow::close);
+    connect(m_vimProxy, &Proxy::requestRun, this, &MainWindow::slotPreview);
 
     m_windowGeometry = m_pSettingsManager->getMainWindowGeometry();
 

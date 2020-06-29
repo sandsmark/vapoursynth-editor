@@ -39,14 +39,13 @@ class Proxy : public QObject
     Q_OBJECT
 
 public:
-    Proxy(QWidget *widget, QMainWindow *mw, QObject *parent = 0);
-
-    void openFile(const QString &fileName);
+    explicit Proxy(QWidget *widget, QMainWindow *mw, QObject *parent = nullptr);
 
 signals:
     void handleInput(const QString &keys);
     void requestSave();
     void requestSaveAndQuit();
+    void requestQuit();
     void requestRun();
 
 public slots:
@@ -87,13 +86,7 @@ private:
 
     bool wantRun(const FakeVim::Internal::ExCommand &cmd);
 
-    bool save();
-
-    void cancel();
-
     void invalidate();
-
-    bool hasChanges();
 
     QTextDocument *document() const;
 
@@ -103,7 +96,6 @@ private:
     QMainWindow *m_mainWindow;
     QString m_statusMessage;
     QString m_statusData;
-    QString m_fileName;
 
     QList<QTextEdit::ExtraSelection> m_searchSelection;
     QList<QTextEdit::ExtraSelection> m_clearSelection;
