@@ -2057,18 +2057,19 @@ double PreviewDialog::valueAtPoint(size_t a_x, size_t a_y, int a_plane)
         if (cpFormat->bytesPerSample == 1) {
             value = (double)cpLine[x];
         } else if (cpFormat->bytesPerSample == 2) {
-            value = (double)((uint16_t *)cpLine)[x];
+            // TODO: when c++20, use std::assume_aligned
+            value = (double)((const uint16_t *)cpLine)[x];
         } else if (cpFormat->bytesPerSample == 4) {
-            value = (double)((uint32_t *)cpLine)[x];
+            value = (double)((const uint32_t *)cpLine)[x];
         }
     } else if (cpFormat->sampleType == stFloat) {
         if (cpFormat->bytesPerSample == 2) {
             vsedit::FP16 half;
-            half.u = ((uint16_t *)cpLine)[x];
+            half.u = ((const uint16_t *)cpLine)[x];
             vsedit::FP32 single = vsedit::halfToSingle(half);
             value = (double)single.f;
         } else if (cpFormat->bytesPerSample == 4) {
-            value = (double)((float *)cpLine)[x];
+            value = (double)((const float *)cpLine)[x];
         }
     }
 
