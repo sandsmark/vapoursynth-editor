@@ -82,6 +82,9 @@ ScriptEditor::ScriptEditor(QWidget *a_pParent) :
 
     fillVariables();
 
+    connect(this, &ScriptEditor::definedVariablesChanged,
+            m_pCompleterModel, &ScriptCompleterModel::onDefinesChanged);
+
     connect(m_pCompleter, SIGNAL(activated(const QString &)),
             this, SLOT(slotInsertCompletion(const QString &)));
     connect(this, SIGNAL(textChanged()), this, SLOT(slotTextChanged()));
@@ -851,7 +854,6 @@ void ScriptEditor::paintEvent(QPaintEvent *event)
 
 void ScriptEditor::slotTextChanged()
 {
-
     QString newPlainText = toPlainText();
 
     if (m_plainText == newPlainText) {
