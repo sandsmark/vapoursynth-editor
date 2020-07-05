@@ -1346,7 +1346,6 @@ void ScriptEditor::addVariableDefine(const QString &textLine)
     QStringList definition = textLine.split(' ', Qt::SkipEmptyParts);
     const QString name = definition.takeFirst();
     m_definedVariables[name] = definition.join(' ');
-    qDebug() << "Found variable" << name << m_definedVariables[name];
 }
 
 // END OF void ScriptEditor::fillVariables()
