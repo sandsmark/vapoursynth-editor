@@ -1263,7 +1263,7 @@ void PreviewDialog::slotProcessPlayQueue()
     Frame referenceFrame(nextFrame, 0, nullptr);
 
     while (!m_framesCache.empty()) {
-        std::list<Frame>::const_iterator it =
+        QList<Frame>::iterator it =
             std::find(m_framesCache.begin(), m_framesCache.end(),
                       referenceFrame);
 

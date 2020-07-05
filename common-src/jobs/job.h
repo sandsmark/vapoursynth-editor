@@ -13,7 +13,7 @@
 #include <QUuid>
 #include <QDateTime>
 #include <QProcess>
-#include <vector>
+#include <QElapsedTimer>
 
 class SettingsManagerCore;
 class VSScriptLibrary;
@@ -192,7 +192,7 @@ protected:
 
     FrameHeaderWriter *m_pFrameHeaderWriter;
 
-    std::list<Frame> m_framesCache;
+    QList<Frame> m_framesCache;
     size_t m_cachedFramesLimit;
 
     size_t m_framesInQueue;

@@ -1040,7 +1040,7 @@ void vsedit::Job::slotProcessBytesWritten(qint64 a_bytes)
         m_encodeRangeStartTime = hr_clock::now();
     } else if (m_encodingState == EncodingState::WritingFrame) {
         Frame referenceFrame(m_lastFrameProcessed + 1, 0, nullptr);
-        std::list<Frame>::iterator it =
+        QList<Frame>::iterator it =
             std::find(m_framesCache.begin(), m_framesCache.end(),
                       referenceFrame);
         Q_ASSERT(it != m_framesCache.end());
@@ -1556,7 +1556,7 @@ void vsedit::Job::processFramesQueue()
     }
 
     Frame frame(m_lastFrameProcessed + 1, 0, nullptr);
-    std::list<Frame>::iterator it = std::find(m_framesCache.begin(),
+    QList<Frame>::iterator it = std::find(m_framesCache.begin(),
                                     m_framesCache.end(), frame);
 
     if (it == m_framesCache.end()) {

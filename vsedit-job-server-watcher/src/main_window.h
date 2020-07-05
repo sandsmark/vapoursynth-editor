@@ -179,9 +179,9 @@ private:
     QHostAddress m_nextServerAddress;
 
     QLocalServer *m_pTaskServer;
-    std::list<QLocalSocket *> m_taskClients;
+    QList<QLocalSocket *> m_taskClients;
 
-    std::list<JobProperties> m_taskList;
+    QList<JobProperties> m_taskList;
 
     QStringList m_trustedClientsAddresses;
 

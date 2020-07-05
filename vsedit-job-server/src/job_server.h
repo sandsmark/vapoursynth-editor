@@ -75,8 +75,8 @@ private:
 
     QVector<LogEntry> m_logEntries;
 
-    std::list<QWebSocket *> m_clients;
-    std::list<QWebSocket *> m_subscribers;
+    QList<QWebSocket *> m_clients;
+    QList<QWebSocket *> m_subscribers;
 
     QStringList m_trustedClientsAddresses;
 };
