@@ -1399,9 +1399,9 @@ void vsedit::Job::startEncodeScriptCLI()
 
     QString executable = vsedit::resolvePathFromApplication(
                              m_properties.executablePath);
-    QString decodedArguments =
+    const QString decodedArguments =
         decodeArguments(m_properties.arguments);
-    QString commandLine = QString("\"%1\" %2").arg(executable)
+    const QString commandLine = QString("\"%1\" %2").arg(executable)
                           .arg(decodedArguments);
 
     emit signalLogMessage(tr("Command line:"));
@@ -1410,7 +1410,11 @@ void vsedit::Job::startEncodeScriptCLI()
     emit signalLogMessage(tr("Checking the encoder sanity."));
     m_encodingState = EncodingState::CheckingEncoderSanity;
 
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+    m_process.start(executable, QProcess::splitCommand(decodedArguments));
+#else
     m_process.start(commandLine);
+#endif
 
     if (!m_process.waitForStarted(3000)) {
         emit signalLogMessage(tr("Encoder wouldn't start."),
@@ -1434,7 +1438,11 @@ void vsedit::Job::startEncodeScriptCLI()
 
     emit signalLogMessage(tr("Encoder seems sane. Starting."));
     m_encodingState = EncodingState::StartingEncoder;
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+    m_process.start(executable, QProcess::splitCommand(decodedArguments));
+#else
     m_process.start(commandLine);
+#endif
 }
 
 // END OF void vsedit::Job::startEncodeScriptCLI()
@@ -1452,7 +1460,11 @@ void vsedit::Job::startRunProcess()
     emit signalLogMessage(tr("Command line:"));
     emit signalLogMessage(commandLine);
 
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+    m_process.start(executable, QProcess::splitCommand(commandLine));
+#else
     m_process.start(commandLine);
+#endif
 }
 
 // END OF void vsedit::Job::startRunProcess()
@@ -1469,7 +1481,14 @@ void vsedit::Job::startRunShellCommand()
     command = "/bin/sh -c %1";
 #endif
 
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+    QStringList arguments = QProcess::splitCommand(command.arg(m_properties.shellCommand));
+    const QString executable = arguments.takeFirst();
+    QProcess::startDetached(executable, arguments);
+#else
     QProcess::startDetached(command.arg(m_properties.shellCommand));
+#endif
+
     changeStateAndNotify(JobState::Completed);
 }
 

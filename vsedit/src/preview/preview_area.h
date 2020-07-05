@@ -23,7 +23,7 @@ public:
 
     void setWidget(QWidget *a_pWidget) = delete;
 
-    const QPixmap *pixmap() const;
+    const QSize pixmapSize() const;
 
     void setPixmap(const QPixmap &a_pixmap);
 

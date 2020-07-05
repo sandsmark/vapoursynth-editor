@@ -179,7 +179,8 @@ bool DropFileCategoryModel::setData(const QModelIndex &a_index,
             }
 
             QSet<QString> intersection =
-                maskList.toSet().intersect(m_categories[i].maskList.toSet());
+                QSet<QString>(maskList.begin(), maskList.end()).
+                    intersect(QSet<QString>(m_categories[i].maskList.begin(), m_categories[i].maskList.end()));
 
             if (intersection.size() > 0) {
                 return false;

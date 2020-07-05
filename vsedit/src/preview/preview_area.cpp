@@ -45,9 +45,13 @@ PreviewArea::~PreviewArea()
 // END OF PreviewArea::~PreviewArea()
 //==============================================================================
 
-const QPixmap *PreviewArea::pixmap() const
+const QSize PreviewArea::pixmapSize() const
 {
-    return m_pPreviewLabel->pixmap();
+#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+    return m_pPreviewLabel->pixmap(Qt::ReturnByValue).size();
+#else
+    return m_pPreviewLabel->pixmap()->size();
+#endif
 }
 
 // END OF const QPixmap * PreviewArea::pixmap() const
@@ -69,9 +73,9 @@ void PreviewArea::checkMouseOverPreview(const QPoint &a_globalMousePos)
 
     QPoint imagePoint = m_pPreviewLabel->mapFromGlobal(a_globalMousePos);
 
-    const QPixmap *pPreviewPixmap = m_pPreviewLabel->pixmap();
-    int pixmapWidth = pPreviewPixmap->width();
-    int pixmapHeight = pPreviewPixmap->height();
+    const QSize previewSize = pixmapSize();
+    int pixmapWidth = previewSize.width();
+    int pixmapHeight = previewSize.height();
 
     if ((imagePoint.x() < 0) || (imagePoint.y() < 0) ||
             (imagePoint.x() >= pixmapWidth) || (imagePoint.y() >= pixmapHeight)) {
@@ -237,8 +241,9 @@ void PreviewArea::mouseReleaseEvent(QMouseEvent *a_pEvent)
 
 void PreviewArea::drawScrollNavigator()
 {
-    int contentsWidth = m_pPreviewLabel->pixmap()->width();
-    int contentsHeight = m_pPreviewLabel->pixmap()->height();
+    const QSize previewSize = pixmapSize();
+    int contentsWidth = previewSize.width();
+    int contentsHeight = previewSize.height();
     int viewportX = -m_pPreviewLabel->x();
     int viewportY = -m_pPreviewLabel->y();
     int viewportWidth = viewport()->width();
