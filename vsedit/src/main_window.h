@@ -70,6 +70,8 @@ private slots:
 
     void slotEditorTextChanged();
 
+    void slotDefinedVariablesChanged(const QMap<QString, QString> &definedVariables);
+
     void slotOpenRecentScriptActionTriggered();
 
     void slotSettingsChanged();

@@ -44,6 +44,9 @@ public:
     const QString &scriptName() const;
 
     void setScriptName(const QString &a_scriptName);
+    const QMap<QString, QString> &variables() const { return m_variables; }
+    void setVariables(const QMap<QString, QString> &v);
+
 
 public slots:
 
@@ -104,7 +107,7 @@ private:
 
     const VSAPI *m_cpVSAPI;
 
-    VSScript *m_pVSScript;
+    VSScript *m_pVSScript = nullptr;
 
     const VSVideoInfo *m_cpVideoInfo;
     const VSCoreInfo *m_cpCoreInfo;
@@ -118,6 +121,8 @@ private:
     double m_resamplingFilterParameterA;
     double m_resamplingFilterParameterB;
     YuvMatrixCoefficients m_yuvMatrix;
+
+    QMap<QString, QString> m_variables;
 
     bool m_finalizing;
 };

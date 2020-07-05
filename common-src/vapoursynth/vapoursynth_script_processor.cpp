@@ -78,6 +78,30 @@ bool VapourSynthScriptProcessor::initialize(const QString &a_script,
         return false;
     }
 
+    m_cpVSAPI = m_pVSScriptLibrary->getVSAPI();
+
+    if (!m_cpVSAPI) {
+        finalize();
+        return false;
+    }
+
+    m_pVSScript = m_pVSScriptLibrary->createScript();
+
+    QMap<QString, QString> variables;
+    for (const QString &line : a_script.split('\n', Qt::SkipEmptyParts)) {
+        static const QLatin1String defineString("#define ");
+        if (!line.startsWith(defineString)) {
+            continue;
+        }
+        QStringList definition = line.mid(defineString.size()).split(' ', Qt::SkipEmptyParts);
+        const QString name = definition.takeFirst();
+        variables[name] = definition.join(' ');
+    }
+
+    if (!variables.isEmpty()) {
+        setVariables(variables);
+    }
+
     int opresult = m_pVSScriptLibrary->evaluateScript(&m_pVSScript,
                    a_script.toUtf8().constData(), a_scriptName.toUtf8().constData(),
                    efSetWorkingDir);
@@ -93,13 +117,6 @@ bool VapourSynthScriptProcessor::initialize(const QString &a_script,
         }
 
         emit signalWriteLogMessage(mtCritical, m_error);
-        finalize();
-        return false;
-    }
-
-    m_cpVSAPI = m_pVSScriptLibrary->getVSAPI();
-
-    if (!m_cpVSAPI) {
         finalize();
         return false;
     }
@@ -324,6 +341,44 @@ const QString &VapourSynthScriptProcessor::scriptName() const
 void VapourSynthScriptProcessor::setScriptName(const QString &a_scriptName)
 {
     m_scriptName = a_scriptName;
+}
+
+void VapourSynthScriptProcessor::setVariables(const QMap<QString, QString> &v)
+{
+    Q_ASSERT(m_pVSScript);
+    Q_ASSERT(m_cpVSAPI);
+
+    // Just clear all of them, can't be bothered to check which one exist already
+    m_pVSScriptLibrary->clearVariables(m_pVSScript, m_variables.keys());
+
+    VSMap *vsMap = m_cpVSAPI->createMap();
+    Q_ASSERT(vsMap);
+
+    int failed = 0;
+
+    for (const QString &varName : v.keys()) {
+        const QByteArray name = varName.toUtf8();
+        const QByteArray content = v[varName].toUtf8();
+        failed = m_cpVSAPI->propSetData(vsMap,
+                       name.constData(),
+                       content.constData(),
+                       content.size(),
+                       paReplace
+                       );
+
+        if (failed) {
+            qWarning() << "Failed set data";
+            break;
+        }
+    }
+
+    if (!failed) {
+        m_pVSScriptLibrary->setVariables(m_pVSScript, vsMap);
+    }
+
+    m_cpVSAPI->freeMap(vsMap);
+
+    m_variables = v;
 }
 
 // END OF void VapourSynthScriptProcessor::setScriptName(

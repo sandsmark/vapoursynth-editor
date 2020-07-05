@@ -104,10 +104,14 @@ MainWindow::MainWindow() : QMainWindow()
     connect(m_ui.scriptEdit,
             SIGNAL(signalScriptFileDropped(const QString &, bool *)),
             this, SLOT(slotScriptFileDropped(const QString &, bool *)));
+    connect(m_ui.scriptEdit, &ScriptEditor::definedVariablesChanged,
+            this, &MainWindow::slotDefinedVariablesChanged);
 
     m_ui.logView->setName("main_log");
     m_ui.logView->setSettingsManager(m_pSettingsManager);
     m_ui.logView->loadSettings();
+
+    m_ui.variablesTable->verticalHeader()->hide();
 
     m_pPreviewDialog =
         new PreviewDialog(m_pSettingsManager, m_pVSScriptLibrary);
@@ -568,6 +572,27 @@ void MainWindow::slotEditorTextChanged()
     bool textMatchesSaved = (m_lastSavedText == m_ui.scriptEdit->text());
     m_ui.scriptEdit->setModified(!textMatchesSaved);
     slotChangeWindowTitle();
+}
+
+void MainWindow::slotDefinedVariablesChanged(const QMap<QString, QString> &definedVariables)
+{
+    m_ui.variablesTable->clear();
+    m_ui.variablesTable->setRowCount(definedVariables.count());
+    m_ui.variablesTable->setHorizontalHeaderItem(0, new QTableWidgetItem(tr("Name")));
+    m_ui.variablesTable->setHorizontalHeaderItem(1, new QTableWidgetItem(tr("Value")));
+
+    QStringList names = definedVariables.keys();
+    for (int i=0; i<names.count(); i++) {
+        const QString &name = names[i];
+        QTableWidgetItem *item = new QTableWidgetItem(name);
+        item->setFlags(Qt::ItemIsEnabled);
+        m_ui.variablesTable->setItem(i, 0, item);
+
+        item = new QTableWidgetItem(definedVariables[name]);
+        item->setFlags(Qt::ItemIsEnabled);
+        m_ui.variablesTable->setItem(i, 1, item);
+    }
+    m_ui.variablesTable->resizeColumnsToContents();
 }
 
 // END OF void MainWindow::slotEditorTextChanged()

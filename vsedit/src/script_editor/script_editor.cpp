@@ -851,6 +851,8 @@ void ScriptEditor::paintEvent(QPaintEvent *event)
 
 void ScriptEditor::slotTextChanged()
 {
+    const QMap<QString, QString> oldDefinedVariables = m_definedVariables;
+
     QString newPlainText = toPlainText();
 
     if (m_plainText == newPlainText) {
@@ -858,8 +860,12 @@ void ScriptEditor::slotTextChanged()
     }
 
     m_plainText = newPlainText;
-    QString vsCoreName = getVapourSynthCoreName();
+    QString vsCoreName = scanChangedText();
     setChildrenCoreName(vsCoreName);
+
+    if (m_definedVariables != oldDefinedVariables) {
+        emit definedVariablesChanged(m_definedVariables);
+    }
 }
 
 // END OF void ScriptEditor::slotTextChanged()
@@ -1019,7 +1025,7 @@ void ScriptEditor::createActionsAndMenus()
 // END OF void ScriptEditor::createActionsAndMenus()
 //==============================================================================
 
-QString ScriptEditor::getVapourSynthCoreName() const
+QString ScriptEditor::scanChangedText()
 {
     QString vapourSynthName;
     QString vsCoreName = "core";
@@ -1029,12 +1035,17 @@ QString ScriptEditor::getVapourSynthCoreName() const
     // Usually looks like: import vapoursynth as vs
     int vsImportBlock = -1;
     QString searchString("import vapoursynth");
+    const QLatin1String defineString("#define ");
 
     for (int k = 0; k < blocksCount; ++k) {
         QString simplifiedText =
             document()->findBlockByNumber(k).text().simplified();
-        int i = simplifiedText.indexOf(searchString);
 
+        if (simplifiedText.startsWith(defineString)) {
+            addVariableDefine(simplifiedText.mid(defineString.size()));
+        }
+
+        int i = simplifiedText.indexOf(searchString);
         if (i < 0) {
             continue;
         }
@@ -1328,6 +1339,14 @@ void ScriptEditor::fillVariables()
     const vsedit::VariableToken & a_second) -> bool {
         return (a_first.token.length() > a_second.token.length());
     });
+}
+
+void ScriptEditor::addVariableDefine(const QString &textLine)
+{
+    QStringList definition = textLine.split(' ', Qt::SkipEmptyParts);
+    const QString name = definition.takeFirst();
+    m_definedVariables[name] = definition.join(' ');
+    qDebug() << "Found variable" << name << m_definedVariables[name];
 }
 
 // END OF void ScriptEditor::fillVariables()

@@ -189,6 +189,43 @@ bool VSScriptLibrary::freeScript(VSScript *a_pScript)
     return true;
 }
 
+VSScript *VSScriptLibrary::createScript()
+{
+    VSScript *handle = nullptr;
+    int result = vssCreateScript(&handle);
+    if (result != 0) {
+        // TODO get error
+        return nullptr;
+    }
+    return handle;
+
+}
+
+void VSScriptLibrary::clearVariables(VSScript *a_pScript, const QStringList &variableNames)
+{
+    for (const QString &name : variableNames) {
+        vssClearVariable(a_pScript, name.toUtf8().constData());
+    }
+}
+
+void VSScriptLibrary::getVariable(VSScript *a_pScript, const char *name, VSMap *output)
+{
+    int ret = vssGetVariable(a_pScript, name, output);
+    if (ret != 0) {
+        qWarning() << "Failed to get variable" << ret;
+    }
+}
+
+void VSScriptLibrary::setVariables(VSScript *a_pScript, VSMap *vsMap)
+{
+    Q_ASSERT(a_pScript);
+    Q_ASSERT(vsMap);
+
+    if (vssSetVariable(a_pScript, vsMap) != 0) {
+        qWarning() << "Failed to set variables";
+    }
+}
+
 // END OF bool VSScriptLibrary::freeScript(VSScript * a_pScript)
 //==============================================================================
 
@@ -197,12 +234,16 @@ bool VSScriptLibrary::initLibrary()
     if (m_vsScriptLibrary.isLoaded()) {
         Q_ASSERT(vssInit);
         Q_ASSERT(vssGetVSApi);
+        Q_ASSERT(vssCreateScript);
         Q_ASSERT(vssEvaluateScript);
         Q_ASSERT(vssGetError);
         Q_ASSERT(vssGetCore);
         Q_ASSERT(vssGetOutput);
         Q_ASSERT(vssFreeScript);
         Q_ASSERT(vssFinalize);
+        Q_ASSERT(vssSetVariable);
+        Q_ASSERT(vssGetVariable);
+        Q_ASSERT(vssClearVariable);
         return true;
     }
 
@@ -296,6 +337,10 @@ bool VSScriptLibrary::initLibrary()
             "_vsscript_getVSApi@0"
         }
         , {
+            (QFunctionPointer *) &vssCreateScript, "vsscript_createScript",
+            "_vsscript_createScript@4" // idk wintendo
+        }
+        , {
             (QFunctionPointer *) &vssEvaluateScript, "vsscript_evaluateScript",
             "_vsscript_evaluateScript@16"
         }
@@ -318,6 +363,18 @@ bool VSScriptLibrary::initLibrary()
         , {
             (QFunctionPointer *) &vssFinalize, "vsscript_finalize",
             "_vsscript_finalize@0"
+        }
+        , {
+            (QFunctionPointer *) &vssSetVariable, "vsscript_setVariable",
+            "_vsscript_setVariable@8" // idk wintendo
+        }
+        , {
+            (QFunctionPointer *) &vssGetVariable, "vsscript_getVariable",
+            "_vsscript_getVariable@12" // idk wintendo
+        }
+        , {
+            (QFunctionPointer *) &vssClearVariable, "vsscript_clearVariable",
+            "_vsscript_clearVariable@8" // idk wintendo
         }
     };
 

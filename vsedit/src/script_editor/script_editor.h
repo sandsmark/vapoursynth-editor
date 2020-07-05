@@ -86,6 +86,8 @@ signals:
 
     void signalScriptFileDropped(const QString &a_filePath, bool *a_pHandled);
 
+    void definedVariablesChanged(const QMap<QString, QString> &definedVariables);
+
 protected:
 
     bool eventFilter(QObject *a_pObject, QEvent *a_pEvent) override;
@@ -118,7 +120,7 @@ private:
 
     void createActionsAndMenus();
 
-    QString getVapourSynthCoreName() const;
+    QString scanChangedText();
 
     void setChildrenCoreName(const QString &a_coreName);
 
@@ -132,6 +134,8 @@ private:
     void removeSelectedLinesBegin(const QString &a_text);
 
     void fillVariables();
+
+    void addVariableDefine(const QString &textLine);
 
     SettingsManager *m_pSettingsManager;
 
@@ -186,6 +190,8 @@ private:
     QRect m_cursorRect;
 
     QVector<vsedit::VariableToken> m_variables;
+
+    QMap<QString, QString> m_definedVariables;
 };
 
 #endif // SCRIPTEDITOR_H

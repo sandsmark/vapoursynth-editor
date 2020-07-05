@@ -926,6 +926,7 @@ bool SettingsManager::setLastPreviewFrame(int a_frameNumber)
 QString SettingsManager::getDefaultNewScriptTemplate()
 {
     return QString(
+               "#define foo bar\n"
                "import vapoursynth as vs\n"
                "core = vs.get_core()\n"
            );

@@ -12,6 +12,7 @@ class SettingsManagerCore;
 
 typedef int (VS_CC *FNP_vssInit)(void);
 typedef const VSAPI *(VS_CC *FNP_vssGetVSApi)(void);
+typedef int (VS_CC *FNP_vssCreateScript)(VSScript **a_ppScript);
 typedef int (VS_CC *FNP_vssEvaluateScript)(VSScript **a_ppScript,
         const char *a_scriptText, const char *a_scriptFilename, int a_flags);
 typedef const char *(VS_CC *FNP_vssGetError)(VSScript *a_pScript);
@@ -20,6 +21,9 @@ typedef VSNodeRef *(VS_CC *FNP_vssGetOutput)(VSScript *a_pScript,
         int a_index);
 typedef void (VS_CC *FNP_vssFreeScript)(VSScript *a_pScript);
 typedef int (VS_CC *FNP_vssFinalize)(void);
+typedef int (VS_CC *FNP_vssSetVariable)(VSScript *a_pScript, const VSMap *vars);
+typedef int (VS_CC *FNP_vssClearVariable)(VSScript *a_pScript, const char *name);
+typedef int (VS_CC *FNP_vssGetVariable)(VSScript *handle, const char *name, VSMap *dst);
 
 //==============================================================================
 
@@ -52,6 +56,11 @@ public:
     VSNodeRef *getOutput(VSScript *a_pScript, int a_index);
 
     bool freeScript(VSScript *a_pScript);
+    VSScript *createScript();
+
+    void clearVariables(VSScript *a_pScript, const QStringList &variableNames);
+    void getVariable(VSScript *a_pScript, const char *name, VSMap *output);
+    void setVariables(VSScript *a_pScript, VSMap *vsMap);
 
 signals:
 
@@ -74,12 +83,16 @@ private:
 
     FNP_vssInit vssInit;
     FNP_vssGetVSApi vssGetVSApi;
+    FNP_vssCreateScript vssCreateScript;
     FNP_vssEvaluateScript vssEvaluateScript;
     FNP_vssGetError vssGetError;
     FNP_vssGetCore vssGetCore;
     FNP_vssGetOutput vssGetOutput;
     FNP_vssFreeScript vssFreeScript;
     FNP_vssFinalize vssFinalize;
+    FNP_vssSetVariable vssSetVariable;
+    FNP_vssGetVariable vssGetVariable;
+    FNP_vssClearVariable vssClearVariable;
 
     bool m_vsScriptInitialized;
 
