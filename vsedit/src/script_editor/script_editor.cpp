@@ -851,13 +851,15 @@ void ScriptEditor::paintEvent(QPaintEvent *event)
 
 void ScriptEditor::slotTextChanged()
 {
-    const QMap<QString, QString> oldDefinedVariables = m_definedVariables;
 
     QString newPlainText = toPlainText();
 
     if (m_plainText == newPlainText) {
         return;
     }
+
+    const QMap<QString, QString> oldDefinedVariables = m_definedVariables;
+    m_definedVariables.clear();
 
     m_plainText = newPlainText;
     QString vsCoreName = scanChangedText();
