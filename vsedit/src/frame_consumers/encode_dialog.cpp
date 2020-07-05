@@ -506,16 +506,17 @@ void EncodeDialog::slotJobProgressChanged()
     QString passedString = vsedit::timeToString(passed);
 
     QString text = tr("Time elapsed: %1 - %2 FPS")
-                   .arg(passedString).arg(QString::number(properties.fps, 'f', 20));
+                   .arg(passedString).arg(QString::number(properties.fps, 'f', 2));
 
     if ((properties.framesProcessed > 0) &&
             (properties.framesProcessed < properties.framesTotal())) {
-        Q_ASSERT(properties.fps > 0.0);
-        double estimated = (properties.framesTotal() -
-                            properties.framesProcessed) / properties.fps;
-        QString estimatedString = vsedit::timeToString(estimated);
-        text += tr("; estimated time to finish: %1")
-                .arg(estimatedString);
+        if (properties.fps > 0.) {
+            double estimated = (properties.framesTotal() -
+                                properties.framesProcessed) / properties.fps;
+            QString estimatedString = QTime::fromMSecsSinceStartOfDay(estimated * 1000).toString();//vsedit::timeToString(estimated);
+            text += tr("; estimated time to finish: %1")
+                    .arg(estimatedString);
+        }
     }
 
     m_ui.metricsEdit->setText(text);

@@ -46,7 +46,6 @@ vsedit::Job::Job(const JobProperties &a_properties,
     , m_framesInQueue(0)
     , m_framesInProcess(0)
     , m_maxThreads(0)
-    , m_memorizedEncodingTime(0.0)
 {
     fillVariables();
 
@@ -803,8 +802,9 @@ void vsedit::Job::slotProcessStarted()
             }
         }
 
-        m_memorizedEncodingTime = 0.0;
-        m_encodeRangeStartTime = hr_clock::now();
+        m_lastFrameCount = 0;
+        m_lastFrameTimer.restart();
+        m_smoothing.reset();
 
         m_encodingState = EncodingState::WaitingForFrames;
         processFramesQueue();
@@ -1036,8 +1036,8 @@ void vsedit::Job::slotProcessBytesWritten(qint64 a_bytes)
     Q_ASSERT(m_cpVSAPI);
 
     if (m_encodingState == EncodingState::WritingHeader) {
-        m_memorizedEncodingTime = 0.0;
-        m_encodeRangeStartTime = hr_clock::now();
+        m_smoothing.reset();
+        m_lastFrameTimer.restart();
     } else if (m_encodingState == EncodingState::WritingFrame) {
         Frame referenceFrame(m_lastFrameProcessed + 1, 0, nullptr);
         QList<Frame>::iterator it =
@@ -1342,22 +1342,17 @@ void vsedit::Job::changeStateAndNotify(JobState a_state)
 
     if (vsedit::contains(finishStates, a_state)) {
         m_properties.timeEnded = QDateTime::currentDateTimeUtc();
-        memorizeEncodingTime();
         emit signalEndTimeChanged();
     }
 
-    if (a_state == JobState::Paused) {
-        memorizeEncodingTime();
-    }
-
     if ((oldState == JobState::Paused) && (a_state == JobState::Running)) {
-        m_encodeRangeStartTime = hr_clock::now();
+        m_smoothing.reset();
+        m_lastFrameTimer.restart();
     }
 
     if (a_state == JobState::Waiting) {
         m_properties.timeStarted = QDateTime();
         m_properties.timeEnded = QDateTime();
-        m_memorizedEncodingTime = 0.0;
         m_properties.fps = 0.0;
         m_properties.framesProcessed = 0;
     }
@@ -1538,7 +1533,6 @@ void vsedit::Job::processFramesQueue()
 
     if (m_properties.framesProcessed == framesTotal()) {
         Q_ASSERT(m_framesCache.empty());
-        memorizeEncodingTime();
         updateFPS();
         changeStateAndNotify(JobState::CompletedCleanUp);
         m_encodingState = EncodingState::Finishing;
@@ -1687,48 +1681,35 @@ void vsedit::Job::finishEncodingCLI()
 // END OF void vsedit::Job::finishEncodingCLI()
 //==============================================================================
 
-void vsedit::Job::memorizeEncodingTime()
-{
-    if (m_properties.type != JobType::EncodeScriptCLI) {
-        return;
-    }
-
-    m_memorizedEncodingTime += currentEncodingRangeTime();
-    m_encodeRangeStartTime = hr_clock::now();
-}
-
-// END OF void vsedit::Job::memorizeEncodingTime()
-//==============================================================================
-
 void vsedit::Job::updateFPS()
 {
     if (m_properties.type != JobType::EncodeScriptCLI) {
         return;
     }
 
-    double totalTime = m_memorizedEncodingTime;
-    const JobState validStates[] = {JobState::Running, JobState::Pausing};
-
-    if (vsedit::contains(validStates, m_properties.jobState)) {
-        totalTime += currentEncodingRangeTime();
+    if (!m_lastFrameTimer.isValid() || m_lastFrameCount < 0) {
+        qWarning() << "not setup properly, timer valid?" << m_lastFrameTimer.isValid() << "framecount" << m_lastFrameCount;
+        m_lastFrameTimer.restart();
+        m_lastFrameCount = m_properties.framesProcessed;
+        return;
     }
 
-    m_properties.fps = (double)m_properties.framesProcessed / totalTime;
+    const int framesProcessedDelta = m_properties.framesProcessed - m_lastFrameCount;
+    if (m_lastFrameTimer.elapsed() < 500 || framesProcessedDelta < 1) {
+        return;
+    }
+
+    const double fps = 1000. * framesProcessedDelta / double(m_lastFrameTimer.elapsed());
+    m_properties.fps = m_smoothing.getSmoothed(fps);
+
+    // Can happen because of the trend factor
+    if (qFuzzyIsNull(m_properties.fps) || m_properties.fps < 0) {
+        m_properties.fps = fps;
+    }
+
+    m_lastFrameCount = m_properties.framesProcessed;
+    m_lastFrameTimer.restart();
 }
 
 // END OF void vsedit::Job::updateFPS()
-//==============================================================================
-
-double vsedit::Job::currentEncodingRangeTime() const
-{
-    if (m_properties.type != JobType::EncodeScriptCLI) {
-        return 0.0;
-    }
-
-    hr_time_point now = hr_clock::now();
-    double rangeTime = duration_to_double(now - m_encodeRangeStartTime);
-    return rangeTime;
-}
-
-// END OF double vsedit::Job::currentEncodingRangeTime() const
 //==============================================================================

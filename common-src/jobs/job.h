@@ -22,6 +22,34 @@ class FrameHeaderWriter;
 
 namespace vsedit {
 
+// Double ewma
+struct EwmaFilter {
+    static constexpr double smoothFactor = 0.2;
+    static constexpr double trendFactor = 0.2;
+
+    void reset() {
+        valueCount = 0;
+    }
+
+    double getSmoothed(double value) {
+        if (valueCount == 1) {
+            deltaEstimate = value - lastValue;
+        } else if (valueCount > 1) {
+            value = smoothFactor * value + (1. - smoothFactor) * (lastValue + deltaEstimate);
+            deltaEstimate = trendFactor * (value - lastValue) + (1.0 - trendFactor) * deltaEstimate;
+        }
+
+        lastValue = value;
+        valueCount++;
+
+        return value;
+    }
+
+    double lastValue = 0;
+    double deltaEstimate = 0;
+    int valueCount = 0;
+};
+
 class Job : public QObject, public JobVariables
 {
     Q_OBJECT
@@ -160,11 +188,7 @@ protected:
 
     virtual void finishEncodingCLI();
 
-    virtual void memorizeEncodingTime();
-
     virtual void updateFPS();
-
-    virtual double currentEncodingRangeTime() const;
 
     JobProperties m_properties;
 
@@ -199,8 +223,9 @@ protected:
     size_t m_framesInProcess;
     size_t m_maxThreads;
 
-    hr_time_point m_encodeRangeStartTime;
-    double m_memorizedEncodingTime;
+    QElapsedTimer m_lastFrameTimer;
+    int m_lastFrameCount = 0;
+    EwmaFilter m_smoothing;
 };
 
 }
