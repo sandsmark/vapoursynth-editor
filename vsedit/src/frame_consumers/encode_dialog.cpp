@@ -265,6 +265,8 @@ void EncodeDialog::slotArgumentsHelpButtonPressed()
         argumentsHelpString += QString("\n%1 - %2")
                                .arg(variable.token).arg(variable.description);
     }
+    argumentsHelpString += QLatin1String("\n\n") +
+            tr("You can also use %{foo} to replace with variables created with `#define foo bar` in the script.");
 
     QString title = tr("Encoder arguments");
     QMessageBox::information(this, title, argumentsHelpString);

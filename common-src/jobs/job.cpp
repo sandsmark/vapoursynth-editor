@@ -1313,9 +1313,10 @@ void vsedit::Job::fillVariables()
     for (JobVariableEvaluator &evaluator : evaluators) {
         QVector<vsedit::VariableToken>::iterator it =
             std::find_if(m_variables.begin(), m_variables.end(),
-        [&](const vsedit::VariableToken & a_variable) -> bool {
-            return (a_variable.token == evaluator.token);
-        });
+                [&](const vsedit::VariableToken & a_variable) -> bool {
+                    return (a_variable.token == evaluator.token);
+                }
+            );
         it->evaluate = evaluator.evaluate;
     }
 }
@@ -1497,6 +1498,11 @@ QString vsedit::Job::decodeArguments(const QString &a_arguments) const
     for (const vsedit::VariableToken &variable : m_variables) {
         decodedString = decodedString.replace(variable.token,
                                               variable.evaluate());
+    }
+
+    Q_ASSERT(m_pVapourSynthScriptProcessor);
+    for (const QString &variableName : m_pVapourSynthScriptProcessor->variables().keys()) {
+        decodedString = decodedString.replace("%{" + variableName + "}", m_pVapourSynthScriptProcessor->variables()[variableName]);
     }
 
     return decodedString;
