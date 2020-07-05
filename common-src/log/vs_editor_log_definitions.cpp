@@ -30,18 +30,18 @@ QString vsMessageTypeToStyleName(int a_messageType)
 {
     QString style(LOG_STYLE_DEFAULT);
 
-    std::map<int, QString> vsTypeToStyleMap = {
+    QHash<int, QString> vsTypeToStyleMap = {
         {mtDebug, LOG_STYLE_VS_DEBUG},
         {mtWarning, LOG_STYLE_VS_WARNING},
         {mtCritical, LOG_STYLE_VS_CRITICAL},
         {mtFatal, LOG_STYLE_VS_FATAL},
     };
 
-    std::map<int, QString>::const_iterator it =
+    QHash<int, QString>::const_iterator it =
         vsTypeToStyleMap.find(a_messageType);
 
     if (it != vsTypeToStyleMap.end()) {
-        return it->second;
+        return *it;
     }
 
     return style;

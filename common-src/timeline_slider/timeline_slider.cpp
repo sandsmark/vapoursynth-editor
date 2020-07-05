@@ -171,7 +171,7 @@ void TimeLineSlider::setLabelsFont(const QFont &a_font)
 
 void TimeLineSlider::setColor(ColorRole a_role, const QColor &a_color)
 {
-    std::map<ColorRole, QColor *> colorRoleMap = {
+    QHash<ColorRole, QColor *> colorRoleMap = {
         {SlideLine, &m_slideLineColor},
         {ActiveFrame, &m_activeFrameColor},
         {InactiveFrame, &m_inactiveFrameColor},
@@ -180,13 +180,13 @@ void TimeLineSlider::setColor(ColorRole a_role, const QColor &a_color)
         {Bookmark, &m_bookmarkColor},
     };
 
-    std::map<ColorRole, QColor *>::iterator it = colorRoleMap.find(a_role);
+    QHash<ColorRole, QColor *>::iterator it = colorRoleMap.find(a_role);
 
     if (it == colorRoleMap.end()) {
         return;
     }
 
-    *(it->second) = a_color;
+    *(*it) = a_color;
     update();
 }
 

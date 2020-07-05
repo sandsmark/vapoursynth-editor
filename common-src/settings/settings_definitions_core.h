@@ -48,6 +48,7 @@ enum class JobType {
     RunProcess,
     RunShellCommand,
 };
+Q_DECL_CONST_FUNCTION Q_DECL_CONSTEXPR inline uint qHash(JobType key, uint seed = 0) noexcept { return uint(key) ^ seed; }
 
 enum class JobState {
     Waiting,
@@ -62,6 +63,7 @@ enum class JobState {
     CompletedCleanUp,
     Completed,
 };
+Q_DECL_CONST_FUNCTION Q_DECL_CONSTEXPR inline uint qHash(JobState key, uint seed = 0) noexcept { return uint(key) ^ seed; }
 
 extern const QVector<JobState> ACTIVE_JOB_STATES;
 

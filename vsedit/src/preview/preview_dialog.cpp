@@ -489,7 +489,7 @@ void PreviewDialog::slotSaveSnapshot()
         return;
     }
 
-    std::map<QString, QString> extensionToFilterMap = {
+    QHash<QString, QString> extensionToFilterMap = {
         {"png", tr("PNG image (*.png)")},
     };
 
@@ -514,11 +514,7 @@ void PreviewDialog::slotSaveSnapshot()
 
     snapshotFilePath += fileExtension;
 
-    QStringList saveFormatsList;
-
-    for (const std::pair<const QString, QString> &pair : extensionToFilterMap) {
-        saveFormatsList << pair.second;
-    }
+    QStringList saveFormatsList = extensionToFilterMap.values();
 
     QString selectedFilter = extensionToFilterMap[fileExtension];
 

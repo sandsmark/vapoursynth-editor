@@ -111,7 +111,7 @@ private:
 
     std::deque<FrameTicket> m_frameTicketsQueue;
     QVector<FrameTicket> m_frameTicketsInProcess;
-    std::map<int, NodePair> m_nodePairForOutputIndex;
+    QHash<int, NodePair> m_nodePairForOutputIndex;
 
     ResamplingFilter m_chromaResamplingFilter;
     ChromaPlacement m_chromaPlacement;

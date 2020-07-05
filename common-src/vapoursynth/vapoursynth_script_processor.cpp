@@ -151,8 +151,7 @@ bool VapourSynthScriptProcessor::finalize()
         return false;
     }
 
-    for (std::pair<const int, NodePair> &mapItem : m_nodePairForOutputIndex) {
-        NodePair &nodePair = mapItem.second;
+    for (NodePair &nodePair : m_nodePairForOutputIndex) {
 
         if (nodePair.pOutputNode) {
             m_cpVSAPI->freeNode(nodePair.pOutputNode);
@@ -364,9 +363,7 @@ void VapourSynthScriptProcessor::slotResetSettings()
 
     m_chromaPlacement = m_pSettingsManager->getChromaPlacement();
 
-    for (std::pair<const int, NodePair> &mapItem : m_nodePairForOutputIndex) {
-        NodePair &nodePair = mapItem.second;
-
+    for (NodePair &nodePair : m_nodePairForOutputIndex) {
         if (nodePair.pPreviewNode) {
             recreatePreviewNode(nodePair);
         }
@@ -787,7 +784,7 @@ QString VapourSynthScriptProcessor::framePropsString(
     QString propsString;
     QStringList propsStringList;
 
-    std::map<char, QString> propTypeToString = {
+    QHash<char, QString> propTypeToString = {
         {ptUnset, "<unset>"},
         {ptInt, "int"},
         {ptFloat, "float"},

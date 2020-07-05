@@ -51,7 +51,7 @@ JobProperties::JobProperties():
 
 QString JobProperties::typeName(JobType a_type)
 {
-    static std::map<JobType, QString> typeNameMap = {
+    static QHash<JobType, QString> typeNameMap = {
         {JobType::EncodeScriptCLI, QObject::tr("CLI encoding")},
         {JobType::RunProcess, QObject::tr("Process run")},
         {JobType::RunShellCommand, QObject::tr("Shell command")},
@@ -62,7 +62,7 @@ QString JobProperties::typeName(JobType a_type)
 
 QString JobProperties::stateName(JobState a_state)
 {
-    static std::map<JobState, QString> stateNameMap = {
+    static QHash<JobState, QString> stateNameMap = {
         {JobState::Waiting, QObject::tr("Waiting")},
         {JobState::Running, QObject::tr("Running")},
         {JobState::Paused, QObject::tr("Paused")},

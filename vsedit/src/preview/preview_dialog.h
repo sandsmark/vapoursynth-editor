@@ -9,8 +9,6 @@
 
 #include <QPixmap>
 #include <QIcon>
-#include <map>
-#include <vector>
 #include <chrono>
 
 class QEvent;
@@ -225,11 +223,11 @@ protected:
     QAction *m_pActionGoToNextBookmark;
     QAction *m_pActionPasteShownFrameNumberIntoScript;
 
-    std::map<QString, ZoomMode> m_actionIDToZoomModeMap;
+    QHash<QString, ZoomMode> m_actionIDToZoomModeMap;
 
-    std::map<QString, Qt::TransformationMode> m_actionIDToZoomScaleModeMap;
+    QHash<QString, Qt::TransformationMode> m_actionIDToZoomScaleModeMap;
 
-    std::map<QString, TimeLineSlider::DisplayMode>
+    QHash<QString, TimeLineSlider::DisplayMode>
     m_actionIDToTimeLineModeMap;
 
     QVector<QAction *> m_settableActionsList;

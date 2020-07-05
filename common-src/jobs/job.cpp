@@ -1670,17 +1670,17 @@ void vsedit::Job::finishEncodingCLI()
 
     m_encodingState = EncodingState::Idle;
 
-    const std::map<JobState, JobState> stateToSwitch = {
+    const QHash<JobState, JobState> stateToSwitch = {
         {JobState::Aborting, JobState::Aborted},
         {JobState::FailedCleanUp, JobState::Failed},
         {JobState::CompletedCleanUp, JobState::Completed},
     };
 
-    std::map<JobState, JobState>::const_iterator it =
+    QHash<JobState, JobState>::const_iterator it =
         stateToSwitch.find(m_properties.jobState);
 
     if (it != stateToSwitch.cend()) {
-        changeStateAndNotify(it->second);
+        changeStateAndNotify(*it);
     }
 }
 

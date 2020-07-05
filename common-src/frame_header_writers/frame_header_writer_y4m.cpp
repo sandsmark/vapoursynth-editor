@@ -86,7 +86,7 @@ QByteArray FrameHeaderWriterY4M::videoHeader(int a_totalFrames)
             header += std::to_string(cpFormat->bitsPerSample);
         }
     } else if (cpFormat->colorFamily == cmYUV) {
-        std::map<std::pair<int, int>, std::string> subsamplingStringMap = {
+        QHash<std::pair<int, int>, std::string> subsamplingStringMap = {
             {{0, 0}, "444"},
             {{0, 1}, "440"},
             {{1, 0}, "422"},
