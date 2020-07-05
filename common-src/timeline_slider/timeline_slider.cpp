@@ -496,7 +496,7 @@ void TimeLineSlider::mouseMoveEvent(QMouseEvent *a_pEvent)
 
 void TimeLineSlider::mousePressEvent(QMouseEvent *a_pEvent)
 {
-    if (slideLineActiveRect().contains(a_pEvent->pos())) {
+    if (rect().contains(a_pEvent->pos())) {
         m_sliderPressed = true;
         setPointerAtFrame(a_pEvent);
         repaint();
