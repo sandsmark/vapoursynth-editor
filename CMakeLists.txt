@@ -61,6 +61,9 @@ set(VSEDIT_SRC
     vsedit/src/script_templates/templates_dialog.cpp
     vsedit/src/main_window.cpp
     vsedit/src/main.cpp
+
+    resources/vsedit.qrc
+    qdarkstyle/style.qrc
 )
 
 add_library(common OBJECT ${COMMON_SRC})
