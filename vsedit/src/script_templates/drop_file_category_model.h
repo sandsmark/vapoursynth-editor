@@ -37,9 +37,9 @@ public:
     virtual bool setData(const QModelIndex &a_index, const QVariant &a_value,
                          int a_role = Qt::EditRole) override;
 
-    std::vector<DropFileCategory> getCategories() const;
+    QVector<DropFileCategory> getCategories() const;
 
-    void setCategories(const std::vector<DropFileCategory> &a_categories);
+    void setCategories(const QVector<DropFileCategory> &a_categories);
 
     void addCategory();
 
@@ -51,7 +51,7 @@ public:
 
 private:
 
-    std::vector<DropFileCategory> m_categories;
+    QVector<DropFileCategory> m_categories;
 };
 
 #endif // DROP_FILE_CATEGORY_MODEL_H_INCLUDED

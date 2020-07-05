@@ -130,15 +130,15 @@ bool LogStylesModel::setData(const QModelIndex &a_index,
 //		const QVariant & a_value, int a_role)
 //==============================================================================
 
-std::vector<TextBlockStyle> LogStylesModel::styles() const
+QVector<TextBlockStyle> LogStylesModel::styles() const
 {
     return m_styles;
 }
 
-// END OF std::vector<TextBlockStyle> LogStylesModel::styles() const
+// END OF QVector<TextBlockStyle> LogStylesModel::styles() const
 //==============================================================================
 
-void LogStylesModel::setStyles(const std::vector<TextBlockStyle> &a_styles)
+void LogStylesModel::setStyles(const QVector<TextBlockStyle> &a_styles)
 {
     beginResetModel();
     m_styles = a_styles;
@@ -146,7 +146,7 @@ void LogStylesModel::setStyles(const std::vector<TextBlockStyle> &a_styles)
 }
 
 // END OF void LogStylesModel::setStyles(
-//		const std::vector<TextBlockStyle> & a_styles)
+//		const QVector<TextBlockStyle> & a_styles)
 //==============================================================================
 
 TextBlockStyle LogStylesModel::style(int a_index) const

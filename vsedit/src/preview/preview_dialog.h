@@ -232,7 +232,7 @@ protected:
     std::map<QString, TimeLineSlider::DisplayMode>
     m_actionIDToTimeLineModeMap;
 
-    std::vector<QAction *> m_settableActionsList;
+    QVector<QAction *> m_settableActionsList;
 
     bool m_playing;
     bool m_processingPlayQueue;

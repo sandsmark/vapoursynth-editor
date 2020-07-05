@@ -23,7 +23,7 @@ struct ThemeElementData {
     QColor color;
 };
 
-typedef std::vector<ThemeElementData> ThemeElementsList;
+typedef QVector<ThemeElementData> ThemeElementsList;
 
 class ThemeElementsModel : public QAbstractItemModel
 {

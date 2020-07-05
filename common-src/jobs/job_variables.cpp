@@ -25,9 +25,9 @@ JobVariables::JobVariables()
 // END OF JobVariables::JobVariables()
 //==============================================================================
 
-std::vector<vsedit::VariableToken> JobVariables::variables() const
+QVector<vsedit::VariableToken> JobVariables::variables() const
 {
-    std::vector<vsedit::VariableToken> cutVariables;
+    QVector<vsedit::VariableToken> cutVariables;
 
     for (const vsedit::VariableToken &variable : m_variables) {
         vsedit::VariableToken cutVariable =
@@ -38,7 +38,7 @@ std::vector<vsedit::VariableToken> JobVariables::variables() const
     return cutVariables;
 }
 
-// END OF std::vector<vsedit::VariableToken> JobVariables::variables() const
+// END OF QVector<vsedit::VariableToken> JobVariables::variables() const
 //==============================================================================
 
 void JobVariables::fillVariables()

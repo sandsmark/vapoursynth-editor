@@ -70,8 +70,8 @@ protected:
 
     virtual QString realHtml(bool a_excludeFiltered = false) const;
 
-    std::vector<TextBlockStyle> m_styles;
-    std::vector<LogEntry> m_entries;
+    QVector<TextBlockStyle> m_styles;
+    QVector<LogEntry> m_entries;
 
     qint64 m_millisecondsToDivideBlocks;
 

@@ -53,7 +53,7 @@ TextBlockStyle StyledLogView::getStyle(const QString &a_styleName) const
 
     QStringList foundAliasesList;
 
-    std::vector<TextBlockStyle>::const_iterator it = m_styles.end();
+    QVector<TextBlockStyle>::const_iterator it = m_styles.end();
 
     while (true) {
         it = std::find_if(m_styles.begin(), m_styles.end(),
@@ -104,7 +104,7 @@ void StyledLogView::addStyle(const TextBlockStyle &a_style,
         newStyle.originalStyleName = originalStyle.name;
     }
 
-    std::vector<TextBlockStyle>::iterator it = std::find_if(m_styles.begin(),
+    QVector<TextBlockStyle>::iterator it = std::find_if(m_styles.begin(),
     m_styles.end(), [&](const TextBlockStyle & la_style) -> bool {
         return (la_style.name == newStyle.name);
     });

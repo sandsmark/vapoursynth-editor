@@ -12,7 +12,7 @@ public:
 
     JobVariables();
 
-    virtual std::vector<vsedit::VariableToken> variables() const;
+    virtual QVector<vsedit::VariableToken> variables() const;
 
 protected:
 
@@ -29,7 +29,7 @@ protected:
 
     virtual void fillVariables();
 
-    std::vector<vsedit::VariableToken> m_variables;
+    QVector<vsedit::VariableToken> m_variables;
 };
 
 #endif // JOB_VARIABLES_H_INCLUDED

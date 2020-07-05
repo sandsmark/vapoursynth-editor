@@ -190,7 +190,7 @@ void ScriptEditor::setSettingsManager(SettingsManager *a_pSettingsManager)
 //		SettingsManager * a_pSettingsManager)
 //==============================================================================
 
-std::vector<QAction *> ScriptEditor::actionsForMenu() const
+QVector<QAction *> ScriptEditor::actionsForMenu() const
 {
     return {m_pActionDuplicateSelection, m_pActionCommentSelection,
             m_pActionUncommentSelection, m_pActionReplaceTabWithSpaces,
@@ -198,12 +198,12 @@ std::vector<QAction *> ScriptEditor::actionsForMenu() const
             m_pActionToggleComment};
 }
 
-// END OF std::vector<QAction *> ScriptEditor::actionsForMenu() const
+// END OF QVector<QAction *> ScriptEditor::actionsForMenu() const
 //==============================================================================
 
-std::vector<vsedit::VariableToken> ScriptEditor::variables() const
+QVector<vsedit::VariableToken> ScriptEditor::variables() const
 {
-    std::vector<vsedit::VariableToken> cleanVariables = m_variables;
+    QVector<vsedit::VariableToken> cleanVariables = m_variables;
 
     for (vsedit::VariableToken &variable : cleanVariables) {
         variable.evaluate = nullptr;
@@ -212,7 +212,7 @@ std::vector<vsedit::VariableToken> ScriptEditor::variables() const
     return cleanVariables;
 }
 
-// END OF std::vector<QAction *> ScriptEditor::actionsForMenu() const
+// END OF QVector<QAction *> ScriptEditor::actionsForMenu() const
 //==============================================================================
 
 void ScriptEditor::slotLoadSettings()
@@ -941,7 +941,7 @@ void ScriptEditor::slotShowCustomMenu(const QPoint &a_position)
 
     if (m_pSettingsManager) {
         m_pContextMenu->addSeparator();
-        std::vector<QAction *> actionsList = actionsForMenu();
+        QVector<QAction *> actionsList = actionsForMenu();
 
         for (QAction *pAction : actionsList) {
             m_pContextMenu->addAction(pAction);

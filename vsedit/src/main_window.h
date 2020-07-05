@@ -125,7 +125,7 @@ private:
     QAction *m_pActionExit;
     QAction *m_pActionAbout;
 
-    std::vector<QAction *> m_settableActionsList;
+    QVector<QAction *> m_settableActionsList;
 
     QMenu *m_pMenuRecentScripts;
 
@@ -138,7 +138,7 @@ private:
     QString m_scriptFilePath;
     QString m_lastSavedText;
 
-    std::vector<QObject **> m_orphanQObjects;
+    QVector<QObject **> m_orphanQObjects;
 
     JobServerWatcherSocket *m_pJobServerWatcherSocket;
 

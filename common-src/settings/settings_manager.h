@@ -24,7 +24,7 @@ public:
     QAction *createStandardAction(const QString &a_actionID,
                                   QObject *a_pParent);
 
-    std::vector<StandardAction> getStandardActions() const;
+    QVector<StandardAction> getStandardActions() const;
 
     QKeySequence getDefaultHotkey(const QString &a_actionID) const;
 
@@ -177,7 +177,7 @@ public:
 
     bool setNewScriptTemplate(const QString &a_text);
 
-    std::vector<CodeSnippet> getAllCodeSnippets() const;
+    QVector<CodeSnippet> getAllCodeSnippets() const;
 
     CodeSnippet getCodeSnippet(const QString &a_name) const;
 
@@ -185,10 +185,9 @@ public:
 
     bool deleteCodeSnippet(const QString &a_name);
 
-    std::vector<DropFileCategory> getAllDropFileTemplates() const;
+    QVector<DropFileCategory> getAllDropFileTemplates() const;
 
-    bool setDropFileTemplates(
-        const std::vector<DropFileCategory> &a_categories);
+    bool setDropFileTemplates(const QVector<DropFileCategory> &a_categories);
 
     QString getDropFileTemplate(const QString &a_filePath) const;
 
@@ -208,14 +207,14 @@ public:
 
     bool setAlwaysKeepCurrentFrame(bool a_keep);
 
-    std::vector<TextBlockStyle> getLogStyles(const QString &a_logName) const;
+    QVector<TextBlockStyle> getLogStyles(const QString &a_logName) const;
 
     bool getUseDarkMode() const;
 
     bool setUseDarkMode(bool a_use);
 
     bool setLogStyles(const QString &a_logName,
-                      const std::vector<TextBlockStyle> &a_styles);
+                      const QVector<TextBlockStyle> &a_styles);
 
     QString getLastSnapshotExtension() const;
 
@@ -225,7 +224,7 @@ private:
 
     void initializeStandardActions();
 
-    std::vector<StandardAction> m_standardActions;
+    QVector<StandardAction> m_standardActions;
 };
 
 //==============================================================================

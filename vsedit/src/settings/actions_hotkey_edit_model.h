@@ -43,7 +43,7 @@ public slots:
 
 private:
 
-    std::vector<StandardAction> m_actions;
+    QVector<StandardAction> m_actions;
 
     SettingsManager *m_pSettingsManager;
 };

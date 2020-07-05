@@ -34,9 +34,9 @@ public:
     virtual bool setData(const QModelIndex &a_index, const QVariant &a_value,
                          int a_role = Qt::EditRole) override;
 
-    virtual std::vector<TextBlockStyle> styles() const;
+    virtual QVector<TextBlockStyle> styles() const;
 
-    virtual void setStyles(const std::vector<TextBlockStyle> &a_styles);
+    virtual void setStyles(const QVector<TextBlockStyle> &a_styles);
 
     virtual TextBlockStyle style(int a_index) const;
     virtual TextBlockStyle style(const QModelIndex &a_index) const;
@@ -49,7 +49,7 @@ protected:
 
     virtual bool styleIndexValid(int a_index) const;
 
-    std::vector<TextBlockStyle> m_styles;
+    QVector<TextBlockStyle> m_styles;
 };
 
 #endif // LOG_STYLES_MODEL_H_INCLUDED

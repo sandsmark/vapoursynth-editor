@@ -2,7 +2,7 @@
 #define VSPLUGINDATA_H_INCLUDED
 
 #include <QString>
-#include <vector>
+#include <QVector>
 
 /// Data, gathered from VS core and plugins for syntax highlighting,
 /// autocompletion and reference.
@@ -25,7 +25,7 @@ struct FunctionArgument {
 
 struct Function {
     QString name;
-    std::vector<VSData::FunctionArgument> arguments;
+    QVector<VSData::FunctionArgument> arguments;
 
     Function();
     Function(const VSData::Function &a_other);
@@ -42,7 +42,7 @@ struct Plugin {
     QString id;
     QString pluginNamespace;
     QString name;
-    std::vector<VSData::Function> functions;
+    QVector<VSData::Function> functions;
 
     Plugin();
     Plugin(const VSData::Plugin &a_other);
@@ -55,6 +55,6 @@ struct Plugin {
 
 }
 
-typedef std::vector<VSData::Plugin> VSPluginsList;
+typedef QVector<VSData::Plugin> VSPluginsList;
 
 #endif // VSPLUGINDATA_H_INCLUDED

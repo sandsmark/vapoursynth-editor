@@ -101,7 +101,7 @@ public:
     }
 
 private:
-    std::vector<Callable> m_callables;
+    QVector<Callable> m_callables;
 };
 
 class FakeVimHandler : public QObject

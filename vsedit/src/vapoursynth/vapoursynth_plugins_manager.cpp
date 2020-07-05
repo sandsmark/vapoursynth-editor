@@ -36,12 +36,14 @@ void VS_CC fakeConfigPlugin(const char *a_identifier,
         }
     }
 
-    pManager->m_pluginsList.emplace_back();
-    pManager->m_pluginsList.back().filepath = pManager->m_currentPluginPath;
-    pManager->m_pluginsList.back().id = id;
-    pManager->m_pluginsList.back().pluginNamespace =
+    VSData::Plugin plugin;
+    plugin.filepath = pManager->m_currentPluginPath;
+    plugin.id = id;
+    plugin.pluginNamespace =
         QString(a_defaultNamespace);
-    pManager->m_pluginsList.back().name = QString(a_name);
+    plugin.name = QString(a_name);
+
+    pManager->m_pluginsList.append(std::move(plugin));
 }
 
 // END OF void VS_CC fakeConfigPlugin(const char * a_identifier,
@@ -272,8 +274,7 @@ void VapourSynthPluginsManager::getCorePlugins()
 
         QString pluginInfoString(pluginInfo);
 
-        m_pluginsList.emplace_back();
-        VSData::Plugin &pluginData = m_pluginsList.back();
+        VSData::Plugin pluginData;
         pluginData.filepath = filepath;
         pluginData.id = id;
         QStringList parsedPluginInfo = pluginInfoString.split(';');
@@ -314,6 +315,8 @@ void VapourSynthPluginsManager::getCorePlugins()
                                         functionInfo);
             pluginData.functions.push_back(function);
         }
+
+        m_pluginsList.append(std::move(pluginData));
 
         cpVSAPI->freeMap(pFunctionsMap);
     }
@@ -412,8 +415,7 @@ VSData::Function VapourSynthPluginsManager::parseFunctionSignature(
             continue;
         }
 
-        function.arguments.emplace_back();
-        VSData::FunctionArgument &argument = function.arguments.back();
+        VSData::FunctionArgument argument;
         argument.name = argumentParts[0];
         argument.type = argumentParts[1];
 
@@ -424,6 +426,8 @@ VSData::Function VapourSynthPluginsManager::parseFunctionSignature(
                 argument.empty = true;
             }
         }
+
+        function.arguments.append(std::move(argument));
     }
 
     return function;

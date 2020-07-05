@@ -209,31 +209,31 @@ bool DropFileCategoryModel::setData(const QModelIndex &a_index,
 //		const QVariant & a_value, int a_role)
 //==============================================================================
 
-std::vector<DropFileCategory> DropFileCategoryModel::getCategories() const
+QVector<DropFileCategory> DropFileCategoryModel::getCategories() const
 {
     return m_categories;
 }
 
-// END OF std::vector<DropFileCategory> DropFileCategoryModel::getCategories()
+// END OF QVector<DropFileCategory> DropFileCategoryModel::getCategories()
 //		const
 //==============================================================================
 
 void DropFileCategoryModel::setCategories(
-    const std::vector<DropFileCategory> &a_categories)
+    const QVector<DropFileCategory> &a_categories)
 {
     m_categories = a_categories;
     emit layoutChanged();
 }
 
 // END OF void DropFileCategoryModel::setCategories(
-//		const std::vector<DropFileCategory> & a_categories)
+//		const QVector<DropFileCategory> & a_categories)
 //==============================================================================
 
 void DropFileCategoryModel::addCategory()
 {
     beginInsertRows(QModelIndex(), (int)m_categories.size(),
                     (int)m_categories.size());
-    m_categories.emplace_back();
+    m_categories.append(DropFileCategory());
     endInsertRows();
 }
 

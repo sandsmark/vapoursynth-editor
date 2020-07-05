@@ -54,8 +54,8 @@ public:
 
     void clear();
 
-    std::vector<JobProperties> jobs() const;
-    bool setJobs(const std::vector<JobProperties> &a_jobs);
+    QVector<JobProperties> jobs() const;
+    bool setJobs(const QVector<JobProperties> &a_jobs);
 
     JobProperties jobProperties(int a_index) const;
 
@@ -63,13 +63,13 @@ public:
 
     bool swapJobs(const QUuid &a_id1, const QUuid &a_id2);
 
-    bool deleteJobs(std::vector<QUuid> a_ids);
+    bool deleteJobs(QVector<QUuid> a_ids);
 
     bool updateJobProperties(const JobProperties &a_jobProperties);
     bool setJobDependsOnIds(const QUuid &a_id,
-                            const std::vector<QUuid> &a_dependencies);
+                            const QVector<QUuid> &a_dependencies);
     void requestJobDependsOnIds(const QUuid &a_id,
-                                const std::vector<QUuid> &a_dependencies);
+                                const QVector<QUuid> &a_dependencies);
     bool setJobProgress(const QUuid &a_id, int a_progress, double a_fps);
     bool setJobState(const QUuid &a_id, JobState a_state);
     bool setJobStartTime(const QUuid &a_id, const QDateTime &a_time);
@@ -80,8 +80,8 @@ public:
     bool hasActiveJobs();
     bool hasWaitingJobs();
 
-    std::vector<int> indexesFromSelection(const QItemSelection &a_selection);
-    std::vector<QUuid> idsFromSelection(const QItemSelection &a_selection);
+    QVector<int> indexesFromSelection(const QItemSelection &a_selection);
+    QVector<QUuid> idsFromSelection(const QItemSelection &a_selection);
 
 signals:
 
@@ -93,7 +93,7 @@ signals:
     void signalProgressChanged(int a_job, int a_progress, int a_progressMax);
 
     void signalSetDependencies(const QUuid &a_id,
-                               std::vector<QUuid> a_dependencies);
+                               QVector<QUuid> a_dependencies);
 
 private:
 
@@ -101,7 +101,7 @@ private:
 
     void notifyJobUpdated(int a_index, int a_column = -1);
 
-    std::vector<JobProperties> m_jobs;
+    QVector<JobProperties> m_jobs;
 
     SettingsManager *m_pSettingsManager;
 

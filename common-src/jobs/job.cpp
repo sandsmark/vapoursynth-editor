@@ -270,15 +270,15 @@ bool vsedit::Job::setState(JobState a_state)
 // END OF bool vsedit::Job::setState(JobState a_state)
 //==============================================================================
 
-std::vector<QUuid> vsedit::Job::dependsOnJobIds() const
+QVector<QUuid> vsedit::Job::dependsOnJobIds() const
 {
     return m_properties.dependsOnJobIds;
 }
 
-// END OF std::vector<QUuid> vsedit::Job::dependsOnJobIds() const
+// END OF QVector<QUuid> vsedit::Job::dependsOnJobIds() const
 //==============================================================================
 
-bool vsedit::Job::setDependsOnJobIds(const std::vector<QUuid> &a_ids)
+bool vsedit::Job::setDependsOnJobIds(const QVector<QUuid> &a_ids)
 {
     if (isActive()) {
         return false;
@@ -288,7 +288,7 @@ bool vsedit::Job::setDependsOnJobIds(const std::vector<QUuid> &a_ids)
     return true;
 }
 
-// END OF bool vsedit::Job::setDependsOnJobIds(const std::vector<QUuid> & a_ids)
+// END OF bool vsedit::Job::setDependsOnJobIds(const QVector<QUuid> & a_ids)
 //==============================================================================
 
 QString vsedit::Job::subject() const
@@ -1311,7 +1311,7 @@ void vsedit::Job::fillVariables()
     };
 
     for (JobVariableEvaluator &evaluator : evaluators) {
-        std::vector<vsedit::VariableToken>::iterator it =
+        QVector<vsedit::VariableToken>::iterator it =
             std::find_if(m_variables.begin(), m_variables.end(),
         [&](const vsedit::VariableToken & a_variable) -> bool {
             return (a_variable.token == evaluator.token);

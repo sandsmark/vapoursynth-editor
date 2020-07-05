@@ -56,7 +56,7 @@ public:
 
     bool setLanczosFilterTaps(int a_taps);
 
-    std::vector<EncodingPreset> getAllEncodingPresets() const;
+    QVector<EncodingPreset> getAllEncodingPresets() const;
 
     EncodingPreset getEncodingPreset(const QString &a_name) const;
 
@@ -64,9 +64,9 @@ public:
 
     bool deleteEncodingPreset(const QString &a_name);
 
-    std::vector<JobProperties> getJobs() const;
+    QVector<JobProperties> getJobs() const;
 
-    bool setJobs(const std::vector<JobProperties> &a_jobs);
+    bool setJobs(const QVector<JobProperties> &a_jobs);
 
     QStringList getRecentJobServers() const;
 

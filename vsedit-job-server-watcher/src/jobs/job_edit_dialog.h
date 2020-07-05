@@ -49,7 +49,7 @@ private:
     SettingsManager *m_pSettingsManager;
     VSScriptLibrary *m_pVSScriptLibrary;
 
-    std::vector<EncodingPreset> m_encodingPresets;
+    QVector<EncodingPreset> m_encodingPresets;
 };
 
 #endif // JOB_EDIT_DIALOG_H_INCLUDED

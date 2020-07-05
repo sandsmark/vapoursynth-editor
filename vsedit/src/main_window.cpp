@@ -745,7 +745,7 @@ void MainWindow::createActionsAndMenus()
 
     QMenu *pEditMenu = m_ui.menuBar->addMenu(tr("Edit"));
 
-    std::vector<QAction *> editorActions = m_ui.scriptEdit->actionsForMenu();
+    QVector<QAction *> editorActions = m_ui.scriptEdit->actionsForMenu();
 
     for (QAction *pAction : editorActions) {
         pEditMenu->addAction(pAction);

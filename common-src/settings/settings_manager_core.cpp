@@ -294,12 +294,12 @@ bool SettingsManagerCore::setLanczosFilterTaps(int a_taps)
 
 //==============================================================================
 
-std::vector<EncodingPreset> SettingsManagerCore::getAllEncodingPresets() const
+QVector<EncodingPreset> SettingsManagerCore::getAllEncodingPresets() const
 {
     QSettings settings(m_settingsFilePath, QSettings::IniFormat);
     settings.beginGroup(ENCODING_PRESETS_GROUP);
 
-    std::vector<EncodingPreset> presets;
+    QVector<EncodingPreset> presets;
 
     QStringList presetNames = settings.childGroups();
 
@@ -394,12 +394,12 @@ bool SettingsManagerCore::deleteEncodingPreset(const QString &a_name)
 
 //==============================================================================
 
-std::vector<JobProperties> SettingsManagerCore::getJobs() const
+QVector<JobProperties> SettingsManagerCore::getJobs() const
 {
     QSettings settings(m_settingsFilePath, QSettings::IniFormat);
     settings.beginGroup(JOBS_GROUP);
 
-    std::vector<JobProperties> jobs;
+    QVector<JobProperties> jobs;
 
     QStringList numbers = settings.childGroups();
 
@@ -464,7 +464,7 @@ std::vector<JobProperties> SettingsManagerCore::getJobs() const
     return jobs;
 }
 
-bool SettingsManagerCore::setJobs(const std::vector<JobProperties> &a_jobs)
+bool SettingsManagerCore::setJobs(const QVector<JobProperties> &a_jobs)
 {
     QSettings settings(m_settingsFilePath, QSettings::IniFormat);
     settings.remove(JOBS_GROUP);

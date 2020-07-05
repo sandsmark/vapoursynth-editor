@@ -50,9 +50,9 @@ private slots:
     void slotJobEndTimeChanged(const QUuid &a_jobID,
                                const QDateTime &a_time);
     void slotJobDependenciesChanged(const QUuid &a_jobID,
-                                    const std::vector<QUuid> &a_dependencies);
+                                    const QVector<QUuid> &a_dependencies);
     void slotJobsSwapped(const QUuid &a_jobID1, const QUuid &a_jobID2);
-    void slotJobsDeleted(const std::vector<QUuid> &a_ids);
+    void slotJobsDeleted(const QVector<QUuid> &a_ids);
 
 private:
 
@@ -73,7 +73,7 @@ private:
     JobsManager *m_pJobsManager;
     QWebSocketServer *m_pWebSocketServer;
 
-    std::vector<LogEntry> m_logEntries;
+    QVector<LogEntry> m_logEntries;
 
     std::list<QWebSocket *> m_clients;
     std::list<QWebSocket *> m_subscribers;

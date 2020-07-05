@@ -390,7 +390,7 @@ void VapourSynthScriptProcessor::receiveFrame(
 
     FrameTicket ticket(a_frameNumber, -1, nullptr);
 
-    std::vector<FrameTicket>::iterator it = std::find_if(
+    QVector<FrameTicket>::iterator it = std::find_if(
             m_frameTicketsInProcess.begin(), m_frameTicketsInProcess.end(),
     [&](const FrameTicket & a_ticket) {
         return ((a_ticket.frameNumber == a_frameNumber) &&

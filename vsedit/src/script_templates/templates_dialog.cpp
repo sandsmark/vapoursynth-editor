@@ -33,7 +33,7 @@ TemplatesDialog::TemplatesDialog(SettingsManager *a_pSettingsManager,
                                        "as a list of wildcards, separated by semicolons without spaces.\n"
                                        "In the template below use tokens: ");
     QStringList tokenInfoList;
-    std::vector<vsedit::VariableToken> variables =
+    QVector<vsedit::VariableToken> variables =
         m_ui.dropFileCategoryTemplateEdit->variables();
 
     for (const vsedit::VariableToken &variable : variables)
@@ -162,7 +162,7 @@ void TemplatesDialog::slotSnippetSaveButtonClicked()
         return;
     }
 
-    std::vector<CodeSnippet>::iterator it = std::find(
+    QVector<CodeSnippet>::iterator it = std::find(
             m_codeSnippets.begin(), m_codeSnippets.end(), snippet);
 
     if (it == m_codeSnippets.end()) {
@@ -197,7 +197,7 @@ void TemplatesDialog::slotSnippetDeleteButtonClicked()
         return;
     }
 
-    std::vector<CodeSnippet>::iterator it = std::find(
+    QVector<CodeSnippet>::iterator it = std::find(
             m_codeSnippets.begin(), m_codeSnippets.end(), snippet);
 
     if (it == m_codeSnippets.end()) {
@@ -227,7 +227,7 @@ void TemplatesDialog::slotSnippetNameComboBoxActivated(const QString &a_text)
 
     CodeSnippet snippet(a_text);
 
-    std::vector<CodeSnippet>::iterator it = std::find(
+    QVector<CodeSnippet>::iterator it = std::find(
             m_codeSnippets.begin(), m_codeSnippets.end(), snippet);
 
     if (it == m_codeSnippets.end()) {
@@ -276,7 +276,7 @@ void TemplatesDialog::slotSaveDropFileCategoriesButtonClicked()
     int index = m_ui.dropFileCategoryView->currentIndex().row();
     m_pDropFileCategoryModel->setSourceTemplate(index,
             m_ui.dropFileCategoryTemplateEdit->text());
-    std::vector<DropFileCategory> categories =
+    QVector<DropFileCategory> categories =
         m_pDropFileCategoryModel->getCategories();
     m_pSettingsManager->setDropFileTemplates(categories);
 }
@@ -286,7 +286,7 @@ void TemplatesDialog::slotSaveDropFileCategoriesButtonClicked()
 
 void TemplatesDialog::slotRevertDropFileCategoriesButtonClicked()
 {
-    std::vector<DropFileCategory> categories =
+    QVector<DropFileCategory> categories =
         m_pSettingsManager->getAllDropFileTemplates();
     m_pDropFileCategoryModel->setCategories(categories);
     m_ui.dropFileCategoryView->resizeColumnToContents(0);

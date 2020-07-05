@@ -29,7 +29,7 @@ const int DEFAULT_WINDOW_GEOMETRY_SAVE_DELAY = 2000;
 
 //==============================================================================
 
-const std::vector<JobState> ACTIVE_JOB_STATES = {JobState::Running,
+const QVector<JobState> ACTIVE_JOB_STATES = {JobState::Running,
                                                  JobState::Pausing, JobState::Paused, JobState::Aborting,
                                                  JobState::FailedCleanUp, JobState::CompletedCleanUp
                                                 };

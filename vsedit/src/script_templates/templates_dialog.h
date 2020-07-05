@@ -67,13 +67,13 @@ private:
 
     SettingsManager *m_pSettingsManager;
 
-    std::vector<CodeSnippet> m_codeSnippets;
+    QVector<CodeSnippet> m_codeSnippets;
 
     DropFileCategoryModel *m_pDropFileCategoryModel;
 
     QAction *m_pSaveAction;
 
-    std::vector<ScriptEditor *> m_scriptEditors;
+    QVector<ScriptEditor *> m_scriptEditors;
 };
 
 #endif // TEMPLATES_DIALOG_H_INCLUDED

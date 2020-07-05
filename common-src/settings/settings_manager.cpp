@@ -310,7 +310,7 @@ void SettingsManager::initializeStandardActions()
     };
 }
 
-std::vector<StandardAction> SettingsManager::getStandardActions() const
+QVector<StandardAction> SettingsManager::getStandardActions() const
 {
     return m_standardActions;
 }
@@ -321,7 +321,7 @@ QAction *SettingsManager::createStandardAction(const QString &a_actionID,
     StandardAction actionToFind;
     actionToFind.id = a_actionID;
 
-    std::vector<StandardAction>::const_iterator it = std::find(
+    QVector<StandardAction>::const_iterator it = std::find(
                 m_standardActions.begin(), m_standardActions.end(), actionToFind);
 
     if (it == m_standardActions.end()) {
@@ -342,7 +342,7 @@ QKeySequence SettingsManager::getDefaultHotkey(const QString &a_actionID) const
     StandardAction actionToFind;
     actionToFind.id = a_actionID;
 
-    std::vector<StandardAction>::const_iterator it = std::find(
+    QVector<StandardAction>::const_iterator it = std::find(
                 m_standardActions.begin(), m_standardActions.end(), actionToFind);
 
     if (it != m_standardActions.end()) {
@@ -944,12 +944,12 @@ bool SettingsManager::setNewScriptTemplate(const QString &a_text)
 
 //==============================================================================
 
-std::vector<CodeSnippet> SettingsManager::getAllCodeSnippets() const
+QVector<CodeSnippet> SettingsManager::getAllCodeSnippets() const
 {
     QSettings settings(m_settingsFilePath, QSettings::IniFormat);
     settings.beginGroup(CODE_SNIPPETS_GROUP);
 
-    std::vector<CodeSnippet> snippets;
+    QVector<CodeSnippet> snippets;
 
     QStringList snippetNames = settings.childKeys();
 
@@ -991,12 +991,12 @@ bool SettingsManager::deleteCodeSnippet(const QString &a_name)
 
 //==============================================================================
 
-std::vector<DropFileCategory> SettingsManager::getAllDropFileTemplates() const
+QVector<DropFileCategory> SettingsManager::getAllDropFileTemplates() const
 {
     QSettings settings(m_settingsFilePath, QSettings::IniFormat);
     settings.beginGroup(DROP_FILE_TEMPLATES_GROUP);
 
-    std::vector<DropFileCategory> categories;
+    QVector<DropFileCategory> categories;
 
     QStringList categoryNames = settings.childGroups();
 
@@ -1018,7 +1018,7 @@ std::vector<DropFileCategory> SettingsManager::getAllDropFileTemplates() const
 }
 
 bool SettingsManager::setDropFileTemplates(
-    const std::vector<DropFileCategory> &a_categories)
+    const QVector<DropFileCategory> &a_categories)
 {
     QSettings settings(m_settingsFilePath, QSettings::IniFormat);
 
@@ -1047,7 +1047,7 @@ QString SettingsManager::getDropFileTemplate(const QString &a_filePath) const
     matcher.setPatternSyntax(QRegExp::Wildcard);
     matcher.setCaseSensitivity(Qt::CaseInsensitive);
 
-    std::vector<DropFileCategory> categories = getAllDropFileTemplates();
+    QVector<DropFileCategory> categories = getAllDropFileTemplates();
 
     for (const DropFileCategory &category : categories) {
         for (const QString &mask : category.maskList) {
@@ -1126,10 +1126,10 @@ bool SettingsManager::setUseDarkMode(bool a_use)
 
 //==============================================================================
 
-std::vector<TextBlockStyle> SettingsManager::getLogStyles(
+QVector<TextBlockStyle> SettingsManager::getLogStyles(
     const QString &a_logName) const
 {
-    std::vector<TextBlockStyle> styles;
+    QVector<TextBlockStyle> styles;
 
     if (a_logName.isEmpty()) {
         return styles;
@@ -1175,7 +1175,7 @@ std::vector<TextBlockStyle> SettingsManager::getLogStyles(
 }
 
 bool SettingsManager::setLogStyles(const QString &a_logName,
-                                   const std::vector<TextBlockStyle> &a_styles)
+                                   const QVector<TextBlockStyle> &a_styles)
 {
     if (a_logName.isEmpty()) {
         return false;

@@ -92,7 +92,7 @@ VSData::Function &VSData::Function::operator=(VSData::Function a_other)
 
 QString VSData::Function::toString() const
 {
-    std::vector<VSData::FunctionArgument> argumentsCopy = arguments;
+    QVector<VSData::FunctionArgument> argumentsCopy = arguments;
     std::sort(argumentsCopy.begin(), argumentsCopy.end());
     size_t argumentsNumber = argumentsCopy.size();
     size_t firstOptional;

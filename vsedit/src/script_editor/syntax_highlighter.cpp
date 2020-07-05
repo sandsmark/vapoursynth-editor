@@ -151,7 +151,7 @@ void SyntaxHighlighter::slotLoadSettings()
 void SyntaxHighlighter::highlightBlock(const QString &a_text)
 {
     setCurrentBlockState(0);
-    std::vector<Token> tokens;
+    QVector<Token> tokens;
 
     int i = 0;
     int j = 0;

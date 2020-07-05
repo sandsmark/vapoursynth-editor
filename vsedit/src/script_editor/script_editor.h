@@ -48,9 +48,9 @@ public:
 
     void setSettingsManager(SettingsManager *a_pSettingsManager);
 
-    std::vector<QAction *> actionsForMenu() const;
+    QVector<QAction *> actionsForMenu() const;
 
-    std::vector<vsedit::VariableToken> variables() const;
+    QVector<vsedit::VariableToken> variables() const;
 
 public slots:
 
@@ -179,13 +179,13 @@ private:
     QAction *m_pActionMoveTextBlockDown;
     QAction *m_pActionToggleComment;
 
-    std::vector<QAction *> m_settableActionsList;
+    QVector<QAction *> m_settableActionsList;
 
     QString m_droppedFilePath;
     int m_droppedFileNumber;
     QRect m_cursorRect;
 
-    std::vector<vsedit::VariableToken> m_variables;
+    QVector<vsedit::VariableToken> m_variables;
 };
 
 #endif // SCRIPTEDITOR_H

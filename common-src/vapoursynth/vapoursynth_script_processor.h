@@ -110,7 +110,7 @@ private:
     const VSCoreInfo *m_cpCoreInfo;
 
     std::deque<FrameTicket> m_frameTicketsQueue;
-    std::vector<FrameTicket> m_frameTicketsInProcess;
+    QVector<FrameTicket> m_frameTicketsInProcess;
     std::map<int, NodePair> m_nodePairForOutputIndex;
 
     ResamplingFilter m_chromaResamplingFilter;

@@ -85,7 +85,7 @@ private slots:
     void slotJobStateChanged(int a_job, JobState a_state);
     void slotJobProgressChanged(int a_job, int a_progress, int a_progressMax);
     void slotSetJobDependencies(const QUuid &a_id,
-                                std::vector<QUuid> a_dependencies);
+                                QVector<QUuid> a_dependencies);
 
     void slotServerConnected();
     void slotServerDisconnected();
@@ -132,7 +132,7 @@ private:
 
     void processSMsgJobInfo(const QString &a_message);
 
-    std::vector<int> selectedIndexes();
+    QVector<int> selectedIndexes();
 
     void setUiEnabled();
 

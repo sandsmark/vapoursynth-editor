@@ -307,7 +307,7 @@ void EncodeDialog::slotEncodingPresetSaveButtonPressed()
         return;
     }
 
-    std::vector<EncodingPreset>::iterator it = std::find(
+    QVector<EncodingPreset>::iterator it = std::find(
                 m_encodingPresets.begin(), m_encodingPresets.end(), preset);
 
     if (it == m_encodingPresets.end()) {
@@ -345,7 +345,7 @@ void EncodeDialog::slotEncodingPresetDeleteButtonPressed()
         return;
     }
 
-    std::vector<EncodingPreset>::iterator it = std::find(
+    QVector<EncodingPreset>::iterator it = std::find(
                 m_encodingPresets.begin(), m_encodingPresets.end(), preset);
 
     if (it == m_encodingPresets.end()) {
@@ -388,7 +388,7 @@ void EncodeDialog::slotEncodingPresetComboBoxActivated(const QString &a_text)
 
     EncodingPreset preset(a_text);
 
-    std::vector<EncodingPreset>::iterator it = std::find(
+    QVector<EncodingPreset>::iterator it = std::find(
                 m_encodingPresets.begin(), m_encodingPresets.end(), preset);
 
     if (it == m_encodingPresets.end()) {

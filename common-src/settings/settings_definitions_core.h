@@ -63,7 +63,7 @@ enum class JobState {
     Completed,
 };
 
-extern const std::vector<JobState> ACTIVE_JOB_STATES;
+extern const QVector<JobState> ACTIVE_JOB_STATES;
 
 extern const char JP_ID[];
 extern const char JP_TYPE[];
@@ -88,7 +88,7 @@ struct JobProperties {
     QUuid id;
     JobType type;
     JobState jobState;
-    std::vector<QUuid> dependsOnJobIds;
+    QVector<QUuid> dependsOnJobIds;
     QDateTime timeStarted;
     QDateTime timeEnded;
     QString scriptName;

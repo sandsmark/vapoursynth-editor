@@ -21,7 +21,7 @@ public:
                 QObject *a_pParent = nullptr);
     virtual ~JobsManager();
 
-    std::vector<JobProperties> jobsProperties() const;
+    QVector<JobProperties> jobsProperties() const;
 
     int createJob(const JobProperties &a_jobProperties = JobProperties());
 
@@ -29,7 +29,7 @@ public:
 
     bool setJobState(const QUuid &a_jobID, JobState a_state);
     bool setJobDependsOnIds(const QUuid &a_jobID,
-                            const std::vector<QUuid> &a_dependencies);
+                            const QVector<QUuid> &a_dependencies);
     bool changeJob(const JobProperties &a_jobProperties);
 
     bool loadJobs();
@@ -41,8 +41,8 @@ public:
     void abortActiveJobs();
     void pauseActiveJobs();
     void resumePausedJobs();
-    void resetJobs(const std::vector<QUuid> &a_ids);
-    void deleteJobs(const std::vector<QUuid> &a_ids);
+    void resetJobs(const QVector<QUuid> &a_ids);
+    void deleteJobs(const QVector<QUuid> &a_ids);
 
 signals:
 
@@ -58,9 +58,9 @@ signals:
     void signalJobEndTimeChanged(const QUuid &a_jobID,
                                  const QDateTime &a_time);
     void signalJobDependenciesChanged(const QUuid &a_jobID,
-                                      const std::vector<QUuid> &a_dependencies);
+                                      const QVector<QUuid> &a_dependencies);
     void signalJobsSwapped(const QUuid &a_jobID1, const QUuid &a_jobID2);
-    void signalJobsDeleted(const std::vector<QUuid> &a_ids);
+    void signalJobsDeleted(const QVector<QUuid> &a_ids);
 
 private slots:
 
@@ -96,7 +96,7 @@ private:
 
     void startFirstReadyJob(int a_fromIndex = 0);
 
-    std::vector<JobTicket> m_tickets;
+    QVector<JobTicket> m_tickets;
 
     SettingsManagerCore *m_pSettingsManager;
     VSScriptLibrary *m_pVSScriptLibrary;

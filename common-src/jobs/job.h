@@ -75,8 +75,8 @@ public:
     virtual JobState state() const;
     virtual bool setState(JobState a_state);
 
-    virtual std::vector<QUuid> dependsOnJobIds() const;
-    virtual bool setDependsOnJobIds(const std::vector<QUuid> &a_ids);
+    virtual QVector<QUuid> dependsOnJobIds() const;
+    virtual bool setDependsOnJobIds(const QVector<QUuid> &a_ids);
 
     virtual QString subject() const;
 

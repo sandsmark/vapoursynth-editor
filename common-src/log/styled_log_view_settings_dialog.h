@@ -17,9 +17,9 @@ public:
 
     virtual ~StyledLogViewSettingsDialog();
 
-    virtual std::vector<TextBlockStyle> styles() const;
+    virtual QVector<TextBlockStyle> styles() const;
 
-    virtual void setStyles(const std::vector<TextBlockStyle> &a_styles);
+    virtual void setStyles(const QVector<TextBlockStyle> &a_styles);
 
 signals:
 

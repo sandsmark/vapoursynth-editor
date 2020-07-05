@@ -46,18 +46,18 @@ StyledLogViewSettingsDialog::~StyledLogViewSettingsDialog()
 // END OF StyledLogViewSettingsDialog::~StyledLogViewSettingsDialog()
 //==============================================================================
 
-std::vector<TextBlockStyle> StyledLogViewSettingsDialog::styles() const
+QVector<TextBlockStyle> StyledLogViewSettingsDialog::styles() const
 {
     Q_ASSERT(m_pLogStylesModel);
     return m_pLogStylesModel->styles();
 }
 
-// END OF std::vector<TextBlockStyle> StyledLogViewSettingsDialog::styles()
+// END OF QVector<TextBlockStyle> StyledLogViewSettingsDialog::styles()
 //		const
 //==============================================================================
 
 void StyledLogViewSettingsDialog::setStyles(
-    const std::vector<TextBlockStyle> &a_styles)
+    const QVector<TextBlockStyle> &a_styles)
 {
     Q_ASSERT(m_pLogStylesModel);
     m_pLogStylesModel->setStyles(a_styles);
@@ -65,7 +65,7 @@ void StyledLogViewSettingsDialog::setStyles(
 }
 
 // END OF void StyledLogViewSettingsDialog::setStyles(
-//		const std::vector<TextBlockStyle> & a_styles)
+//		const QVector<TextBlockStyle> & a_styles)
 //==============================================================================
 
 void StyledLogViewSettingsDialog::slotOk()

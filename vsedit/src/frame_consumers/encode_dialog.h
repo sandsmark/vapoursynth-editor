@@ -75,7 +75,7 @@ private:
 
     vsedit::Job *m_pJob;
 
-    std::vector<EncodingPreset> m_encodingPresets;
+    QVector<EncodingPreset> m_encodingPresets;
 
 #ifdef Q_OS_WIN
     QWinTaskbarButton *m_pWinTaskbarButton;

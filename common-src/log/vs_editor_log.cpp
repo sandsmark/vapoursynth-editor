@@ -56,11 +56,11 @@ bool VSEditorLog::loadSettings()
         return false;
     }
 
-    const std::vector<TextBlockStyle> styles =
+    const QVector<TextBlockStyle> styles =
         m_pSettingsManager->getLogStyles(m_name);
 
     for (TextBlockStyle &style : m_styles) {
-        std::vector<TextBlockStyle>::const_iterator it =
+        QVector<TextBlockStyle>::const_iterator it =
             std::find_if(styles.begin(), styles.end(),
         [&](const TextBlockStyle & a_style) -> bool {
             return (a_style.name == style.name);
