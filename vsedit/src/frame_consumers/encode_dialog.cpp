@@ -508,7 +508,7 @@ void EncodeDialog::slotJobProgressChanged()
     QString passedString = vsedit::timeToString(passed);
 
     QString text = tr("Time elapsed: %1 - %2 FPS")
-                   .arg(passedString).arg(QString::number(properties.fps, 'f', 2));
+                   .arg(passedString).arg(QString::number(properties.fps, 'f', properties.fps > 10 ? 0 : 2));
 
     if ((properties.framesProcessed > 0) &&
             (properties.framesProcessed < properties.framesTotal())) {
