@@ -19,6 +19,7 @@ public:
                        const QModelIndex &a_index) const override;
 
 protected:
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &a_index) const override;
 
     virtual QColor jobStateColor(JobState a_state,
                                  const QStyleOptionViewItem &a_option) const;
