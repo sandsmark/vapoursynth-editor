@@ -787,7 +787,7 @@ void MainWindow::slotServerDisconnected()
         changeState(WatcherState::StartingLocal);
         QString serverPath = vsedit::resolvePathFromApplication(
                                  "./vsedit-job-server");
-        bool started = QProcess::startDetached(serverPath);
+        bool started = QProcess::startDetached(serverPath, {});
 
         if (!started) {
             changeState(WatcherState::NotConnected);
@@ -1448,7 +1448,7 @@ void MainWindow::setUiEnabled()
 
         bool allInactive = !l_selectedIndexes.empty();
 
-        for (size_t i = 0; i < l_selectedIndexes.size(); ++i) {
+        for (int i = 0; i < l_selectedIndexes.size(); ++i) {
             JobProperties jobProperties =
                 m_pJobsModel->jobProperties(l_selectedIndexes[i]);
 
