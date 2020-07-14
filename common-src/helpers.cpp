@@ -3,6 +3,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QCoreApplication>
+#include <QStandardPaths>
 #include <cmath>
 
 //==============================================================================
@@ -193,6 +194,11 @@ QString vsedit::subsamplingString(const VSFormat *a_cpFormat)
 
 QString vsedit::resolvePathFromApplication(const QString &a_relativePath)
 {
+    const QFileInfo absoluteInfo(a_relativePath);
+    if (absoluteInfo.isAbsolute() && absoluteInfo.exists()) {
+        return absoluteInfo.absolutePath();
+    }
+
     QFileInfo fileInfo(QCoreApplication::applicationDirPath() + '/' + a_relativePath);
     return fileInfo.absoluteFilePath();
 }
@@ -272,3 +278,15 @@ vsedit::FP32 vsedit::halfToSingle(vsedit::FP16 a_half)
 
 // END OF vsedit::FP32 vsedit::halfToSingle(vsedit::FP16 a_half)
 //==============================================================================
+
+QString vsedit::findExecutable(const QString &executableName)
+{
+    // Prefer same directory
+    const QString path = QStandardPaths::findExecutable(executableName, {QCoreApplication::applicationDirPath()});
+    if (!path.isEmpty()) {
+        return path;
+    }
+
+    // Else search the standard system paths
+    return QStandardPaths::findExecutable(executableName);
+}

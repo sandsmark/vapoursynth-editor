@@ -323,6 +323,10 @@ QVector<EncodingPreset> SettingsManagerCore::getAllEncodingPresets() const
         settings.endGroup();
     }
 
+    if (presets.isEmpty()) {
+        return {EncodingPreset()};
+    }
+
     return presets;
 }
 

@@ -1,5 +1,7 @@
 #include "settings_definitions_core.h"
 
+#include "common-src/helpers.h"
+
 #include <QObject>
 #include <QJsonArray>
 #include <QVariant>
@@ -17,7 +19,7 @@ const double DEFAULT_BICUBIC_FILTER_PARAMETER_C = 1.0 / 3.0;
 const int DEFAULT_LANCZOS_FILTER_TAPS = 3;
 const EncodingType DEFAULT_ENCODING_TYPE = EncodingType::CLI;
 const EncodingHeaderType DEFAULT_ENCODING_HEADER_TYPE =
-    EncodingHeaderType::NoHeader;
+    EncodingHeaderType::Y4M;
 const JobType DEFAULT_JOB_TYPE = JobType::EncodeScriptCLI;
 const JobState DEFAULT_JOB_STATE = JobState::Waiting;
 const int DEFAULT_JOB_FIRST_FRAME = -1;
@@ -26,6 +28,16 @@ const int DEFAULT_JOB_FRAMES_PROCESSED = 0;
 const double DEFAULT_JOB_FPS = 0.0;
 const int DEFAULT_RECENT_JOB_SERVERS_NUMBER = 10;
 const int DEFAULT_WINDOW_GEOMETRY_SAVE_DELAY = 2000;
+const char DEFAULT_ENCODING_ARGUMENTS[] =
+        "-i pipe:\n"
+        "-i %{source}\n"
+        "-c:v h264\n"
+        "-crf 24\n"
+        "-c:a aac\n"
+        "-map 0:0\n"
+        "-map 1:1\n"
+        "-loglevel 8\n"
+        "%{source}-output.mkv\n";
 
 //==============================================================================
 
@@ -254,6 +266,11 @@ EncodingPreset::EncodingPreset(const QString &a_name):
     , type(DEFAULT_ENCODING_TYPE)
     , headerType(DEFAULT_ENCODING_HEADER_TYPE)
 {
+    if (a_name.isEmpty()) {
+        static const QString defaultExecutablePath = vsedit::findExecutable("ffmpeg");
+        executablePath = defaultExecutablePath;
+        arguments = DEFAULT_ENCODING_ARGUMENTS;
+    }
 }
 
 bool EncodingPreset::operator==(const EncodingPreset &a_other) const

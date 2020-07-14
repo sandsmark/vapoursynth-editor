@@ -926,9 +926,13 @@ bool SettingsManager::setLastPreviewFrame(int a_frameNumber)
 QString SettingsManager::getDefaultNewScriptTemplate()
 {
     return QString(
-               "#define foo bar\n"
+               "# For ease of use, you can use the define below to define which file to load,\n"
+               "# it will also be used in the encode dialog by default.\n"
+               "#define source /edit/me.mp4\n"
                "import vapoursynth as vs\n"
                "core = vs.get_core()\n"
+               "clip = core.ffms2.Source(source=source)\n"
+               "clip.set_output()\n"
            );
 }
 

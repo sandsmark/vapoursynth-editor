@@ -217,7 +217,7 @@ protected:
     FrameHeaderWriter *m_pFrameHeaderWriter;
 
     QList<Frame> m_framesCache;
-    size_t m_cachedFramesLimit;
+    int m_cachedFramesLimit;
 
     size_t m_framesInQueue;
     size_t m_framesInProcess;

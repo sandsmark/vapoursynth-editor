@@ -39,6 +39,8 @@ QString subsamplingString(const VSFormat *a_cpFormat);
 
 QString resolvePathFromApplication(const QString &a_relativePath);
 
+QString findExecutable(const QString &executableName);
+
 QByteArray jsonMessage(const QString &a_command,
                        const QJsonObject &a_jsonObject);
 QByteArray jsonMessage(const QString &a_command,

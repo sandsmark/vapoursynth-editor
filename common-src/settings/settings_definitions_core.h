@@ -155,6 +155,8 @@ extern const double DEFAULT_JOB_FPS;
 extern const int DEFAULT_RECENT_JOB_SERVERS_NUMBER;
 extern const int DEFAULT_WINDOW_GEOMETRY_SAVE_DELAY;
 
+extern const char DEFAULT_ENCODING_ARGUMENTS[];
+
 //==============================================================================
 
 #endif // SETTINGS_DEFINITIONS_CORE_H_INCLUDED

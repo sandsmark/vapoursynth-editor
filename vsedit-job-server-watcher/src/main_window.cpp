@@ -785,8 +785,7 @@ void MainWindow::slotServerDisconnected()
 
     if (m_state == WatcherState::ProbingLocal) {
         changeState(WatcherState::StartingLocal);
-        QString serverPath = vsedit::resolvePathFromApplication(
-                                 "./vsedit-job-server");
+        QString serverPath = vsedit::findExecutable("vsedit-job-server");
         bool started = QProcess::startDetached(serverPath, {});
 
         if (!started) {

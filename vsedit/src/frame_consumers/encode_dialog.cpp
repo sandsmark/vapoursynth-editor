@@ -382,24 +382,20 @@ void EncodeDialog::slotEncodingPresetDeleteButtonPressed()
 
 void EncodeDialog::slotEncodingPresetComboBoxActivated(const QString &a_text)
 {
-    if (a_text.isEmpty()) {
-        m_ui.executablePathEdit->clear();
-        m_ui.argumentsTextEdit->clear();
-        return;
-    }
-
     EncodingPreset preset(a_text);
 
-    QVector<EncodingPreset>::iterator it = std::find(
-                m_encodingPresets.begin(), m_encodingPresets.end(), preset);
+    if (!a_text.isEmpty()) {
+        QVector<EncodingPreset>::iterator it = std::find(
+                    m_encodingPresets.begin(), m_encodingPresets.end(), preset);
 
-    if (it == m_encodingPresets.end()) {
-        m_ui.feedbackTextEdit->addEntry(tr("Error. There is no preset "
-                                           "named \'%1\'.").arg(preset.name), LOG_STYLE_ERROR);
-        return;
+        if (it == m_encodingPresets.end()) {
+            m_ui.feedbackTextEdit->addEntry(tr("Error. There is no preset "
+                                               "named \'%1\'.").arg(preset.name), LOG_STYLE_ERROR);
+            return;
+        }
+
+        preset = *it;
     }
-
-    preset = *it;
 
     m_ui.executablePathEdit->setText(preset.executablePath);
     m_ui.argumentsTextEdit->setPlainText(preset.arguments);
