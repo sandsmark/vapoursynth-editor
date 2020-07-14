@@ -96,6 +96,13 @@ MainWindow::MainWindow() : QMainWindow()
 
     QHeaderView *pHorizontalHeader = m_ui.jobsTableView->horizontalHeader();
     pHorizontalHeader->setSectionsMovable(true);
+    pHorizontalHeader->setSectionResizeMode(JobsModel::NAME_COLUMN, QHeaderView::ResizeToContents);
+    pHorizontalHeader->setSectionResizeMode(JobsModel::FPS_COLUMN, QHeaderView::ResizeToContents);
+    pHorizontalHeader->setSectionResizeMode(JobsModel::TYPE_COLUMN, QHeaderView::ResizeToContents);
+    pHorizontalHeader->setSectionResizeMode(JobsModel::STATE_COLUMN, QHeaderView::ResizeToContents);
+    pHorizontalHeader->setSectionResizeMode(JobsModel::DEPENDS_ON_COLUMN, QHeaderView::ResizeToContents);
+    pHorizontalHeader->setSectionResizeMode(JobsModel::SUBJECT_COLUMN, QHeaderView::Stretch);
+//    pHorizontalHeader->setStretchLastSection(true);
 
     QHeaderView *pVerticalHeader = m_ui.jobsTableView->verticalHeader();
     pVerticalHeader->setSectionResizeMode(QHeaderView::ResizeToContents);
@@ -1305,7 +1312,7 @@ void MainWindow::createActionsAndMenus()
 
     m_pActionSetTrustedClientsAddresses->setEnabled(false);
 
-    QMenu *pMainMenu = m_ui.menuBar->addMenu(tr("Main"));
+    QMenu *pMainMenu = m_ui.menuBar->addMenu(tr("&Main"));
     pMainMenu->addAction(m_pActionSetTrustedClientsAddresses);
     pMainMenu->addAction(m_pActionExit);
     pMainMenu->addAction(m_pActionShutdownServerAndExit);

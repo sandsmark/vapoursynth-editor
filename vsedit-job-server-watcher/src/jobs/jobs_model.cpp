@@ -176,16 +176,16 @@ QVariant JobsModel::data(const QModelIndex &a_index, int a_role) const
 
             return dependsList.join(", ");
         } else if (column == TIME_START_COLUMN) {
-            QDateTime timeStarted = m_jobs[row].timeStarted;
+            const QDateTime timeStarted = m_jobs[row].timeStarted;
 
-            if (timeStarted != QDateTime()) {
+            if (timeStarted.isValid()) {
                 return timeStarted.toLocalTime().toString(dateTimeFormat);
             }
         } else if (column == TIME_END_COLUMN) {
-            QDateTime timeStarted = m_jobs[row].timeEnded;
+            const QDateTime timeEnded = m_jobs[row].timeEnded;
 
-            if (timeStarted != QDateTime()) {
-                return timeStarted.toLocalTime().toString(dateTimeFormat);
+            if (timeEnded.isValid()) {
+                return timeEnded.toLocalTime().toString(dateTimeFormat);
             }
         } else if ((column == FPS_COLUMN) &&
                    (m_jobs[row].type == JobType::EncodeScriptCLI) &&
@@ -322,7 +322,7 @@ bool JobsModel::setJobs(const QVector<JobProperties> &a_jobs)
 
 JobProperties JobsModel::jobProperties(int a_index) const
 {
-    if ((a_index < 0) || ((size_t)a_index >= m_jobs.size())) {
+    if ((a_index < 0) || (a_index >= m_jobs.size())) {
         return JobProperties();
     }
 
@@ -507,7 +507,7 @@ bool JobsModel::setJobEndTime(const QUuid &a_id, const QDateTime &a_time)
 
 bool JobsModel::canModifyJob(int a_index) const
 {
-    if ((a_index < 0) || ((size_t)a_index >= m_jobs.size())) {
+    if ((a_index < 0) || (a_index >= m_jobs.size())) {
         return false;
     }
 

@@ -42,15 +42,19 @@ void JobStateDelegate::paint(QPainter *a_pPainter,
 
     if (drawProgress) {
         int progressWidth = properties.framesProcessed * innerRect.width() /
-                            properties.framesTotal();
-        QRect progressRect = innerRect;
-        progressRect.setWidth(progressWidth);
-        a_pPainter->drawRect(progressRect);
-        QRect blankRect = innerRect;
-        blankRect.setWidth(innerRect.width() - progressWidth);
-        blankRect.translate(progressWidth, 0);
-        a_pPainter->setBrush(a_option.palette.color(QPalette::Base));
-        a_pPainter->drawRect(blankRect);
+                properties.framesTotal();
+        if (progressWidth > 1) {
+            QRect progressRect = innerRect;
+            progressRect.setWidth(progressWidth);
+            a_pPainter->drawRect(progressRect);
+            QRect blankRect = innerRect;
+            blankRect.setWidth(innerRect.width() - progressWidth);
+            blankRect.translate(progressWidth, 0);
+            a_pPainter->setBrush(a_option.palette.color(QPalette::Base));
+            a_pPainter->drawRect(blankRect);
+        } else {
+            a_pPainter->drawRect(innerRect);
+        }
     } else {
         a_pPainter->drawRect(innerRect);
     }
@@ -58,7 +62,7 @@ void JobStateDelegate::paint(QPainter *a_pPainter,
     QString stateText = cpModel->data(a_index).toString();
 
     if (drawProgress) {
-        stateText += QString(" %1 / %2").arg(properties.framesProcessed)
+        stateText += QString("\n%1 / %2").arg(properties.framesProcessed)
                      .arg(properties.framesTotal());
     }
 
@@ -70,6 +74,30 @@ void JobStateDelegate::paint(QPainter *a_pPainter,
     a_pPainter->restore();
 }
 
+QSize JobStateDelegate::sizeHint(const QStyleOptionViewItem &a_option, const QModelIndex &a_index) const
+{
+    const JobsModel *cpModel =
+        qobject_cast<const JobsModel *>(a_index.model());
+    Q_ASSERT(cpModel);
+    Q_ASSERT(a_index.column() == JobsModel::STATE_COLUMN);
+
+    const JobProperties properties = cpModel->jobProperties(a_index.row());
+    const JobState state = properties.jobState;
+
+    JobState noProgressBarStates[] = {JobState::Waiting,
+                                      JobState::DependencyNotMet
+                                     };
+    bool drawProgress = (properties.type == JobType::EncodeScriptCLI) &&
+                        (!vsedit::contains(noProgressBarStates, state));
+
+    QString stateText = a_index.data().toString();
+    if (drawProgress) {
+        stateText += QString("\n%1 / %2").arg(properties.framesProcessed)
+                     .arg(properties.framesTotal());
+    }
+    return a_option.fontMetrics.boundingRect(stateText).size() + QSize(2, 2); // some extra margin, it does stuff above
+}
+
 QColor JobStateDelegate::jobStateColor(JobState a_state,
                                        const QStyleOptionViewItem &a_option) const
 {
@@ -77,7 +105,7 @@ QColor JobStateDelegate::jobStateColor(JobState a_state,
     case JobState::Aborted:
     case JobState::Failed:
     case JobState::DependencyNotMet:
-        return QColor("#ffcccc");
+        return QColor("#ffeeee");
 
     case JobState::Aborting:
     case JobState::FailedCleanUp:
