@@ -667,18 +667,23 @@ void vsedit::Job::start()
 
 #endif
         }
-    } else if (!isActive()) {
-        m_properties.timeStarted = QDateTime::currentDateTimeUtc();
-        changeStateAndNotify(JobState::Running);
-        emit signalStartTimeChanged();
+        return;
+    }
 
-        if (m_properties.type == JobType::EncodeScriptCLI) {
-            startEncodeScriptCLI();
-        } else if (m_properties.type == JobType::RunProcess) {
-            startRunProcess();
-        } else if (m_properties.type == JobType::RunShellCommand) {
-            startRunShellCommand();
-        }
+    if (isActive()) {
+        return;
+    }
+
+    m_properties.timeStarted = QDateTime::currentDateTimeUtc();
+    changeStateAndNotify(JobState::Running);
+    emit signalStartTimeChanged();
+
+    if (m_properties.type == JobType::EncodeScriptCLI) {
+        startEncodeScriptCLI();
+    } else if (m_properties.type == JobType::RunProcess) {
+        startRunProcess();
+    } else if (m_properties.type == JobType::RunShellCommand) {
+        startRunShellCommand();
     }
 }
 
@@ -1393,8 +1398,7 @@ void vsedit::Job::startEncodeScriptCLI()
         return;
     }
 
-    QString executable = vsedit::resolvePathFromApplication(
-                             m_properties.executablePath);
+    QString executable = vsedit::findExecutable(m_properties.executablePath);
     const QString decodedArguments =
         decodeArguments(m_properties.arguments);
     const QString commandLine = QString("\"%1\" %2").arg(executable)
@@ -1448,8 +1452,7 @@ void vsedit::Job::startRunProcess()
 {
     changeStateAndNotify(JobState::Running);
 
-    QString executable = vsedit::resolvePathFromApplication(
-                             m_properties.executablePath);
+    QString executable = vsedit::findExecutable(m_properties.executablePath);
     QString commandLine = QString("\"%1\" %2").arg(executable)
                           .arg(m_properties.arguments);
 

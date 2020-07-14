@@ -223,8 +223,7 @@ void EncodeDialog::slotStartEncodeButtonPressed()
 
     m_pJob->setFirstFrame(firstFrame);
     m_pJob->setLastFrame(lastFrame);
-    m_pJob->setExecutablePath(vsedit::resolvePathFromApplication(
-                                  m_ui.executablePathEdit->text()));
+    m_pJob->setExecutablePath(vsedit::findExecutable(m_ui.executablePathEdit->text()));
     m_pJob->setArguments(m_ui.argumentsTextEdit->toPlainText());
     m_pJob->setEncodingHeaderType((EncodingHeaderType)
                                   m_ui.headerTypeComboBox->currentData().toInt());
