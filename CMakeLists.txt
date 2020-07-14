@@ -156,3 +156,10 @@ set_target_properties(
     PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
 )
+
+install(TARGETS
+    vsedit
+    vsedit-job-server
+    vsedit-job-server-watcher
+    DESTINATION bin
+    )
