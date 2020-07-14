@@ -60,7 +60,7 @@ void JobDependenciesDelegate::setEditorData(QWidget *a_pEditor,
 
     JobProperties properties = cpModel->jobProperties(a_index.row());
 
-    std::vector<QUuid> dependencyIds = properties.dependsOnJobIds;
+    QVector<QUuid> dependencyIds = properties.dependsOnJobIds;
 
     pListWidget->clear();
 
@@ -97,7 +97,7 @@ void JobDependenciesDelegate::setModelData(QWidget *a_pEditor,
 
     JobProperties properties = pModel->jobProperties(a_index.row());
 
-    std::vector<QUuid> dependencyIds;
+    QVector<QUuid> dependencyIds;
 
     for (int i = 0; i < pListWidget->count(); ++i) {
         QListWidgetItem *pItem = pListWidget->item(i);

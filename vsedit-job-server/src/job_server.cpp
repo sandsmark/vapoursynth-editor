@@ -138,8 +138,8 @@ void JobServer::slotSocketDisconnected()
         return;
     }
 
-    m_clients.remove(pClient);
-    m_subscribers.remove(pClient);
+    m_clients.removeAll(pClient);
+    m_subscribers.removeAll(pClient);
     pClient->deleteLater();
 }
 
@@ -229,7 +229,7 @@ void JobServer::slotJobEndTimeChanged(const QUuid &a_jobID,
 //==============================================================================
 
 void JobServer::slotJobDependenciesChanged(const QUuid &a_jobID,
-        const std::vector<QUuid> &a_dependencies)
+        const QVector<QUuid> &a_dependencies)
 {
     QJsonObject jsJob;
     jsJob[JP_ID] = a_jobID.toString();
@@ -244,7 +244,7 @@ void JobServer::slotJobDependenciesChanged(const QUuid &a_jobID,
 }
 
 // END OF void JobServer::slotJobDependenciesChanged(const QUuid & a_jobID,
-//		const std::vector<QUuid> & a_dependencies)
+//		const QVector<QUuid> & a_dependencies)
 //==============================================================================
 
 void JobServer::slotJobsSwapped(const QUuid &a_jobID1, const QUuid &a_jobID2)
@@ -259,7 +259,7 @@ void JobServer::slotJobsSwapped(const QUuid &a_jobID1, const QUuid &a_jobID2)
 //		const QUuid & a_jobID2)
 //==============================================================================
 
-void JobServer::slotJobsDeleted(const std::vector<QUuid> &a_ids)
+void JobServer::slotJobsDeleted(const QVector<QUuid> &a_ids)
 {
     QJsonArray jsIdsArray;
 
@@ -270,7 +270,7 @@ void JobServer::slotJobsDeleted(const std::vector<QUuid> &a_ids)
     broadcastMessage(vsedit::jsonMessage(SMSG_JOBS_DELETED, jsIdsArray));
 }
 
-// END OF void JobServer::slotJobsDeleted(const std::vector<QUuid> & a_ids)
+// END OF void JobServer::slotJobsDeleted(const QVector<QUuid> & a_ids)
 //==============================================================================
 
 void JobServer::processMessage(QWebSocket *a_pClient,
@@ -319,7 +319,7 @@ void JobServer::processMessage(QWebSocket *a_pClient,
     }
 
     if (command == QString(MSG_UNSUBSCRIBE)) {
-        m_subscribers.remove(a_pClient);
+        m_subscribers.removeAll(a_pClient);
         a_pClient->sendBinaryMessage("Unsubscribed from jobs updates.");
         return;
     }
@@ -389,7 +389,7 @@ void JobServer::processMessage(QWebSocket *a_pClient,
         }
 
         QJsonArray jsDependencies = jsJob[JP_DEPENDS_ON_JOB_IDS].toArray();
-        std::vector<QUuid> dependencies;
+        QVector<QUuid> dependencies;
 
         for (int i = 0; i < jsDependencies.count(); ++i) {
             dependencies.push_back(QUuid(jsDependencies[i].toString()));
@@ -413,7 +413,7 @@ void JobServer::processMessage(QWebSocket *a_pClient,
 
     if (command == QString(MSG_RESET_JOBS)) {
         QJsonArray jsIDs = jsArguments.array();
-        std::vector<QUuid> ids;
+        QVector<QUuid> ids;
 
         for (int i = 0; i < jsIDs.count(); ++i) {
             ids.push_back(QUuid(jsIDs[i].toString()));
@@ -425,7 +425,7 @@ void JobServer::processMessage(QWebSocket *a_pClient,
 
     if (command == QString(MSG_DELETE_JOBS)) {
         QJsonArray jsIDs = jsArguments.array();
-        std::vector<QUuid> ids;
+        QVector<QUuid> ids;
 
         for (int i = 0; i < jsIDs.count(); ++i) {
             ids.push_back(QUuid(jsIDs[i].toString()));
@@ -518,7 +518,7 @@ void JobServer::broadcastMessage(const char *a_message,
 void JobServer::broadcastMessage(const QByteArray &a_message,
                                  bool a_includeNonSubscribers, bool a_trustedOnly)
 {
-    std::list<QWebSocket *> &clients =
+    QList<QWebSocket *> &clients =
         a_includeNonSubscribers ? m_clients : m_subscribers;
 
     for (QWebSocket *pClient : clients) {

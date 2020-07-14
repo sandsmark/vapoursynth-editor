@@ -473,7 +473,7 @@ void MainWindow::slotJobEditButtonClicked()
 
 void MainWindow::slotJobMoveUpButtonClicked()
 {
-    std::vector<int> selection = selectedIndexes();
+    QVector<int> selection = selectedIndexes();
 
     if (selection.size() != 1) {
         return;
@@ -495,7 +495,7 @@ void MainWindow::slotJobMoveUpButtonClicked()
 
 void MainWindow::slotJobMoveDownButtonClicked()
 {
-    std::vector<int> selection = selectedIndexes();
+    QVector<int> selection = selectedIndexes();
 
     if (selection.size() != 1) {
         return;
@@ -517,7 +517,7 @@ void MainWindow::slotJobMoveDownButtonClicked()
 
 void MainWindow::slotJobDeleteButtonClicked()
 {
-    std::vector<int> selection = selectedIndexes();
+    QVector<int> selection = selectedIndexes();
 
     if (selection.empty()) {
         return;
@@ -538,7 +538,7 @@ void MainWindow::slotJobDeleteButtonClicked()
 
 void MainWindow::slotJobResetStateButtonClicked()
 {
-    std::vector<int> selection = selectedIndexes();
+    QVector<int> selection = selectedIndexes();
 
     if (selection.empty()) {
         return;
@@ -745,7 +745,7 @@ void MainWindow::slotJobProgressChanged(int a_job, int a_progress,
 //==============================================================================
 
 void MainWindow::slotSetJobDependencies(const QUuid &a_id,
-                                        std::vector<QUuid> a_dependencies)
+                                        QVector<QUuid> a_dependencies)
 {
     QJsonObject jsJob;
     jsJob[JP_ID] = a_id.toString();
@@ -761,7 +761,7 @@ void MainWindow::slotSetJobDependencies(const QUuid &a_id,
 }
 
 // END OF void MainWindow::slotSetJobDependencies(const QUuid & a_id,
-//		std::vector<QUuid> a_dependencies)
+//		QVector<QUuid> a_dependencies)
 //==============================================================================
 
 void MainWindow::slotServerConnected()
@@ -984,7 +984,7 @@ void MainWindow::slotTextMessageReceived(const QString &a_message)
         }
 
         QJsonArray jsDependencies = jsJob[JP_DEPENDS_ON_JOB_IDS].toArray();
-        std::vector<QUuid> dependencies;
+        QVector<QUuid> dependencies;
 
         for (int i = 0; i < jsDependencies.count(); ++i) {
             dependencies.push_back(QUuid(jsDependencies[i].toString()));
@@ -1009,7 +1009,7 @@ void MainWindow::slotTextMessageReceived(const QString &a_message)
 
     if (command == QString(SMSG_JOBS_DELETED)) {
         QJsonArray jsIds = jsArguments.array();
-        std::vector<QUuid> ids;
+        QVector<QUuid> ids;
 
         for (int i = 0; i < jsIds.count(); ++i) {
             ids.push_back(QUuid(jsIds[i].toString()));
@@ -1237,7 +1237,7 @@ void MainWindow::slotTaskClientDisconnected()
         return;
     }
 
-    m_taskClients.remove(pClient);
+    m_taskClients.removeAll(pClient);
     pClient->deleteLater();
 }
 
@@ -1362,7 +1362,7 @@ void MainWindow::processSMsgJobInfo(const QString &a_message)
         return;
     }
 
-    std::vector<JobProperties> propertiesVector;
+    QVector<JobProperties> propertiesVector;
 
     for (const QJsonValue &value : doc.array()) {
         if (!value.isObject()) {
@@ -1379,9 +1379,9 @@ void MainWindow::processSMsgJobInfo(const QString &a_message)
 // END OF void MainWindow::processSMsgJobInfo(const QString & a_message)
 //==============================================================================
 
-std::vector<int> MainWindow::selectedIndexes()
+QVector<int> MainWindow::selectedIndexes()
 {
-    std::vector<int> indexes;
+    QVector<int> indexes;
     QItemSelectionModel *pSelectionModel =
         m_ui.jobsTableView->selectionModel();
     QModelIndexList selection = pSelectionModel->selectedRows();
@@ -1393,7 +1393,7 @@ std::vector<int> MainWindow::selectedIndexes()
     return indexes;
 }
 
-// END OF std::vector<int> MainWindow::selectedIndexes()
+// END OF QVector<int> MainWindow::selectedIndexes()
 //==============================================================================
 
 void MainWindow::setUiEnabled()
@@ -1427,7 +1427,7 @@ void MainWindow::setUiEnabled()
         buttonsToEnable[m_ui.jobNewButton] = true;
         buttonsToEnable[m_ui.shutdownServerButton] = true;
 
-        std::vector<int> l_selectedIndexes = selectedIndexes();
+        QVector<int> l_selectedIndexes = selectedIndexes();
 
         if (l_selectedIndexes.size() == 1) {
             JobProperties jobProperties =

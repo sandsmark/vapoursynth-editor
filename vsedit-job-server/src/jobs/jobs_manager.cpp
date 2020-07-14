@@ -30,9 +30,9 @@ JobsManager::~JobsManager()
 // END OF
 //==============================================================================
 
-std::vector<JobProperties> JobsManager::jobsProperties() const
+QVector<JobProperties> JobsManager::jobsProperties() const
 {
-    std::vector<JobProperties> properties;
+    QVector<JobProperties> properties;
 
     for (const JobTicket &ticket : m_tickets) {
         properties.push_back(ticket.pJob->properties());
@@ -122,7 +122,7 @@ bool JobsManager::setJobState(const QUuid &a_jobID, JobState a_state)
 //==============================================================================
 
 bool JobsManager::setJobDependsOnIds(const QUuid &a_jobID,
-                                     const std::vector<QUuid> &a_dependencies)
+                                     const QVector<QUuid> &a_dependencies)
 {
     int index = indexOfJob(a_jobID);
 
@@ -192,7 +192,7 @@ bool JobsManager::loadJobs()
 
     clearJobs();
 
-    std::vector<JobProperties> jobPropertiesList =
+    QVector<JobProperties> jobPropertiesList =
         m_pSettingsManager->getJobs();
 
     for (const JobProperties &properties : jobPropertiesList) {
@@ -222,7 +222,7 @@ bool JobsManager::saveJobs()
         return false;
     }
 
-    std::vector<JobProperties> jobPropertiesList;
+    QVector<JobProperties> jobPropertiesList;
 
     for (const JobTicket &ticket : m_tickets) {
         jobPropertiesList.push_back(ticket.pJob->properties());
@@ -305,7 +305,7 @@ void JobsManager::resumePausedJobs()
 // END OF
 //==============================================================================
 
-void JobsManager::resetJobs(const std::vector<QUuid> &a_ids)
+void JobsManager::resetJobs(const QVector<QUuid> &a_ids)
 {
     for (const QUuid &id : a_ids) {
         setJobState(id, JobState::Waiting);
@@ -315,9 +315,9 @@ void JobsManager::resetJobs(const std::vector<QUuid> &a_ids)
 // END OF
 //==============================================================================
 
-void JobsManager::deleteJobs(const std::vector<QUuid> &a_ids)
+void JobsManager::deleteJobs(const QVector<QUuid> &a_ids)
 {
-    std::vector<QUuid> deletedJobs;
+    QVector<QUuid> deletedJobs;
 
     for (const QUuid &id : a_ids) {
         int index = indexOfJob(id);
@@ -506,7 +506,7 @@ bool JobsManager::canModifyJob(int a_index) const
 
 int JobsManager::indexOfJob(const QUuid &a_uuid) const
 {
-    std::vector<JobTicket>::const_iterator it =
+    QVector<JobTicket>::const_iterator it =
         std::find_if(m_tickets.cbegin(), m_tickets.cend(),
     [&](const JobTicket & a_ticket)->bool {
         return (a_ticket.pJob->id() == a_uuid);

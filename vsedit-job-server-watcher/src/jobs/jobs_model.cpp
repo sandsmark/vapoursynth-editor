@@ -260,7 +260,7 @@ bool JobsModel::setData(const QModelIndex &a_index, const QVariant &a_value,
     }
 
     QVariantList variantList = a_value.toList();
-    std::vector<QUuid> ids;
+    QVector<QUuid> ids;
 
     for (const QVariant &variant : variantList) {
         if (!variant.canConvert<QUuid>()) {
@@ -301,15 +301,15 @@ void JobsModel::clear()
 //==============================================================================
 
 
-std::vector<JobProperties> JobsModel::jobs() const
+QVector<JobProperties> JobsModel::jobs() const
 {
     return m_jobs;
 }
 
-// END OF std::vector<JobProperties> JobsModel::jobs() const
+// END OF QVector<JobProperties> JobsModel::jobs() const
 //==============================================================================
 
-bool JobsModel::setJobs(const std::vector<JobProperties> &a_jobs)
+bool JobsModel::setJobs(const QVector<JobProperties> &a_jobs)
 {
     beginResetModel();
     m_jobs = a_jobs;
@@ -317,7 +317,7 @@ bool JobsModel::setJobs(const std::vector<JobProperties> &a_jobs)
     return true;
 }
 
-// END OF bool JobsModel::setJobs(const std::vector<JobProperties> & a_jobs)
+// END OF bool JobsModel::setJobs(const QVector<JobProperties> & a_jobs)
 //==============================================================================
 
 JobProperties JobsModel::jobProperties(int a_index) const
@@ -369,7 +369,7 @@ bool JobsModel::swapJobs(const QUuid &a_id1, const QUuid &a_id2)
 // END OF bool JobsModel::swapJobs(const QUuid & a_id1, const QUuid & a_id2)
 //==============================================================================
 
-bool JobsModel::deleteJobs(std::vector<QUuid> a_ids)
+bool JobsModel::deleteJobs(QVector<QUuid> a_ids)
 {
     for (const QUuid &id : a_ids) {
         int index = indexOfJob(id);
@@ -386,7 +386,7 @@ bool JobsModel::deleteJobs(std::vector<QUuid> a_ids)
     return true;
 }
 
-// END OF bool JobsModel::deleteJobs(std::vector<QUuid> a_ids)
+// END OF bool JobsModel::deleteJobs(QVector<QUuid> a_ids)
 //==============================================================================
 
 bool JobsModel::updateJobProperties(const JobProperties &a_jobProperties)
@@ -407,7 +407,7 @@ bool JobsModel::updateJobProperties(const JobProperties &a_jobProperties)
 //==============================================================================
 
 bool JobsModel::setJobDependsOnIds(const QUuid &a_id,
-                                   const std::vector<QUuid> &a_dependencies)
+                                   const QVector<QUuid> &a_dependencies)
 {
     int index = indexOfJob(a_id);
 
@@ -421,17 +421,17 @@ bool JobsModel::setJobDependsOnIds(const QUuid &a_id,
 }
 
 // END OF bool JobsModel::setJobDependsOnIds(const QUuid & a_id,
-//		const std::vector<QUuid> & a_dependencies)
+//		const QVector<QUuid> & a_dependencies)
 //==============================================================================
 
 void JobsModel::requestJobDependsOnIds(const QUuid &a_id,
-                                       const std::vector<QUuid> &a_dependencies)
+                                       const QVector<QUuid> &a_dependencies)
 {
     emit signalSetDependencies(a_id, a_dependencies);
 }
 
 // END OF void JobsModel::requestJobDependsOnIds(const QUuid & a_id,
-//		const std::vector<QUuid> & a_dependencies)
+//		const QVector<QUuid> & a_dependencies)
 //==============================================================================
 
 bool JobsModel::setJobProgress(const QUuid &a_id, int a_progress, double a_fps)
@@ -553,7 +553,7 @@ bool JobsModel::hasWaitingJobs()
 // END OF bool JobsModel::hasActiveJobs()
 //==============================================================================
 
-std::vector<int> JobsModel::indexesFromSelection(
+QVector<int> JobsModel::indexesFromSelection(
     const QItemSelection &a_selection)
 {
     std::set<int> indexesSet;
@@ -563,21 +563,21 @@ std::vector<int> JobsModel::indexesFromSelection(
         indexesSet.insert(jobIndex.row());
     }
 
-    std::vector<int> indexesVector;
+    QVector<int> indexesVector;
     std::copy(indexesSet.begin(), indexesSet.end(),
               std::back_inserter(indexesVector));
     return indexesVector;
 }
 
-// END OF std::vector<int> JobsModel::indexesFromSelection(
+// END OF QVector<int> JobsModel::indexesFromSelection(
 //		const QItemSelection & a_selection)
 //==============================================================================
 
-std::vector<QUuid> JobsModel::idsFromSelection(
+QVector<QUuid> JobsModel::idsFromSelection(
     const QItemSelection &a_selection)
 {
-    std::vector<int> indexesVector = indexesFromSelection(a_selection);
-    std::vector<QUuid> idsVector;
+    QVector<int> indexesVector = indexesFromSelection(a_selection);
+    QVector<QUuid> idsVector;
 
     for (int jobIndex : indexesVector) {
         idsVector.push_back(m_jobs[jobIndex].id);
@@ -586,13 +586,13 @@ std::vector<QUuid> JobsModel::idsFromSelection(
     return idsVector;
 }
 
-// END OF std::vector<QUuid> JobsModel::idsFromSelection(
+// END OF QVector<QUuid> JobsModel::idsFromSelection(
 //		const QItemSelection & a_selection)
 //==============================================================================
 
 int JobsModel::indexOfJob(const QUuid &a_uuid) const
 {
-    std::vector<JobProperties>::const_iterator it =
+    QVector<JobProperties>::const_iterator it =
         std::find_if(m_jobs.cbegin(), m_jobs.cend(),
     [&](const JobProperties & a_properties)->bool {
         return (a_properties.id == a_uuid);
