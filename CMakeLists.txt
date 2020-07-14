@@ -33,6 +33,9 @@ set(COMMON_UI_SRC
     common-src/log/styled_log_view_settings_dialog.cpp
     common-src/log/styled_log_view.cpp
     common-src/log/vs_editor_log.cpp
+
+    common-src/log/styled_log_view_settings_dialog.ui
+    qdarkstyle/style.qrc
 )
 
 set(VSEDIT_SRC
@@ -66,8 +69,16 @@ set(VSEDIT_SRC
     vsedit/src/main_window.cpp
     vsedit/src/main.cpp
 
+    vsedit/src/settings/settings_dialog.ui
+    vsedit/src/script_status_bar_widget/script_status_bar_widget.ui
+    vsedit/src/preview/preview_advanced_settings_dialog.ui
+    vsedit/src/preview/preview_dialog.ui
+    vsedit/src/frame_consumers/benchmark_dialog.ui
+    vsedit/src/frame_consumers/encode_dialog.ui
+    vsedit/src/script_templates/templates_dialog.ui
+    vsedit/src/main_window.ui
+
     resources/vsedit.qrc
-    qdarkstyle/style.qrc
 )
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
@@ -111,9 +122,12 @@ add_executable(vsedit-job-server-watcher
     vsedit-job-server-watcher/src/trusted_clients_addresses_dialog.ui
     vsedit-job-server-watcher/src/main_window.ui
 
+    resources/vsedit-job-server-watcher.qrc
+
     $<TARGET_OBJECTS:common>
     $<TARGET_OBJECTS:common-ui>
 )
+
 target_include_directories(vsedit-job-server-watcher
     PRIVATE
     vsedit-job-server-watcher/src
