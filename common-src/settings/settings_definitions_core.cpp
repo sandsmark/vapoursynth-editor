@@ -51,7 +51,7 @@ JobProperties::JobProperties():
     , type(JobType::EncodeScriptCLI)
     , jobState(JobState::Waiting)
     , encodingType(EncodingType::CLI)
-    , encodingHeaderType(EncodingHeaderType::NoHeader)
+    , encodingHeaderType(EncodingHeaderType::Invalid)
     , firstFrame(-1)
     , firstFrameReal(-1)
     , lastFrame(-1)

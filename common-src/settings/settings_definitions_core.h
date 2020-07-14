@@ -39,6 +39,7 @@ enum class EncodingType {
 };
 
 enum class EncodingHeaderType {
+    Invalid = -1,
     NoHeader,
     Y4M,
 };
@@ -96,7 +97,7 @@ struct JobProperties {
     QString scriptName;
     QString scriptText;
     EncodingType encodingType;
-    EncodingHeaderType encodingHeaderType;
+    EncodingHeaderType encodingHeaderType = EncodingHeaderType::Invalid;
     QString executablePath;
     QString arguments;
     QString shellCommand;

@@ -86,8 +86,9 @@ JobProperties JobEditDialog::jobProperties() const
     JobProperties newProperties;
     newProperties.type = (JobType)m_ui.jobTypeComboBox->currentData().toInt();
     newProperties.scriptName = m_ui.encodingScriptPathEdit->text();
+
     newProperties.encodingHeaderType = (EncodingHeaderType)m_ui
-                                       .encodingHeaderTypeComboBox->currentData().toInt();
+            .encodingHeaderTypeComboBox->currentData().toInt();
 
     if (newProperties.type == JobType::EncodeScriptCLI) {
         newProperties.executablePath = m_ui.encodingExecutablePathEdit->text();
@@ -116,12 +117,21 @@ int JobEditDialog::call(const QString &a_title,
     m_ui.jobTypeComboBox->setCurrentIndex(index);
     m_ui.encodingScriptPathEdit->setText(a_jobProperties.scriptName);
     m_ui.encodingPresetComboBox->clearEditText();
-    index = m_ui.encodingHeaderTypeComboBox->findData(
-                (int)a_jobProperties.encodingHeaderType);
-    m_ui.encodingHeaderTypeComboBox->setCurrentIndex(index);
-    m_ui.encodingExecutablePathEdit->setText(a_jobProperties.executablePath);
-    m_ui.encodingArgumentsTextEdit->setPlainText(a_jobProperties.arguments);
-    m_ui.processExecutablePathEdit->setText(a_jobProperties.executablePath);
+
+    if (a_jobProperties.encodingHeaderType != EncodingHeaderType::Invalid) {
+        index = m_ui.encodingHeaderTypeComboBox->findData(
+                    (int)a_jobProperties.encodingHeaderType);
+        m_ui.encodingHeaderTypeComboBox->setCurrentIndex(index);
+    }
+
+    if (!a_jobProperties.executablePath.isEmpty()) {
+        m_ui.encodingExecutablePathEdit->setText(a_jobProperties.executablePath);
+        m_ui.processExecutablePathEdit->setText(a_jobProperties.executablePath);
+    }
+
+    if (!a_jobProperties.arguments.isEmpty()) {
+        m_ui.encodingArgumentsTextEdit->setPlainText(a_jobProperties.arguments);
+    }
     m_ui.processArgumentsTextEdit->setPlainText(a_jobProperties.arguments);
     m_ui.shellCommandTextEdit->setPlainText(a_jobProperties.shellCommand);
 
@@ -189,22 +199,18 @@ void JobEditDialog::slotEncodingScriptBrowseButtonClicked()
 
 void JobEditDialog::slotEncodingPresetComboBoxActivated(const QString &a_text)
 {
-    if (a_text.isEmpty()) {
-        m_ui.encodingExecutablePathEdit->clear();
-        m_ui.encodingArgumentsTextEdit->clear();
-        return;
-    }
-
     EncodingPreset preset(a_text);
 
-    QVector<EncodingPreset>::iterator it = std::find(
-                m_encodingPresets.begin(), m_encodingPresets.end(), preset);
+    if (!a_text.isEmpty()) {
+        QVector<EncodingPreset>::iterator it = std::find(
+                    m_encodingPresets.begin(), m_encodingPresets.end(), preset);
 
-    if (it == m_encodingPresets.end()) {
-        return;
+        if (it == m_encodingPresets.end()) {
+            return;
+        }
+
+        preset = *it;
     }
-
-    preset = *it;
 
     m_ui.encodingExecutablePathEdit->setText(preset.executablePath);
     m_ui.encodingArgumentsTextEdit->setPlainText(preset.arguments);

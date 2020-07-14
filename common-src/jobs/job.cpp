@@ -173,6 +173,10 @@ bool vsedit::Job::setScriptText(const QString &a_scriptText)
 
 EncodingHeaderType vsedit::Job::encodingHeaderType() const
 {
+    if (m_properties.encodingHeaderType == EncodingHeaderType::Invalid) {
+        qWarning() << "Encoding header type not set!";
+        return DEFAULT_ENCODING_HEADER_TYPE;
+    }
     return m_properties.encodingHeaderType;
 }
 

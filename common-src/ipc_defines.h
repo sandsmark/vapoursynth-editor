@@ -1,6 +1,8 @@
 #ifndef IPC_DEFINES_H_INCLUDED
 #define IPC_DEFINES_H_INCLUDED
 
+#include <cstdint>
+
 // Watcher <-> Job server communication
 
 static const char JOB_SERVER_NAME[] = "vsedit_job_server";

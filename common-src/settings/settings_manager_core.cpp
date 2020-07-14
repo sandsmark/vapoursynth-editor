@@ -474,7 +474,7 @@ bool SettingsManagerCore::setJobs(const QVector<JobProperties> &a_jobs)
     settings.remove(JOBS_GROUP);
     settings.beginGroup(JOBS_GROUP);
 
-    for (size_t i = 0; i < a_jobs.size(); ++i) {
+    for (int i = 0; i < a_jobs.size(); ++i) {
         const JobProperties &job = a_jobs[i];
 
         settings.beginGroup(QString("%1").arg(i, 7, 10, QChar('0')));
