@@ -71,3 +71,6 @@ Thumbs.db
 *.dll
 *.exe
 
+# what it says on the tin (and qtcreator always creates a build-foo-kit-version
+# folder, so wildcard)
+/build-*
