@@ -350,6 +350,8 @@ void JobEditDialog::slotEncodingFramesFromVideoButtonClicked()
     bool opened = scriptFile.open(QIODevice::ReadOnly);
 
     if (!opened) {
+        qWarning() << "Failed to open script file" << absoluteScriptPath;
+        qWarning() << scriptFile.errorString();
         return;
     }
 

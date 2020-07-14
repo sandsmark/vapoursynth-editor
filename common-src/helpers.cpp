@@ -196,7 +196,7 @@ QString vsedit::resolvePathFromApplication(const QString &a_relativePath)
 {
     const QFileInfo absoluteInfo(a_relativePath);
     if (absoluteInfo.isAbsolute() && absoluteInfo.exists()) {
-        return absoluteInfo.absolutePath();
+        return absoluteInfo.absoluteFilePath();
     }
 
     QFileInfo fileInfo(QCoreApplication::applicationDirPath() + '/' + a_relativePath);
