@@ -134,3 +134,11 @@ target_link_libraries(vsedit-job-server-watcher
     Qt5::WebSockets
     Qt5::Widgets
 )
+
+set_target_properties(
+    vsedit
+    vsedit-job-server
+    vsedit-job-server-watcher
+    PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
+)
