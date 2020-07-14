@@ -281,6 +281,11 @@ vsedit::FP32 vsedit::halfToSingle(vsedit::FP16 a_half)
 
 QString vsedit::findExecutable(const QString &executableName)
 {
+    QFileInfo inputInfo(executableName);
+    if (inputInfo.exists() && inputInfo.isExecutable()) {
+        return inputInfo.absoluteFilePath();
+    }
+
     // Prefer same directory
     const QString path = QStandardPaths::findExecutable(executableName, {QCoreApplication::applicationDirPath()});
     if (!path.isEmpty()) {
