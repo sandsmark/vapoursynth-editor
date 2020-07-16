@@ -1422,6 +1422,7 @@ void MainWindow::setUiEnabled()
 
     if (m_state == WatcherState::NotConnected) {
         buttonsToEnable[m_ui.startServerButton] = true;
+        m_ui.connectToServerButton->setText(tr("Connect to server"));
     }
 
     if ((m_state == WatcherState::NotConnected) ||
@@ -1432,6 +1433,7 @@ void MainWindow::setUiEnabled()
     if (m_state == WatcherState::Connected) {
         buttonsToEnable[m_ui.jobNewButton] = true;
         buttonsToEnable[m_ui.shutdownServerButton] = true;
+        m_ui.connectToServerButton->setText(tr("Reconnect to server"));
 
         QVector<int> l_selectedIndexes = selectedIndexes();
 
