@@ -227,6 +227,8 @@ private:
     QVector<StandardAction> m_standardActions;
 };
 
+Q_DECLARE_METATYPE(QTextFormat)
+
 //==============================================================================
 
 #endif // SETTINGSMANAGER_H
