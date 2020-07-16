@@ -479,7 +479,12 @@ bool JobsModel::setJobStartTime(const QUuid &a_id, const QDateTime &a_time)
         return false;
     }
 
-    m_jobs[index].timeStarted = a_time;
+    if (a_time.toSecsSinceEpoch() > 0) {
+        m_jobs[index].timeStarted = a_time;
+    } else {
+        m_jobs[index].timeStarted = QDateTime(); // Somehow QDateTime likes to end up with a null (i. e. epoch) value, that is valid?
+    }
+
     notifyJobUpdated(index, TIME_START_COLUMN);
     return true;
 }
@@ -496,7 +501,11 @@ bool JobsModel::setJobEndTime(const QUuid &a_id, const QDateTime &a_time)
         return false;
     }
 
-    m_jobs[index].timeEnded = a_time;
+    if (a_time.toSecsSinceEpoch() > 0) {
+        m_jobs[index].timeEnded = a_time;
+    } else {
+        m_jobs[index].timeEnded = QDateTime();
+    }
     notifyJobUpdated(index, TIME_END_COLUMN);
     return true;
 }
