@@ -150,7 +150,7 @@ QVariant JobsModel::data(const QModelIndex &a_index, int a_role) const
         return QVariant();
     }
 
-    const QString dateTimeFormat = "yyyy-MM-dd\nhh:mm:ss.z";
+    const QString dateTimeFormat = "yyyy-MM-dd\nhh:mm:ss";
 
     if ((a_role == Qt::DisplayRole) || (a_role == Qt::ToolTipRole)) {
         if (column == NAME_COLUMN) {
