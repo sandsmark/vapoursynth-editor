@@ -39,7 +39,9 @@
 #include <QTimer>
 #include <QLocalServer>
 #include <QLocalSocket>
+#include <QPainter>
 #include <map>
+
 
 #ifdef Q_OS_WIN
 #include <QWinTaskbarButton>
@@ -663,6 +665,7 @@ void MainWindow::slotJobStateChanged(int a_job, JobState a_state)
     if (QSystemTrayIcon::isSystemTrayAvailable() &&
             vsedit::contains(finalStates, a_state)) {
         Q_ASSERT(m_pTrayIcon);
+        m_pTrayIcon->setIcon(QIcon(":watcher.ico"));
         QString message;
         QSystemTrayIcon::MessageIcon icon = QSystemTrayIcon::NoIcon;
 
@@ -729,6 +732,17 @@ void MainWindow::slotJobProgressChanged(int a_job, int a_progress,
 
     JobProperties properties = m_pJobsModel->jobProperties(a_job);
 
+    if (m_pTrayIcon) {
+        QSize traySize = m_pTrayIcon->geometry().size();
+        QPixmap trayIcon = QIcon(":watcher.ico").pixmap(traySize);
+        if (properties.type == JobType::EncodeScriptCLI && a_progressMax > 0 && a_progress > 0) {
+             QPainter p(&trayIcon);
+             // invert
+             p.setCompositionMode(QPainter::CompositionMode_Difference);
+             p.fillRect(0, 0, traySize.width() * a_progress / a_progressMax, traySize.height(), Qt::white);
+        }
+        m_pTrayIcon->setIcon(QIcon(trayIcon));
+    }
     // Windows taskbar progress
 #ifdef Q_OS_WIN
 
