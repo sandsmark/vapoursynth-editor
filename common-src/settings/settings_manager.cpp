@@ -11,75 +11,78 @@
 
 //==============================================================================
 
-const char MAIN_WINDOW_GEOMETRY_KEY[] = "main_window_geometry";
-const char PREVIEW_DIALOG_GEOMETRY_KEY[] = "prewiew_dialog_geometry";
-const char JOB_SERVER_WATCHER_GEOMETRY_KEY[] = "job_server_watcher_geometry";
-const char MAIN_WINDOW_MAXIMIZED_KEY[] = "main_window_maximized";
-const char PREVIEW_DIALOG_MAXIMIZED_KEY[] = "preview_dialog_maximized";
-const char JOB_SERVER_WATCHER_MAXIMIZED_KEY[] = "job_server_watcher_maximized";
-const char JOBS_HEADER_STATE_KEY[] = "jobs_header_state";
-const char AUTO_LOAD_LAST_SCRIPT_KEY[] = "auto_load_last_script";
-const char ZOOM_PANEL_VISIBLE_KEY[] = "zoom_panel_visible";
-const char ZOOM_MODE_KEY[] = "zoom_mode";
-const char ZOOM_RATIO_KEY[] = "zoom_ratio";
-const char SCALE_MODE_KEY[] = "scale_mode";
-const char CROP_MODE_KEY[] = "crop_mode";
-const char CROP_ZOOM_RATIO_KEY[] = "crop_zoom_ratio";
-const char PROMPT_TO_SAVE_CHANGES_KEY[] = "prompt_to_save_changes";
-const char RECENT_FILES_LIST_KEY[] = "recent_files_list";
-const char MAX_RECENT_FILES_NUMBER_KEY[] = "max_recent_files_number";
-const char VAPOURSYNTH_DOCUMENTATION_PATHS_KEY[] =
-    "vapoursynth_documentation_paths";
-const char CHARACTERS_TYPED_TO_START_COMPLETION_KEY[] =
-    "characters_typed_to_start_completion";
-const char TIMELINE_MODE_KEY[] = "timeline_mode";
-const char TIME_STEP_KEY[] = "time_step_mode";
-const char COLOR_PICKER_VISIBLE_KEY[] = "color_picker_visible";
-const char PLAY_FPS_LIMIT_MODE_KEY[] = "play_fps_limit_mode";
-const char PLAY_FPS_LIMIT_KEY[] = "play_fps_limit";
-const char USE_SPACES_AS_TAB_KEY[] = "use_spaces_as_tab";
-const char SPACES_IN_TAB_KEY[] = "spaces_in_tab";
-const char REMEMBER_LAST_PREVIEW_FRAME_KEY[] = "remember_last_preview_frame";
-const char LAST_PREVIEW_FRAME_KEY[] = "last_preview_frame";
-const char NEW_SCRIPT_TEMPLATE_KEY[] = "new_script_template";
-const char HIGHLIGHT_SELECTION_MATCHES_KEY[] = "highlight_selection_matches";
-const char HIGHLIGHT_SELECTION_MATCHES_MIN_LENGTH_KEY[] =
-    "highlight_selection_matches_min_length";
-const char TIMELINE_PANEL_VISIBLE_KEY[] = "timeline_panel_visible";
-const char ALWAYS_KEEP_CURRENT_FRAME_KEY[] = "always_keep_current_frame";
-const char LAST_SNAPSHOT_EXTENSION_KEY[] = "last_snapshot_extension";
-const char USE_DARK_MODE_KEY[] = "use_dark_mode";
+static const char MAIN_WINDOW_GEOMETRY_KEY[] = "main_window_geometry";
+static const char PREVIEW_DIALOG_GEOMETRY_KEY[] = "prewiew_dialog_geometry";
+static const char JOB_SERVER_WATCHER_GEOMETRY_KEY[] = "job_server_watcher_geometry";
+static const char MAIN_WINDOW_MAXIMIZED_KEY[] = "main_window_maximized";
+static const char PREVIEW_DIALOG_MAXIMIZED_KEY[] = "preview_dialog_maximized";
+static const char JOB_SERVER_WATCHER_MAXIMIZED_KEY[] = "job_server_watcher_maximized";
+static const char JOBS_HEADER_STATE_KEY[] = "jobs_header_state";
+static const char AUTO_LOAD_LAST_SCRIPT_KEY[] = "auto_load_last_script";
+static const char ZOOM_PANEL_VISIBLE_KEY[] = "zoom_panel_visible";
+static const char ZOOM_MODE_KEY[] = "zoom_mode";
+static const char ZOOM_RATIO_KEY[] = "zoom_ratio";
+static const char SCALE_MODE_KEY[] = "scale_mode";
+static const char CROP_MODE_KEY[] = "crop_mode";
+static const char CROP_ZOOM_RATIO_KEY[] = "crop_zoom_ratio";
+static const char PROMPT_TO_SAVE_CHANGES_KEY[] = "prompt_to_save_changes";
+static const char RECENT_FILES_LIST_KEY[] = "recent_files_list";
+static const char MAX_RECENT_FILES_NUMBER_KEY[] = "max_recent_files_number";
+static const char VAPOURSYNTH_DOCUMENTATION_PATHS_KEY[] =
+     "vapoursynth_documentation_paths";
+static const char CHARACTERS_TYPED_TO_START_COMPLETION_KEY[] =
+     "characters_typed_to_start_completion";
+static const char TIMELINE_MODE_KEY[] = "timeline_mode";
+static const char TIME_STEP_KEY[] = "time_step_mode";
+static const char COLOR_PICKER_VISIBLE_KEY[] = "color_picker_visible";
+static const char PLAY_FPS_LIMIT_MODE_KEY[] = "play_fps_limit_mode";
+static const char PLAY_FPS_LIMIT_KEY[] = "play_fps_limit";
+static const char USE_SPACES_AS_TAB_KEY[] = "use_spaces_as_tab";
+static const char SPACES_IN_TAB_KEY[] = "spaces_in_tab";
+static const char REMEMBER_LAST_PREVIEW_FRAME_KEY[] = "remember_last_preview_frame";
+static const char LAST_PREVIEW_FRAME_KEY[] = "last_preview_frame";
+static const char NEW_SCRIPT_TEMPLATE_KEY[] = "new_script_template";
+static const char HIGHLIGHT_SELECTION_MATCHES_KEY[] = "highlight_selection_matches";
+static const char HIGHLIGHT_SELECTION_MATCHES_MIN_LENGTH_KEY[] =
+     "highlight_selection_matches_min_length";
+static const char TIMELINE_PANEL_VISIBLE_KEY[] = "timeline_panel_visible";
+static const char ALWAYS_KEEP_CURRENT_FRAME_KEY[] = "always_keep_current_frame";
+static const char LAST_SNAPSHOT_EXTENSION_KEY[] = "last_snapshot_extension";
+static const char USE_DARK_MODE_KEY[] = "use_dark_mode";
 
 //==============================================================================
 
-const char HOTKEYS_GROUP[] = "hotkeys";
+static const char HOTKEYS_GROUP[] = "hotkeys";
 
 //==============================================================================
 
-const char THEME_GROUP[] = "theme";
-const char THEME_GROUP_DARK[] = "theme_dark";
+static const char THEME_GROUP[] = "theme";
+static const char THEME_GROUP_DARK[] = "theme_dark";
 
 //==============================================================================
 
-const char CODE_SNIPPETS_GROUP[] = "code_snippets";
+static const char CODE_SNIPPETS_GROUP[] = "code_snippets";
 
 //==============================================================================
 
-const char DROP_FILE_TEMPLATES_GROUP[] = "drop_file_templates";
+static const char DROP_FILE_TEMPLATES_GROUP[] = "drop_file_templates";
 
-const char DROP_FILE_CATEGORY_MASK_LIST_KEY[] = "mask_list";
-const char DROP_FILE_CATEGORY_SOURCE_TEMPLATE_KEY[] = "template";
+static const char DROP_FILE_CATEGORY_MASK_LIST_KEY[] = "mask_list";
+static const char DROP_FILE_CATEGORY_SOURCE_TEMPLATE_KEY[] = "template";
 
 //==============================================================================
 
-const char LOGS_GROUP[] = "logs";
-const char LOG_STYLES_GROUP[] = "styles";
+static const char LOGS_GROUP[] = "logs";
+static const char LOG_STYLES_GROUP[] = "styles";
 
-const char LOG_STYLE_TITLE_KEY[] = "title";
-const char LOG_STYLE_TEXT_FORMAT_KEY[] = "text_format";
-const char LOG_STYLE_IS_ALIAS_KEY[] = "is_alias";
-const char LOG_STYLE_ORIGINAL_STYLE_NAME_KEY[] = "original_style_name";
-const char LOG_STYLE_IS_VISIBLE_KEY[] = "is_visible";
+static const char LOG_STYLE_TITLE_KEY[] = "title";
+static const char LOG_STYLE_TEXT_FORMAT_KEY[] = "text_format";
+static const char LOG_STYLE_TEXT_FORMAT_FGCOLOR_KEY[] = "foreground_color";
+static const char LOG_STYLE_TEXT_FORMAT_BGCOLOR_KEY[] = "background_color";
+static const char LOG_STYLE_TEXT_FORMAT_FONT_KEY[] = "background_color";
+static const char LOG_STYLE_IS_ALIAS_KEY[] = "is_alias";
+static const char LOG_STYLE_ORIGINAL_STYLE_NAME_KEY[] = "original_style_name";
+static const char LOG_STYLE_IS_VISIBLE_KEY[] = "is_visible";
 
 //==============================================================================
 
@@ -1161,9 +1164,18 @@ QVector<TextBlockStyle> SettingsManager::getLogStyles(
         style.name = styleName;
         style.title = settings.value(LOG_STYLE_TITLE_KEY).toString();
 
-        if (settings.contains(LOG_STYLE_TEXT_FORMAT_KEY))
-            style.textFormat = qvariant_cast<QTextFormat>(
-                                   settings.value(LOG_STYLE_TEXT_FORMAT_KEY)).toCharFormat();
+        if (settings.contains(LOG_STYLE_TEXT_FORMAT_FGCOLOR_KEY)) {
+            style.textFormat.setForeground(qvariant_cast<QColor>(
+                        settings.value(LOG_STYLE_TEXT_FORMAT_FGCOLOR_KEY)));
+        }
+        if (settings.contains(LOG_STYLE_TEXT_FORMAT_BGCOLOR_KEY)) {
+            style.textFormat.setBackground(qvariant_cast<QColor>(
+                        settings.value(LOG_STYLE_TEXT_FORMAT_BGCOLOR_KEY)));
+        }
+        if (settings.contains(LOG_STYLE_TEXT_FORMAT_FONT_KEY)) {
+            style.textFormat.setFont(qvariant_cast<QFont>(
+                        settings.value(LOG_STYLE_TEXT_FORMAT_FONT_KEY)));
+        }
 
         style.isAlias = settings.value(LOG_STYLE_IS_ALIAS_KEY, false).toBool();
         style.originalStyleName =
@@ -1199,7 +1211,9 @@ bool SettingsManager::setLogStyles(const QString &a_logName,
     for (const TextBlockStyle &style : a_styles) {
         settings.beginGroup(style.name);
         settings.setValue(LOG_STYLE_TITLE_KEY, style.title);
-        settings.setValue(LOG_STYLE_TEXT_FORMAT_KEY, style.textFormat);
+        settings.setValue(LOG_STYLE_TEXT_FORMAT_FGCOLOR_KEY, style.textFormat.foreground().color());
+        settings.setValue(LOG_STYLE_TEXT_FORMAT_BGCOLOR_KEY, style.textFormat.background().color());
+        settings.setValue(LOG_STYLE_TEXT_FORMAT_FONT_KEY, style.textFormat.font());
         settings.setValue(LOG_STYLE_IS_ALIAS_KEY, style.isAlias);
         settings.setValue(LOG_STYLE_ORIGINAL_STYLE_NAME_KEY,
                           style.originalStyleName);
