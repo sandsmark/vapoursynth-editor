@@ -517,7 +517,7 @@ void MainWindow::slotEnqueueEncodeJob()
 
     JobProperties properties;
     properties.type = JobType::EncodeScriptCLI;
-    properties.scriptName = m_scriptFilePath;
+    properties.scriptName = QFileInfo(m_scriptFilePath).absoluteFilePath();
 
     QByteArray message = vsedit::jsonMessage(WMSG_CLI_ENCODE_JOB,
                          properties.toJson());
