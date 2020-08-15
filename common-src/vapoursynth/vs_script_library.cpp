@@ -5,6 +5,7 @@
 
 #include <QSettings>
 #include <QProcessEnvironment>
+#include <QDebug>
 
 //==============================================================================
 

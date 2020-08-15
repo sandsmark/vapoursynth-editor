@@ -9,6 +9,8 @@
 #include <memory>
 #include <functional>
 
+#include <QDebug>
+
 //==============================================================================
 
 void VS_CC frameReady(void *a_pUserData,

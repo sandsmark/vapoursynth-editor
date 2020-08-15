@@ -10,6 +10,7 @@
 
 #include <QFileInfo>
 #include <QFile>
+#include <QDebug>
 #include <algorithm>
 #include <vapoursynth/VSHelper.h>
 
