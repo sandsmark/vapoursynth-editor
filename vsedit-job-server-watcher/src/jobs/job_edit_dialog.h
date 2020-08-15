@@ -2,6 +2,7 @@
 #define JOB_EDIT_DIALOG_H_INCLUDED
 
 #include <ui_job_edit_dialog.h>
+#include <QDebug>
 
 #include "../../../common-src/settings/settings_definitions_core.h"
 
