@@ -243,10 +243,10 @@ void ScriptEditor::slotLoadSettings()
 
     m_backgroundColor = m_pSettingsManager->getColor(COLOR_ID_TEXT_BACKGROUND);
     QColor textColor = m_commonScriptTextFormat.foreground().color();
-
-    QString sheet = QString("QFrame {color: %1; background-color: %2;}")
-                    .arg(textColor.name()).arg(m_backgroundColor.name());
-    setStyleSheet(sheet);
+    QPalette pal = palette();
+    pal.setColor(QPalette::Text, textColor);
+    pal.setColor(QPalette::Base, m_backgroundColor);
+    setPalette(pal);
 
     m_activeLineColor = m_pSettingsManager->getColor(COLOR_ID_ACTIVE_LINE);
     m_selectionMatchesColor =

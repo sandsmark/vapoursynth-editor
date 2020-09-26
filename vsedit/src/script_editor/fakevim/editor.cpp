@@ -203,27 +203,6 @@ Proxy *connectSignals(
             proxy->checkForElectricCharacter(result, c);
     });
 
-    QObject::connect(proxy, &Proxy::handleInput,
-        handler, [handler] (const QString &text) { handler->handleInput(text); });
-
-    QString fileName = fileToEdit;
-    QObject::connect(proxy, &Proxy::requestSave, proxy, [proxy, fileName] () {
-        proxy->save(fileName);
-    });
-
-    QObject::connect(proxy, &Proxy::requestSaveAndQuit, proxy, [proxy, fileName] () {
-        if (proxy->save(fileName)) {
-            proxy->cancel(fileName);
-        }
-    });
-    QObject::connect(proxy, &Proxy::requestQuit, proxy, [proxy, fileName] () {
-        proxy->cancel(fileName);
-    });
-
-    if (!fileToEdit.isEmpty()) {
-        proxy->openFile(fileToEdit);
-    }
-
     return proxy;
 }
 
@@ -342,8 +321,6 @@ void Proxy::requestSetBlockSelection(const QTextCursor &tc)
         return;
     }
 
-    QPalette pal = m_widget->parentWidget() != nullptr ? m_widget->parentWidget()->palette()
-                                                       : QApplication::palette();
 
     m_blockSelection.clear();
     m_clearSelection.clear();
@@ -351,13 +328,13 @@ void Proxy::requestSetBlockSelection(const QTextCursor &tc)
     QTextCursor cur = tc;
 
     QTextEdit::ExtraSelection selection;
-    selection.format.setBackground( pal.color(QPalette::Base) );
-    selection.format.setForeground( pal.color(QPalette::Text) );
+    selection.format.setBackground( m_originalPalette.color(QPalette::Base) );
+    selection.format.setForeground( m_originalPalette.color(QPalette::Text) );
     selection.cursor = cur;
     m_clearSelection.append(selection);
 
-    selection.format.setBackground( pal.color(QPalette::Highlight) );
-    selection.format.setForeground( pal.color(QPalette::HighlightedText) );
+    selection.format.setBackground( m_originalPalette.color(QPalette::Highlight) );
+    selection.format.setForeground( m_originalPalette.color(QPalette::HighlightedText) );
 
     int from = cur.positionInBlock();
     int to = cur.anchor() - cur.document()->findBlock(cur.anchor()).position();
@@ -386,10 +363,14 @@ void Proxy::requestSetBlockSelection(const QTextCursor &tc)
     }
 
 
-    QPalette pal2 = m_widget->palette();
-    pal2.setColor(QPalette::Highlight, Qt::transparent);
-    pal2.setColor(QPalette::HighlightedText, Qt::transparent);
-    m_widget->setPalette(pal2);
+    if (!m_fetchedPalette) {
+        m_originalPalette = m_widget->palette();
+        m_fetchedPalette = true;
+    }
+    QPalette overridePalette = m_widget->palette();
+    overridePalette.setColor(QPalette::Highlight, Qt::transparent);
+    overridePalette.setColor(QPalette::HighlightedText, Qt::transparent);
+    m_widget->setPalette(overridePalette);
 
     updateExtraSelections();
 }
@@ -402,13 +383,13 @@ void Proxy::requestDisableBlockSelection()
         return;
     }
 
-    QPalette pal = m_widget->parentWidget() != nullptr ? m_widget->parentWidget()->palette()
-                                                       : QApplication::palette();
-
     m_blockSelection.clear();
     m_clearSelection.clear();
 
-    m_widget->setPalette(pal);
+    if (m_fetchedPalette) {
+        m_widget->setPalette(m_originalPalette);
+        m_fetchedPalette = false;
+    }
 
     if (editor) {
         disconnect(editor, &QTextEdit::selectionChanged,

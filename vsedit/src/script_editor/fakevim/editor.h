@@ -96,6 +96,8 @@ private:
     QMainWindow *m_mainWindow;
     QString m_statusMessage;
     QString m_statusData;
+    bool m_fetchedPalette = false;
+    QPalette m_originalPalette;
 
     QList<QTextEdit::ExtraSelection> m_searchSelection;
     QList<QTextEdit::ExtraSelection> m_clearSelection;
