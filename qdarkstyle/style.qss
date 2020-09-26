@@ -1242,26 +1242,12 @@ QComboBox:on {
   selection-background-color: #1464A0;
 }
 
-QComboBox::indicator {
-  border: none;
-  border-radius: 0;
-  background-color: transparent;
-  selection-background-color: transparent;
-  color: transparent;
-  selection-color: transparent;
-  /* Needed to remove indicator - fix #132 */
-}
-
 QComboBox::indicator:alternate {
   background: #19232D;
 }
 
 QComboBox::item:alternate {
   background: #19232D;
-}
-
-QComboBox::item:checked {
-  font-weight: bold;
 }
 
 QComboBox::item:selected {
