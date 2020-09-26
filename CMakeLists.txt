@@ -97,6 +97,7 @@ target_include_directories(vsedit
     PRIVATE
     vsedit
     ${CMAKE_CURRENT_SOURCE_DIR}/vsedit/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/vsedit/src/script_editor/
     )
 
 add_executable(vsedit-job-server

@@ -18,8 +18,8 @@
 */
 
 #include "editor.h"
-#include "fakevimactions.h"
-#include "fakevimhandler.h"
+#include <fakevim/fakevimactions.h>
+#include <fakevim/fakevimhandler.h>
 
 #include <QApplication>
 #include <QFontMetrics>
@@ -119,12 +119,6 @@ void initHandler(FakeVimHandler *handler)
     handler->handleCommand(_("set nopasskeys"));
     handler->handleCommand(_("set nopasscontrolkey"));
 
-    // Set some Vim options.
-    handler->handleCommand(_("set expandtab"));
-    handler->handleCommand(_("set shiftwidth=8"));
-    handler->handleCommand(_("set tabstop=16"));
-    handler->handleCommand(_("set autoindent"));
-    handler->handleCommand(_("set smartindent"));
 
     QString vimrc = QStandardPaths::writableLocation(QStandardPaths::HomeLocation)
 #ifdef Q_OS_WIN
@@ -136,6 +130,13 @@ void initHandler(FakeVimHandler *handler)
     if (QFile::exists(vimrc)) {
         qDebug() << "Loading vimrc";
         handler->handleCommand("source " + vimrc);
+    } else {
+        // Set some Vim options.
+        handler->handleCommand(_("set expandtab"));
+        handler->handleCommand(_("set shiftwidth=8"));
+        handler->handleCommand(_("set tabstop=16"));
+        handler->handleCommand(_("set autoindent"));
+        handler->handleCommand(_("set smartindent"));
     }
 
     handler->installEventFilter();
@@ -163,7 +164,7 @@ void clearUndoRedo(QWidget *editor)
     EDITOR(editor, setUndoRedoEnabled(true));
 }
 
-Proxy  *connectSignals(
+Proxy *connectSignals(
         FakeVimHandler *handler, QMainWindow *mainWindow, QWidget *editor,
         const QString &fileToEdit)
 {
@@ -205,12 +206,35 @@ Proxy  *connectSignals(
     QObject::connect(proxy, &Proxy::handleInput,
         handler, [handler] (const QString &text) { handler->handleInput(text); });
 
+    QString fileName = fileToEdit;
+    QObject::connect(proxy, &Proxy::requestSave, proxy, [proxy, fileName] () {
+        proxy->save(fileName);
+    });
+
+    QObject::connect(proxy, &Proxy::requestSaveAndQuit, proxy, [proxy, fileName] () {
+        if (proxy->save(fileName)) {
+            proxy->cancel(fileName);
+        }
+    });
+    QObject::connect(proxy, &Proxy::requestQuit, proxy, [proxy, fileName] () {
+        proxy->cancel(fileName);
+    });
+
+    if (!fileToEdit.isEmpty()) {
+        proxy->openFile(fileToEdit);
+    }
+
     return proxy;
 }
 
 Proxy::Proxy(QWidget *widget, QMainWindow *mw, QObject *parent)
     : QObject(parent), m_widget(widget), m_mainWindow(mw)
 {
+}
+
+void Proxy::openFile(const QString &fileName)
+{
+    emit handleInput(QString(_(":r %1<CR>")).arg(fileName));
 }
 
 void Proxy::changeStatusData(const QString &info)
@@ -221,17 +245,26 @@ void Proxy::changeStatusData(const QString &info)
 
 void Proxy::highlightMatches(const QString &pattern)
 {
-    QTextEdit *ed = qobject_cast<QTextEdit *>(m_widget);
-    if (!ed) {
-        return;
+    QTextDocument *doc = nullptr;
+
+    { // in a block so we don't inadvertently use one of them later
+        QPlainTextEdit *plainEditor = qobject_cast<QPlainTextEdit *>(m_widget);
+        QTextEdit *editor = qobject_cast<QTextEdit *>(m_widget);
+        if (editor) {
+            doc = editor->document();
+        } else if (plainEditor) {
+            doc = plainEditor->document();
+        } else {
+            return;
+        }
     }
+    Q_ASSERT(doc);
 
     QTextEdit::ExtraSelection selection;
     selection.format.setBackground(Qt::yellow);
     selection.format.setForeground(Qt::black);
 
     // Highlight matches.
-    QTextDocument *doc = ed->document();
     QRegExp re(pattern);
     QTextCursor cur = doc->find(re);
 
@@ -302,12 +335,15 @@ void Proxy::handleExCommand(bool *handled, const ExCommand &cmd)
 
 void Proxy::requestSetBlockSelection(const QTextCursor &tc)
 {
-    QPlainTextEdit *ed = qobject_cast<QPlainTextEdit *>(m_widget);
-    if (!ed)
+    QTextEdit *editor = qobject_cast<QTextEdit*>(m_widget);
+    QPlainTextEdit *plainEditor = qobject_cast<QPlainTextEdit*>(m_widget);
+    if (!editor && !plainEditor) {
+        qWarning() << "no editor set";
         return;
+    }
 
-    QPalette pal = ed->parentWidget() != nullptr ? ed->parentWidget()->palette()
-                                              : QApplication::palette();
+    QPalette pal = m_widget->parentWidget() != nullptr ? m_widget->parentWidget()->palette()
+                                                       : QApplication::palette();
 
     m_blockSelection.clear();
     m_clearSelection.clear();
@@ -335,47 +371,65 @@ void Proxy::requestSetBlockSelection(const QTextCursor &tc)
         m_blockSelection.append(selection);
     }
 
-    disconnect( ed, &QPlainTextEdit::selectionChanged,
-                this, &Proxy::updateBlockSelection );
-    ed->setTextCursor(tc);
-    connect( ed, &QPlainTextEdit::selectionChanged,
-             this, &Proxy::updateBlockSelection );
+    if (editor) {
+        disconnect(editor, &QTextEdit::selectionChanged,
+                   this, &Proxy::updateBlockSelection);
+        editor->setTextCursor(tc);
+        connect(editor, &QTextEdit::selectionChanged,
+                this, &Proxy::updateBlockSelection);
+    } else {
+        disconnect(plainEditor, &QPlainTextEdit::selectionChanged,
+                   this, &Proxy::updateBlockSelection);
+        plainEditor->setTextCursor(tc);
+        connect(plainEditor, &QPlainTextEdit::selectionChanged,
+                this, &Proxy::updateBlockSelection);
+    }
 
-    QPalette pal2 = ed->palette();
+
+    QPalette pal2 = m_widget->palette();
     pal2.setColor(QPalette::Highlight, Qt::transparent);
     pal2.setColor(QPalette::HighlightedText, Qt::transparent);
-    ed->setPalette(pal2);
+    m_widget->setPalette(pal2);
 
     updateExtraSelections();
 }
 
 void Proxy::requestDisableBlockSelection()
 {
-    QPlainTextEdit *ed = qobject_cast<QPlainTextEdit *>(m_widget);
-    if (!ed)
+    QTextEdit *editor = qobject_cast<QTextEdit*>(m_widget);
+    QPlainTextEdit *plainEditor = qobject_cast<QPlainTextEdit*>(m_widget);
+    if (!editor && !plainEditor) {
         return;
+    }
 
-    QPalette pal = ed->parentWidget() != NULL ? ed->parentWidget()->palette()
-                                              : QApplication::palette();
+    QPalette pal = m_widget->parentWidget() != nullptr ? m_widget->parentWidget()->palette()
+                                                       : QApplication::palette();
 
     m_blockSelection.clear();
     m_clearSelection.clear();
 
-    ed->setPalette(pal);
+    m_widget->setPalette(pal);
 
-    disconnect( ed, &QPlainTextEdit::selectionChanged,
-                this, &Proxy::updateBlockSelection );
+    if (editor) {
+        disconnect(editor, &QTextEdit::selectionChanged,
+                   this, &Proxy::updateBlockSelection);
+    } else {
+        disconnect(plainEditor, &QPlainTextEdit::selectionChanged,
+                   this, &Proxy::updateBlockSelection);
+    }
 
     updateExtraSelections();
 }
 
 void Proxy::updateBlockSelection()
 {
-    QPlainTextEdit *ed = qobject_cast<QPlainTextEdit *>(m_widget);
-    if (!ed)
+    QTextEdit *editor = qobject_cast<QTextEdit*>(m_widget);
+    QPlainTextEdit *plainEditor = qobject_cast<QPlainTextEdit*>(m_widget);
+    if (!editor && !plainEditor) {
         return;
+    }
 
-    requestSetBlockSelection(ed->textCursor());
+    requestSetBlockSelection(editor ? editor->textCursor() : plainEditor->textCursor());
 }
 
 void Proxy::requestHasBlockSelection(bool *on)
@@ -385,13 +439,22 @@ void Proxy::requestHasBlockSelection(bool *on)
 
 void Proxy::indentRegion(int beginBlock, int endBlock, QChar typedChar)
 {
-    QPlainTextEdit *ed = qobject_cast<QPlainTextEdit *>(m_widget);
-    if (!ed)
-        return;
+    QTextDocument *doc = nullptr;
+    { // in a block so we don't inadvertently use one of them later
+        QPlainTextEdit *plainEditor = qobject_cast<QPlainTextEdit *>(m_widget);
+        QTextEdit *editor = qobject_cast<QTextEdit *>(m_widget);
+        if (editor) {
+            doc = editor->document();
+        } else if (plainEditor) {
+            doc = plainEditor->document();
+        } else {
+            return;
+        }
+    }
+    Q_ASSERT(doc);
 
-    const auto indentSize = theFakeVimSetting(ConfigShiftWidth)->value().toInt();
+    const int indentSize = theFakeVimSetting(ConfigShiftWidth)->value().toInt();
 
-    QTextDocument *doc = ed->document();
     QTextBlock startBlock = doc->findBlockByNumber(beginBlock);
 
     // Record line lenghts for mark adjustments
@@ -444,9 +507,13 @@ int Proxy::firstNonSpace(const QString &text)
 
 void Proxy::updateExtraSelections()
 {
-    QPlainTextEdit *ed = qobject_cast<QPlainTextEdit *>(m_widget);
-    if (ed)
-        ed->setExtraSelections(m_clearSelection + m_searchSelection + m_blockSelection);
+    QTextEdit *editor = qobject_cast<QTextEdit*>(m_widget);
+    QPlainTextEdit *plainEditor = qobject_cast<QPlainTextEdit*>(m_widget);
+    if (editor) {
+        editor->setExtraSelections(m_clearSelection + m_searchSelection + m_blockSelection);
+    } else if (plainEditor) {
+        plainEditor->setExtraSelections(m_clearSelection + m_searchSelection + m_blockSelection);
+    }
 }
 
 bool Proxy::wantSaveAndQuit(const ExCommand &cmd)
@@ -469,9 +536,58 @@ bool Proxy::wantRun(const ExCommand &cmd)
     return cmd.matches("r", "run") || cmd.matches("m", "make");
 }
 
+bool Proxy::save(const QString &fileName)
+{
+    if (!hasChanges(fileName))
+        return true;
+
+    QTemporaryFile tmpFile;
+    if (!tmpFile.open()) {
+        QMessageBox::critical(m_widget, tr("FakeVim Error"),
+                              tr("Cannot create temporary file: %1").arg(tmpFile.errorString()));
+        return false;
+    }
+
+    QTextStream ts(&tmpFile);
+    ts << content();
+    ts.flush();
+
+    QFile::remove(fileName);
+    if (!QFile::copy(tmpFile.fileName(), fileName)) {
+        QMessageBox::critical(m_widget, tr("FakeVim Error"),
+                              tr("Cannot write to file \"%1\"").arg(fileName));
+        return false;
+    }
+
+    return true;
+}
+
+void Proxy::cancel(const QString &fileName)
+{
+    if (hasChanges(fileName)) {
+        QMessageBox::critical(m_widget, tr("FakeVim Warning"),
+                              tr("File \"%1\" was changed").arg(fileName));
+    } else {
+        invalidate();
+    }
+}
+
 void Proxy::invalidate()
 {
     QApplication::quit();
+}
+
+bool Proxy::hasChanges(const QString &fileName)
+{
+    if (fileName.isEmpty() && content().isEmpty())
+        return false;
+
+    QFile f(fileName);
+    if (!f.open(QIODevice::ReadOnly))
+        return true;
+
+    QTextStream ts(&f);
+    return content() != ts.readAll();
 }
 
 QTextDocument *Proxy::document() const
