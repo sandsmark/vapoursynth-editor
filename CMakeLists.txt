@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.9)
 project(vsedit)
 
 find_package(Qt5 COMPONENTS Widgets Network WebSockets)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(vapoursynth REQUIRED IMPORTED_TARGET vapoursynth)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -138,16 +140,19 @@ target_link_libraries(vsedit
     Qt5::Core
     Qt5::Widgets
     Qt5::Network
+    PkgConfig::vapoursynth
 )
 target_link_libraries(vsedit-job-server
     Qt5::Core
     Qt5::WebSockets
+    PkgConfig::vapoursynth
 )
 target_link_libraries(vsedit-job-server-watcher
     Qt5::Core
     Qt5::Network
     Qt5::WebSockets
     Qt5::Widgets
+    PkgConfig::vapoursynth
 )
 
 set_target_properties(
