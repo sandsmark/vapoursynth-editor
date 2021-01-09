@@ -42,7 +42,7 @@
         <file alias="timeline_bookmark_previous.png">timeline_marker_previous.png</file>
         <file alias="timeline_bookmark_next.png">timeline_marker_next.png</file>
         <file alias="jobs.png">sheduled_task.png</file>
-        <file alias="readme">../README</file>
+        <file alias="readme">../README.md</file>
         <file alias="fonts/DigitalMini.ttf">fonts/DigitalMini.ttf</file>
     </qresource>
 </RCC>
