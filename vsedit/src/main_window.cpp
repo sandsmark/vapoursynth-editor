@@ -76,6 +76,8 @@ MainWindow::MainWindow() : QMainWindow()
 
     m_ui.setupUi(this);
 
+    statusBar()->setFont(m_ui.scriptEdit->font());
+
     setWindowIcon(QIcon(":vsedit.ico"));
 
     m_pSettingsManager = new SettingsManager(this);

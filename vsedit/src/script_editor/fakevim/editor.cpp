@@ -59,7 +59,7 @@ public:
         TextEdit::setCursorWidth(0);
     }
 
-    void paintEvent(QPaintEvent *e)
+    void paintEvent(QPaintEvent *e) override
     {
         TextEdit::paintEvent(e);
 
