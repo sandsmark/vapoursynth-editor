@@ -8,6 +8,7 @@
 #include <QWheelEvent>
 #include <QPoint>
 #include <QPainter>
+#include <QStyleOption>
 #include <QMargins>
 #include <QToolTip>
 #include <QFontMetricsF>
@@ -26,7 +27,7 @@ TimeLineSlider::TimeLineSlider(QWidget *a_pParent) : QWidget(a_pParent)
     , m_displayMode(Time)
     , m_bigStep(10)
     , m_sideMargin(6)
-    , m_bottomMargin(2)
+    , m_bottomMargin(5)
     , m_slideLineHeight(10)
     , m_slideLineFrameWidth(1)
     , m_slideLineTicksSpacing(1)
@@ -554,6 +555,11 @@ void TimeLineSlider::paintEvent(QPaintEvent *a_pEvent)
     painter.drawRect(l_slideLineRect.marginsRemoved(slideLineMargins));
 
     // Bookmarks
+    QStyleOption styleOption;
+    styleOption.rect = QRect(0, height() - m_bottomMargin*2, height()/2, height()/2);
+    styleOption.palette = palette();
+//    styleOption.palette.setBrush(QPalette::WindowText, m_bookmarkColor);
+
     pen.setColor(m_bookmarkColor);
     pen.setWidth(1);
     painter.setPen(pen);
@@ -566,7 +572,8 @@ void TimeLineSlider::paintEvent(QPaintEvent *a_pEvent)
         }
 
         int pointerPos = frameToPos(i);
-        painter.drawLine(pointerPos, pointerTop, pointerPos, pointerBottom);
+        styleOption.rect.moveLeft(pointerPos - styleOption.rect.width()/2);
+        style()->drawPrimitive(QStyle::PE_IndicatorArrowUp, &styleOption, &painter, this);
     }
 
     // Current frame pointer
