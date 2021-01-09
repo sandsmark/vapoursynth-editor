@@ -241,7 +241,7 @@ void SettingsManager::initializeStandardActions()
         },
         {
             ACTION_ID_ADVANCED_PREVIEW_SETTINGS,
-            tr("Preview advanced settings"), QIcon(":settings.png"),
+            tr("Preview advanced settings"), QIcon(":configure.png"),
             QKeySequence()
         },
         {
@@ -255,7 +255,7 @@ void SettingsManager::initializeStandardActions()
         },
         {
             ACTION_ID_TIMELINE_CLEAR_BOOKMARKS, tr("Clear bookmarks"),
-            QIcon(":timeline_bookmark.png"), QKeySequence()
+            QIcon(":timeline_marker_empty.png"), QKeySequence()
         },
         {
             ACTION_ID_TIMELINE_BOOKMARK_CURRENT_FRAME,

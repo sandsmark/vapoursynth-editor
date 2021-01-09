@@ -44,5 +44,7 @@
         <file alias="jobs.png">sheduled_task.png</file>
         <file alias="readme">../README.md</file>
         <file alias="fonts/DigitalMini.ttf">fonts/DigitalMini.ttf</file>
+        <file>timeline_marker_empty.png</file>
+        <file>configure.png</file>
     </qresource>
 </RCC>
