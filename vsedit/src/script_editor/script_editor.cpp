@@ -64,6 +64,7 @@ ScriptEditor::ScriptEditor(QWidget *a_pParent) :
 {
     QGuiApplication::styleHints()->setCursorFlashTime(0);
     QFont mono = font();
+    mono.setStyleHint(QFont::TypeWriter);
     mono.setFamily("Monospace");
     setFont(mono);
 
@@ -235,6 +236,7 @@ void ScriptEditor::slotLoadSettings()
                                    TEXT_FORMAT_ID_COMMON_SCRIPT_TEXT);
     QFont commonScriptTextFont = m_commonScriptTextFormat.font();
     document()->setDefaultFont(commonScriptTextFont);
+    setFont(commonScriptTextFont);
 
     m_tabText = m_pSettingsManager->getTabText();
     m_spacesInTab = m_pSettingsManager->getSpacesInTab();

@@ -76,8 +76,6 @@ MainWindow::MainWindow() : QMainWindow()
 
     m_ui.setupUi(this);
 
-    statusBar()->setFont(m_ui.scriptEdit->font());
-
     setWindowIcon(QIcon(":vsedit.ico"));
 
     m_pSettingsManager = new SettingsManager(this);
@@ -98,6 +96,8 @@ MainWindow::MainWindow() : QMainWindow()
 
     m_ui.scriptEdit->setPluginsList(vsPluginsList);
     m_ui.scriptEdit->setSettingsManager(m_pSettingsManager);
+
+    statusBar()->setFont(m_pSettingsManager->getTextFormat(TEXT_FORMAT_ID_COMMON_SCRIPT_TEXT).font());
 
     connect(m_ui.scriptEdit, SIGNAL(textChanged()),
             this, SLOT(slotEditorTextChanged()));
@@ -621,6 +621,8 @@ void MainWindow::slotOpenRecentScriptActionTriggered()
 void MainWindow::slotSettingsChanged()
 {
     QKeySequence hotkey;
+
+    statusBar()->setFont(m_pSettingsManager->getTextFormat(TEXT_FORMAT_ID_COMMON_SCRIPT_TEXT).font());
 
     for (QAction *pAction : m_settableActionsList) {
         hotkey = m_pSettingsManager->getHotkey(pAction->data().toString());
