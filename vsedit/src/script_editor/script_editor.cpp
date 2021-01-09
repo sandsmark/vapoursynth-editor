@@ -607,7 +607,21 @@ void ScriptEditor::slotToggleComment()
 
     for (int i = firstBlockNumber; i <= lastBlockNumber; ++i) {
         QTextBlock block = pDocument->findBlockByNumber(i);
-        int position = block.position();
+
+        // Skip whitespace at the start of the line, to preserve indentation
+        const QString content = block.text();
+        int offset = 0;
+        for (int c = 0; c<content.length()-1; c++) {
+            if (!content[c].isSpace()) {
+                break;
+            }
+            offset++;
+        }
+        if (offset >= block.length()) {
+            continue;
+        }
+        int position = block.position() + offset;
+
         cursor.setPosition(position);
         cursor.setPosition(std::min(position + tokenLength,
                                     pDocument->characterCount() - 1), QTextCursor::KeepAnchor);
@@ -620,7 +634,19 @@ void ScriptEditor::slotToggleComment()
 
     for (int i = firstBlockNumber; i <= lastBlockNumber; ++i) {
         QTextBlock block = pDocument->findBlockByNumber(i);
-        int position = block.position();
+        const QString content = block.text();
+        int offset = 0;
+        for (int c = 0; c<content.length()-1; c++) {
+            if (!content[c].isSpace()) {
+                break;
+            }
+            offset++;
+        }
+        if (offset >= block.length()) {
+            continue;
+        }
+
+        int position = block.position() + offset;
         cursor.setPosition(position);
         cursor.setPosition(std::min(position + tokenLength,
                                     pDocument->characterCount() - 1), QTextCursor::KeepAnchor);
