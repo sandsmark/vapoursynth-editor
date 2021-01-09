@@ -1,3 +1,25 @@
+Vapoursynth Editor Sandsmark
+----------------------------
+
+I'm not very good with names, but this is my fork of the original version.
+
+
+Improvements and new features
+========================
+
+ - Integration of [FakeVim](https://github.com/hluk/FakeVim), an extremely
+   faithful re-implementation of vim. Includes support for loading your vimrc.
+ - Dark mode support, based on [qdarkstyle](https://github.com/ColinDuquesnoy/QDarkStyleSheet).
+ - Improved FPS calculation in the benchmarking.
+ - "#define" support, to re-use variables from python in the encoding dialog.
+ - UI fixes, e. g. improved sizes of clickable areas/hitboxes, missing icons, etc.
+ - General fixes, e. g. loading wrong preset in encoding dialog, loading of style colors.
+ - General code clean up, build system fixing, bug fixing.
+
+
+Original readme
+---------------
+
 VapourSynth Editor r20
 
 By Aleksey [Mystery Keeper] Lyashin
