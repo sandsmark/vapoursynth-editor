@@ -19,7 +19,7 @@ PreviewArea::PreviewArea(QWidget *a_pParent) : QScrollArea(a_pParent)
     , m_lastPreviewLabelPos(0, 0)
 {
     m_pPreviewLabel = new QLabel(this);
-    m_pPreviewLabel->setPixmap(QPixmap());
+    m_pPreviewLabel->clear();
     m_pPreviewLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     QScrollArea::setWidget(m_pPreviewLabel);
     setWidgetResizable(true);
@@ -45,7 +45,7 @@ PreviewArea::~PreviewArea()
 // END OF PreviewArea::~PreviewArea()
 //==============================================================================
 
-const QSize PreviewArea::pixmapSize() const
+QSize PreviewArea::pixmapSize() const
 {
 #if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
     return m_pPreviewLabel->pixmap(Qt::ReturnByValue).size();
@@ -54,12 +54,12 @@ const QSize PreviewArea::pixmapSize() const
 #endif
 }
 
-// END OF const QPixmap * PreviewArea::pixmap() const
+// END OF const QImage * PreviewArea::pixmap() const
 //==============================================================================
 
-void PreviewArea::setPixmap(const QPixmap &a_pixmap)
+void PreviewArea::setPixmap(const QImage &a_pixmap)
 {
-    m_pPreviewLabel->setPixmap(a_pixmap);
+    m_pPreviewLabel->setPixmap(QPixmap::fromImage(a_pixmap));
 }
 
 // END OF void PreviewArea::setPixmap(const QPixmap & a_pixmap)

@@ -166,7 +166,7 @@ protected:
 
     double valueAtPoint(size_t a_x, size_t a_y, int a_plane) ;
 
-    QPixmap pixmapFromCompatBGR32(const VSFrameRef *a_cpFrameRef);
+    QImage qimageFromCompatBGR32(const VSFrameRef *a_cpFrameRef);
 
     void setTitle();
 
@@ -186,7 +186,7 @@ protected:
     int m_bigFrameStep;
 
     const VSFrameRef *m_cpFrameRef;
-    QPixmap m_framePixmap;
+    QImage m_framePixmap;
 
     bool m_changingCropValues;
 

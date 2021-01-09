@@ -232,7 +232,7 @@ void PreviewDialog::previewScript(const QString &a_script,
 
     if (scriptChanged && (!m_alwaysKeepCurrentFrame)) {
         m_frameExpected = 0;
-        m_ui.previewArea->setPixmap(QPixmap());
+        m_ui.previewArea->setPixmap(QImage());
     }
 
     if (m_frameExpected > lastFrameNumber) {
@@ -277,12 +277,12 @@ void PreviewDialog::stopAndCleanUp()
     }
 
     m_frameShown = -1;
-    m_framePixmap = QPixmap();
+    m_framePixmap = QImage();
     // Replace shown image with a blank one of the same dimension:
     // -helps to keep the scrolling position when refreshing the script;
     // -leaves the image blank on sudden error;
     // -creates a blinking effect indicating the script is being refreshed.
-    QPixmap blackPixmap(m_ui.previewArea->pixmapSize());
+    QImage blackPixmap(m_ui.previewArea->pixmapSize(), QImage::Format_Mono);
     blackPixmap.fill(Qt::black);
     m_ui.previewArea->setPixmap(blackPixmap);
 
@@ -1162,7 +1162,7 @@ void PreviewDialog::slotFrameToClipboard()
     }
 
     QClipboard *pClipboard = QApplication::clipboard();
-    pClipboard->setPixmap(m_framePixmap);
+    pClipboard->setPixmap(QPixmap::fromImage(m_framePixmap));
 }
 
 // END OF void PreviewDialog::slotFrameToClipboard()
@@ -1904,19 +1904,19 @@ void PreviewDialog::setPreviewPixmap()
         int cropTop = m_ui.cropTopSpinBox->value();
         int cropWidth = m_ui.cropWidthSpinBox->value();
         int cropHeight = m_ui.cropHeightSpinBox->value();
-        QPixmap croppedPixmap = m_framePixmap.copy(cropLeft, cropTop,
+        QImage croppedImage = m_framePixmap.copy(cropLeft, cropTop,
                                 cropWidth, cropHeight);
         int ratio = m_ui.cropZoomRatioSpinBox->value();
 
         if (ratio == 1) {
-            m_ui.previewArea->setPixmap(croppedPixmap);
+            m_ui.previewArea->setPixmap(croppedImage);
             return;
         }
 
-        QPixmap zoomedPixmap = croppedPixmap.scaled(
-                                   croppedPixmap.width() * ratio, croppedPixmap.height() * ratio,
+        QImage zoomedImage = croppedImage.scaled(
+                                   croppedImage.width() * ratio, croppedImage.height() * ratio,
                                    Qt::KeepAspectRatio, Qt::FastTransformation);
-        m_ui.previewArea->setPixmap(zoomedPixmap);
+        m_ui.previewArea->setPixmap(croppedImage);
         return;
     }
 
@@ -1927,7 +1927,7 @@ void PreviewDialog::setPreviewPixmap()
         return;
     }
 
-    QPixmap previewPixmap;
+    QImage previewPixmap;
     int frameWidth = 0;
     int frameHeight = 0;
     Qt::TransformationMode scaleMode = (Qt::TransformationMode)
@@ -2007,7 +2007,7 @@ void PreviewDialog::setCurrentFrame(const VSFrameRef *a_cpOutputFrameRef,
     Q_ASSERT(m_cpVSAPI);
     m_cpVSAPI->freeFrame(m_cpFrameRef);
     m_cpFrameRef = a_cpOutputFrameRef;
-    m_framePixmap = pixmapFromCompatBGR32(a_cpPreviewFrameRef);
+    m_framePixmap = qimageFromCompatBGR32(a_cpPreviewFrameRef);
     m_cpVSAPI->freeFrame(a_cpPreviewFrameRef);
     setPreviewPixmap();
     m_ui.previewArea->checkMouseOverPreview(QCursor::pos());
@@ -2073,11 +2073,11 @@ double PreviewDialog::valueAtPoint(size_t a_x, size_t a_y, int a_plane)
 //		int a_plane)
 //==============================================================================
 
-QPixmap PreviewDialog::pixmapFromCompatBGR32(
+QImage PreviewDialog::qimageFromCompatBGR32(
     const VSFrameRef *a_cpFrameRef)
 {
     if ((!m_cpVSAPI) || (!a_cpFrameRef)) {
-        return QPixmap();
+        return QImage();
     }
 
     const VSFormat *cpFormat = m_cpVSAPI->getFrameFormat(a_cpFrameRef);
@@ -2088,18 +2088,16 @@ QPixmap PreviewDialog::pixmapFromCompatBGR32(
                                  "Expected format CompatBGR32. Instead got \'%1\'.")
                               .arg(cpFormat->name);
         emit signalWriteLogMessage(mtCritical, errorString);
-        return QPixmap();
+        return QImage();
     }
 
     int width = m_cpVSAPI->getFrameWidth(a_cpFrameRef, 0);
     int height = m_cpVSAPI->getFrameHeight(a_cpFrameRef, 0);
     const void *pData = m_cpVSAPI->getReadPtr(a_cpFrameRef, 0);
     int stride = m_cpVSAPI->getStride(a_cpFrameRef, 0);
-    QImage frameImage((const uchar *)pData, width, height,
-                      stride, QImage::Format_RGB32);
-    QImage flippedImage = frameImage.mirrored();
-    QPixmap framePixmap = QPixmap::fromImage(flippedImage);
-    return framePixmap;
+    return QImage((const uchar *)pData, width, height,
+                      stride, QImage::Format_RGB32)
+            .mirrored();
 }
 
 // END OF QPixmap PreviewDialog::pixmapFromCompatBGR32(

@@ -23,9 +23,9 @@ public:
 
     void setWidget(QWidget *a_pWidget) = delete;
 
-    const QSize pixmapSize() const;
+    QSize pixmapSize() const;
 
-    void setPixmap(const QPixmap &a_pixmap);
+    void setPixmap(const QImage &a_pixmap);
 
     void checkMouseOverPreview(const QPoint &a_globalMousePos);
 
