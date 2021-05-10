@@ -526,13 +526,15 @@ void PreviewDialog::slotSaveSnapshot()
     QString suffix = fileInfo.suffix().toLower();
 
     QByteArray format("png");
+    int quality = -1;
 
     if ((suffix == "webp") && webpSupported) {
         format = "webp";
+        quality = 100;
     }
 
     if (!snapshotFilePath.isEmpty()) {
-        bool success = m_framePixmap.save(snapshotFilePath, format, 100);
+        bool success = m_framePixmap.save(snapshotFilePath, format, quality);
 
         if (success) {
             m_pSettingsManager->setLastSnapshotExtension(suffix);
