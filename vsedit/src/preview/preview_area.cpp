@@ -227,7 +227,7 @@ void PreviewArea::mouseReleaseEvent(QMouseEvent *a_pEvent)
         m_pScrollNavigator->setVisible(false);
         a_pEvent->accept();
         return;
-    } else if (releasedButton == Qt::MidButton) {
+    } else if (releasedButton == Qt::MiddleButton) {
         emit signalMouseMiddleButtonReleased();
     } else if (releasedButton == Qt::RightButton) {
         emit signalMouseRightButtonReleased();

@@ -110,7 +110,7 @@ private:
     VSScript *m_pVSScript = nullptr;
 
     const VSVideoInfo *m_cpVideoInfo;
-    const VSCoreInfo *m_cpCoreInfo;
+    std::unique_ptr<VSCoreInfo> m_cpCoreInfo;
 
     std::deque<FrameTicket> m_frameTicketsQueue;
     QVector<FrameTicket> m_frameTicketsInProcess;

@@ -124,7 +124,8 @@ bool VapourSynthScriptProcessor::initialize(const QString &a_script,
     }
 
     VSCore *pCore = m_pVSScriptLibrary->getCore(m_pVSScript);
-    m_cpCoreInfo = m_cpVSAPI->getCoreInfo(pCore);
+    m_cpCoreInfo = std::make_unique<VSCoreInfo>();
+    m_cpVSAPI->getCoreInfo2(pCore, m_cpCoreInfo.get());
 
     if (m_cpCoreInfo->core < 29) {
         m_error = tr("VapourSynth R29+ required for preview.");
