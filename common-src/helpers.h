@@ -128,6 +128,8 @@ FP32 halfToSingle(FP16 a_half);
 
 //------------------------------------------------------------------------------
 
+int significantDigits(double num);
+
 }
 
 #endif // HELPERS_H_INCLUDED

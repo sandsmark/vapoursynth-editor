@@ -1,6 +1,7 @@
 #ifndef JOB_H_INCLUDED
 #define JOB_H_INCLUDED
 
+#include "fps_buffer.h"
 #include "common-src/settings/settings_definitions_core.h"
 #include "common-src/chrono.h"
 #include "common-src/helpers.h"
@@ -13,7 +14,6 @@
 #include <QUuid>
 #include <QDateTime>
 #include <QProcess>
-#include <QElapsedTimer>
 
 class SettingsManagerCore;
 class VSScriptLibrary;
@@ -22,40 +22,12 @@ class FrameHeaderWriter;
 
 namespace vsedit {
 
-// Double ewma
-struct EwmaFilter {
-    static constexpr double smoothFactor = 0.2;
-    static constexpr double trendFactor = 0.2;
-
-    void reset() {
-        valueCount = 0;
-    }
-
-    double getSmoothed(double value) {
-        if (valueCount == 1) {
-            deltaEstimate = value - lastValue;
-        } else if (valueCount > 1) {
-            value = smoothFactor * value + (1. - smoothFactor) * (lastValue + deltaEstimate);
-            deltaEstimate = trendFactor * (value - lastValue) + (1.0 - trendFactor) * deltaEstimate;
-        }
-
-        lastValue = value;
-        valueCount++;
-
-        return value;
-    }
-
-    double lastValue = 0;
-    double deltaEstimate = 0;
-    int valueCount = 0;
-};
 
 class Job : public QObject, public JobVariables
 {
     Q_OBJECT
 
 public:
-
     Job(const JobProperties &a_properties = JobProperties(),
         SettingsManagerCore *a_pSettingsManager = nullptr,
         VSScriptLibrary *a_pVSScriptLibrary = nullptr,
@@ -223,9 +195,7 @@ protected:
     size_t m_framesInProcess;
     size_t m_maxThreads;
 
-    QElapsedTimer m_lastFrameTimer;
-    int m_lastFrameCount = 0;
-    EwmaFilter m_smoothing;
+    FpsBuffer m_fpsBuffer;
 };
 
 }

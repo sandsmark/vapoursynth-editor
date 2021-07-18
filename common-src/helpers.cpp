@@ -295,3 +295,19 @@ QString vsedit::findExecutable(const QString &executableName)
     // Else search the standard system paths
     return QStandardPaths::findExecutable(executableName);
 }
+
+int vsedit::significantDigits(double num)
+{
+    if (qFuzzyIsNull(num)) {
+        return 0;
+    }
+    if (num > 100) {
+        return 0;
+    }
+    int factor = 1;
+    for (int i=0; i<10 && int(num) == 0; i++) {
+        num *= 10;
+        factor++;
+    }
+    return factor;
+}

@@ -5,6 +5,7 @@
 
 #include "../vapoursynth/vs_script_processor_dialog.h"
 #include "../../../common-src/chrono.h"
+#include "../../../common-src/jobs/fps_buffer.h"
 
 #ifdef Q_OS_WIN
 class QWinTaskbarButton;
@@ -67,6 +68,8 @@ protected:
 
     int m_lastFromFrame;
     int m_lastToFrame;
+
+    vsedit::FpsBuffer m_fpsBuffer;
 
 #ifdef Q_OS_WIN
     QWinTaskbarButton *m_pWinTaskbarButton;

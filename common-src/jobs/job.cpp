@@ -601,6 +601,7 @@ bool vsedit::Job::initialize()
     Q_ASSERT(m_cpVideoInfo);
 
     m_properties.framesProcessed = 0;
+    m_fpsBuffer.reset();
     m_properties.firstFrameReal = m_properties.firstFrame;
     vsedit::clamp(m_properties.firstFrameReal, 0, m_cpVideoInfo->numFrames - 1);
     m_properties.lastFrameReal = m_properties.lastFrame;
@@ -812,9 +813,7 @@ void vsedit::Job::slotProcessStarted()
             }
         }
 
-        m_lastFrameCount = 0;
-        m_lastFrameTimer.restart();
-        m_smoothing.reset();
+        m_fpsBuffer.reset();
 
         m_encodingState = EncodingState::WaitingForFrames;
         processFramesQueue();
@@ -1046,8 +1045,7 @@ void vsedit::Job::slotProcessBytesWritten(qint64 a_bytes)
     Q_ASSERT(m_cpVSAPI);
 
     if (m_encodingState == EncodingState::WritingHeader) {
-        m_smoothing.reset();
-        m_lastFrameTimer.restart();
+        m_fpsBuffer.reset();
     } else if (m_encodingState == EncodingState::WritingFrame) {
         Frame referenceFrame(m_lastFrameProcessed + 1, 0, nullptr);
         QList<Frame>::iterator it =
@@ -1357,8 +1355,7 @@ void vsedit::Job::changeStateAndNotify(JobState a_state)
     }
 
     if ((oldState == JobState::Paused) && (a_state == JobState::Running)) {
-        m_smoothing.reset();
-        m_lastFrameTimer.restart();
+        m_fpsBuffer.reset();
     }
 
     if (a_state == JobState::Waiting) {
@@ -1700,29 +1697,7 @@ void vsedit::Job::updateFPS()
     if (m_properties.type != JobType::EncodeScriptCLI) {
         return;
     }
-
-    if (!m_lastFrameTimer.isValid() || m_lastFrameCount < 0) {
-        qWarning() << "not setup properly, timer valid?" << m_lastFrameTimer.isValid() << "framecount" << m_lastFrameCount;
-        m_lastFrameTimer.restart();
-        m_lastFrameCount = m_properties.framesProcessed;
-        return;
-    }
-
-    const int framesProcessedDelta = m_properties.framesProcessed - m_lastFrameCount;
-    if (m_lastFrameTimer.elapsed() < 500 || framesProcessedDelta < 1) {
-        return;
-    }
-
-    const double fps = 1000. * framesProcessedDelta / double(m_lastFrameTimer.elapsed());
-    m_properties.fps = m_smoothing.getSmoothed(fps);
-
-    // Can happen because of the trend factor
-    if (qFuzzyIsNull(m_properties.fps) || m_properties.fps < 0) {
-        m_properties.fps = fps;
-    }
-
-    m_lastFrameCount = m_properties.framesProcessed;
-    m_lastFrameTimer.restart();
+    m_properties.fps = m_fpsBuffer.update(m_properties.framesProcessed);
 }
 
 // END OF void vsedit::Job::updateFPS()

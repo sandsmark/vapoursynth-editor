@@ -179,6 +179,7 @@ void ScriptBenchmarkDialog::slotStartStopBenchmarkButtonPressed()
         return;
     }
 
+    m_fpsBuffer.reset();
     m_framesProcessed = 0;
     m_framesFailed = 0;
     int firstFrame = m_ui.fromFrameSpinBox->value();
@@ -291,9 +292,9 @@ void ScriptBenchmarkDialog::updateMetrics()
     m_ui.processingProgressBar->setValue(m_framesProcessed);
     double passed = duration_to_double(now - m_benchmarkStartTime);
     QString passedString = vsedit::timeToString(passed);
-    double fps = (double)m_framesProcessed / passed;
+    const double fps = m_fpsBuffer.update(m_framesProcessed);
     QString text = tr("Time elapsed: %1 - %2 FPS")
-                   .arg(passedString).arg(QString::number(fps, 'f', 20));
+                   .arg(passedString).arg(m_fpsBuffer.toString());
 
     if (m_framesFailed > 0) {
         text += tr("; %1 frames failed").arg(m_framesFailed);
