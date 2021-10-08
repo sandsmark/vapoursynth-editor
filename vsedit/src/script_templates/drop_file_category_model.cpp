@@ -240,9 +240,9 @@ void DropFileCategoryModel::addCategory()
 // END OF void DropFileCategoryModel::addCategory()
 //==============================================================================
 
-void DropFileCategoryModel::deleteCategory(int a_index)
+void DropFileCategoryModel::deleteCategory(unsigned a_index)
 {
-    if (a_index >= (int)m_categories.size()) {
+    if (a_index >= m_categories.size()) {
         return;
     }
 
@@ -254,9 +254,9 @@ void DropFileCategoryModel::deleteCategory(int a_index)
 // END OF void DropFileCategoryModel::deleteCategory(int a_index)
 //==============================================================================
 
-QString DropFileCategoryModel::sourceTemplate(int a_index) const
+QString DropFileCategoryModel::sourceTemplate(unsigned a_index) const
 {
-    if (a_index >= (int)m_categories.size()) {
+    if (a_index >= m_categories.size()) {
         return QString();
     }
 
@@ -266,10 +266,10 @@ QString DropFileCategoryModel::sourceTemplate(int a_index) const
 // END OF QString DropFileCategoryModel::sourceTemplate(int a_index) const
 //==============================================================================
 
-void DropFileCategoryModel::setSourceTemplate(int a_index,
+void DropFileCategoryModel::setSourceTemplate(unsigned a_index,
         const QString &a_text)
 {
-    if (a_index >= (int)m_categories.size()) {
+    if (a_index >= m_categories.size()) {
         return;
     }
 

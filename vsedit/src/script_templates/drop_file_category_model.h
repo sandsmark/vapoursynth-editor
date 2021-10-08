@@ -43,11 +43,11 @@ public:
 
     void addCategory();
 
-    void deleteCategory(int a_index);
+    void deleteCategory(unsigned a_index);
 
-    QString sourceTemplate(int a_index) const;
+    QString sourceTemplate(unsigned a_index) const;
 
-    void setSourceTemplate(int a_index, const QString &a_text);
+    void setSourceTemplate(unsigned a_index, const QString &a_text);
 
 private:
 
