@@ -164,9 +164,11 @@ protected:
     void setCurrentFrame(const VSFrameRef *a_cpOutputFrameRef,
                          const VSFrameRef *a_cpPreviewFrameRef);
 
-    double valueAtPoint(size_t a_x, size_t a_y, int a_plane) ;
+    double valueAtPoint(size_t a_x, size_t a_y, int a_plane);
 
-    QImage qimageFromCompatBGR32(const VSFrameRef *a_cpFrameRef);
+    void previewValueAtPoint(size_t a_x, size_t a_y, int a_ret[]);
+
+    QImage qimageFromRGB(const VSFrameRef *a_cpFrameRef);
 
     void setTitle();
 
@@ -186,6 +188,7 @@ protected:
     int m_bigFrameStep;
 
     const VSFrameRef *m_cpFrameRef;
+    const VSFrameRef *m_cpPreviewFrameRef;
     QImage m_framePixmap;
 
     bool m_changingCropValues;

@@ -1,6 +1,7 @@
 #include "preview_dialog.h"
 
 #include "../../../common-src/helpers.h"
+#include "../../../common-src/libp2p/p2p_api.h"
 #include "../../../common-src/vapoursynth/vapoursynth_script_processor.h"
 #include "../../../common-src/settings/settings_manager.h"
 #include "../settings/settings_dialog.h"
@@ -61,6 +62,7 @@ PreviewDialog::PreviewDialog(SettingsManager *a_pSettingsManager,
     , m_lastFrameRequestedForPlay(-1)
     , m_bigFrameStep(10)
     , m_cpFrameRef(nullptr)
+    , m_cpPreviewFrameRef(nullptr)
     , m_changingCropValues(false)
     , m_pPreviewContextMenu(nullptr)
     , m_pActionFrameToClipboard(nullptr)
@@ -290,6 +292,12 @@ void PreviewDialog::stopAndCleanUp()
         Q_ASSERT(m_cpVSAPI);
         m_cpVSAPI->freeFrame(m_cpFrameRef);
         m_cpFrameRef = nullptr;
+    }
+
+    if (m_cpPreviewFrameRef) {
+        Q_ASSERT(m_cpVSAPI);
+        m_cpVSAPI->freeFrame(m_cpPreviewFrameRef);
+        m_cpPreviewFrameRef = nullptr;
     }
 
     VSScriptProcessorDialog::stopAndCleanUp();
@@ -1071,6 +1079,7 @@ void PreviewDialog::slotPreviewAreaMouseOverPoint(float a_normX, float a_normY)
     double value1 = 0.0;
     double value2 = 0.0;
     double value3 = 0.0;
+    int preview_values[3] = {0, 0, 0};
 
     size_t frameX = 0;
     size_t frameY = 0;
@@ -1089,7 +1098,7 @@ void PreviewDialog::slotPreviewAreaMouseOverPoint(float a_normX, float a_normY)
     if (cpFormat->id == pfCompatBGR32) {
         const uint8_t *cpData = m_cpVSAPI->getReadPtr(m_cpFrameRef, 0);
         int stride = m_cpVSAPI->getStride(m_cpFrameRef, 0);
-        const uint32_t *cpLine = (const uint32_t *)(cpData + frameY * stride);
+        const uint32_t *cpLine = (const uint32_t *)(cpData + (height - 1 - frameY) * stride);
         uint32_t packedValue = cpLine[frameX];
         value3 = (double)(packedValue & 0xFF);
         value2 = (double)((packedValue >> 8) & 0xFF);
@@ -1122,6 +1131,8 @@ void PreviewDialog::slotPreviewAreaMouseOverPoint(float a_normX, float a_normY)
         }
     }
 
+    previewValueAtPoint(frameX, frameY, preview_values);
+
     QString l1("1");
     QString l2("2");
     QString l3("3");
@@ -1143,14 +1154,23 @@ void PreviewDialog::slotPreviewAreaMouseOverPoint(float a_normX, float a_normY)
         l3 = "Cg";
     }
 
-    QString colorString = QString("%1:%2|%3:%4|%5:%6")
-                          .arg(l1).arg(value1).arg(l2).arg(value2).arg(l3).arg(value3);
+    QString colorString;
 
     if (colorFamily == cmGray) {
-        colorString = QString("G:%1").arg(value1);
+        colorString = QString("Video: G:%1").arg(value1);
+    } else {
+        colorString = QString("Video: %1:%2|%3:%4|%5:%6")
+                      .arg(l1).arg(value1).arg(l2).arg(value2).arg(l3).arg(value3);
     }
 
-    m_pStatusBarWidget->setColorPickerString(colorString);
+    QString coordString = QString("    Position: X:%1|Y:%2")
+                          .arg(frameX).arg(frameY);
+
+    QString dispString = QString("    Display: R:%1|G:%2|B:%3")
+                         .arg(preview_values[0]).arg(preview_values[1]).arg(preview_values[2]);
+
+    m_pStatusBarWidget->setColorPickerString(colorString + coordString +
+            dispString);
 }
 
 // END OF void PreviewDialog::slotPreviewAreaMouseOverPoint(float a_normX,
@@ -1332,6 +1352,7 @@ void PreviewDialog::slotLoadChapters()
         emit signalWriteLogMessage(mtWarning, infoString);
         return;
     }
+
     const double fps = (double)cpVideoInfo->fpsNum /
                        (double)cpVideoInfo->fpsDen;
 
@@ -2016,8 +2037,14 @@ void PreviewDialog::setCurrentFrame(const VSFrameRef *a_cpOutputFrameRef,
     Q_ASSERT(m_cpVSAPI);
     m_cpVSAPI->freeFrame(m_cpFrameRef);
     m_cpFrameRef = a_cpOutputFrameRef;
-    m_framePixmap = qimageFromCompatBGR32(a_cpPreviewFrameRef);
-    m_cpVSAPI->freeFrame(a_cpPreviewFrameRef);
+
+    if (m_cpPreviewFrameRef) {
+        m_cpVSAPI->freeFrame(m_cpPreviewFrameRef);
+        m_cpPreviewFrameRef = nullptr;
+    }
+
+    m_framePixmap = qimageFromRGB(a_cpPreviewFrameRef);
+    m_cpPreviewFrameRef = a_cpPreviewFrameRef;
     setPreviewPixmap();
     m_ui.previewArea->checkMouseOverPreview(QCursor::pos());
 }
@@ -2082,7 +2109,74 @@ double PreviewDialog::valueAtPoint(size_t a_x, size_t a_y, int a_plane)
 //		int a_plane)
 //==============================================================================
 
-QImage PreviewDialog::qimageFromCompatBGR32(
+void PreviewDialog::previewValueAtPoint(size_t a_x, size_t a_y, int a_ret[])
+{
+    // Read RGB values on screen from packed Gray8
+
+    if (!m_cpPreviewFrameRef) {
+        return;
+    }
+
+    const VSMap *props = m_cpVSAPI->getFramePropsRO(m_cpPreviewFrameRef);
+    enum p2p_packing packing_fmt =
+        static_cast<p2p_packing>(m_cpVSAPI->propGetInt(props, "_packingFormat",
+                                 0, nullptr));
+    bool is_10_bits = (packing_fmt == p2p_rgb30);
+
+    if (!is_10_bits) {
+        Q_ASSERT(packing_fmt == p2p_argb32);
+    }
+
+    const uint8_t *cpPlane = m_cpVSAPI->getReadPtr(m_cpPreviewFrameRef, 0);
+
+    size_t x = a_x;
+    size_t y = a_y;
+
+    int stride = m_cpVSAPI->getStride(m_cpPreviewFrameRef, 0);
+    const uint8_t *cpLoc = cpPlane + y * stride + x * 4;
+
+    // libp2p will handle endianness
+    p2p_buffer_param p = {};
+    p.width = 1;
+    p.height = 1;
+    p.packing = packing_fmt;
+    p.src[0] = cpLoc;
+    p.src_stride[0] = 1;
+
+    if (is_10_bits) {
+        uint16_t unpacked[3];
+
+        for (int plane = 0; plane < 3; ++plane) {
+            p.dst[plane] = &unpacked[plane];
+            p.dst_stride[plane] = 1;
+        }
+
+        p2p_unpack_frame(&p, 0);
+
+        for (int plane = 0; plane < 3; ++plane) {
+            a_ret[plane] = static_cast<int>(unpacked[plane]);
+        }
+    } else {
+        uint8_t unpacked[3];
+
+        for (int plane = 0; plane < 3; ++plane) {
+            p.dst[plane] = &unpacked[plane];
+            p.dst_stride[plane] = 1;
+        }
+
+        p2p_unpack_frame(&p, 0);
+
+        for (int plane = 0; plane < 3; ++plane) {
+            a_ret[plane] = static_cast<int>(unpacked[plane]);
+        }
+    }
+}
+
+// END OF void PreviewDialog::previewValueAtPoint(size_t a_x, size_t a_y,
+//		int a_ret[])
+//==============================================================================
+
+QImage PreviewDialog::qimageFromRGB(
     const VSFrameRef *a_cpFrameRef)
 {
     if ((!m_cpVSAPI) || (!a_cpFrameRef)) {
@@ -2091,25 +2185,44 @@ QImage PreviewDialog::qimageFromCompatBGR32(
 
     const VSFormat *cpFormat = m_cpVSAPI->getFrameFormat(a_cpFrameRef);
     Q_ASSERT(cpFormat);
+    int wwidth = m_cpVSAPI->getFrameWidth(a_cpFrameRef, 0);
 
-    if (cpFormat->id != pfCompatBGR32) {
-        QString errorString = tr("Error forming pixmap from frame. "
-                                 "Expected format CompatBGR32. Instead got \'%1\'.")
+    if ((cpFormat->id != pfGray8) || (wwidth % 4)) {
+        QString errorString = tr("Error forming image from frame. "
+                                 "Expected format Gray8 with width divisible by 4. Instead got \'%1\'.")
                               .arg(cpFormat->name);
         emit signalWriteLogMessage(mtCritical, errorString);
         return QImage();
     }
 
-    int width = m_cpVSAPI->getFrameWidth(a_cpFrameRef, 0);
+    const VSMap *props = m_cpVSAPI->getFramePropsRO(a_cpFrameRef);
+    enum p2p_packing packing_fmt = static_cast<p2p_packing>(m_cpVSAPI->propGetInt(props,
+                                   "_packingFormat", 0, nullptr));
+    bool is_10_bits;
+
+    if (packing_fmt == p2p_rgb30) {
+        is_10_bits = true;
+    } else if (packing_fmt == p2p_argb32) {
+        is_10_bits = false;
+    } else {
+        QString errorString = tr("Error forming image from frame. "
+                                 "Expected frame being packed from RGB24 or RGB30.");
+        emit signalWriteLogMessage(mtCritical, errorString);
+        return QImage();
+    }
+
+    int width = wwidth / 4;
     int height = m_cpVSAPI->getFrameHeight(a_cpFrameRef, 0);
-    const void *pData = m_cpVSAPI->getReadPtr(a_cpFrameRef, 0);
     int stride = m_cpVSAPI->getStride(a_cpFrameRef, 0);
-    return QImage((const uchar *)pData, width, height,
-                      stride, QImage::Format_RGB32)
-            .mirrored();
+
+    const uint8_t *pData = m_cpVSAPI->getReadPtr(a_cpFrameRef, 0);
+    QImage frameImage(reinterpret_cast<const uchar *>(pData),
+                      width, height, stride, is_10_bits ?
+                      QImage::Format_RGB30 : QImage::Format_RGB32);
+    return frameImage;
 }
 
-// END OF QPixmap PreviewDialog::pixmapFromCompatBGR32(
+// END OF QImage PreviewDialog::qimageFromRGB(
 //		const VSFrameRef * a_cpFrameRef)
 //==============================================================================
 
