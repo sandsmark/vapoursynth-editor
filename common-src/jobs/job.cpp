@@ -587,7 +587,7 @@ bool vsedit::Job::initialize()
                                           m_properties.scriptText)) {
         bool scriptProcessorInitialized =
             m_pVapourSynthScriptProcessor->initialize(
-                m_properties.scriptText, m_properties.scriptName);
+                m_properties.scriptText, m_properties.scriptName, -1);
 
         if (!scriptProcessorInitialized) {
             emit signalLogMessage(tr("Failed to initialize script.\n%1")

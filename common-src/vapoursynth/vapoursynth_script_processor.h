@@ -24,7 +24,7 @@ public:
 
     virtual ~VapourSynthScriptProcessor();
 
-    bool initialize(const QString &a_script, const QString &a_scriptName);
+    bool initialize(const QString &a_script, const QString &a_scriptName, int colorDepth);
 
     bool finalize();
 
@@ -46,6 +46,8 @@ public:
     void setScriptName(const QString &a_scriptName);
     const QMap<QString, QString> &variables() const { return m_variables; }
     void setVariables(const QMap<QString, QString> &v);
+
+    void setColorDepth(const int a_colorDepth) { m_colorDepth = a_colorDepth; }
 
 
 public slots:
@@ -104,6 +106,7 @@ private:
     QString m_error;
 
     bool m_initialized;
+    int m_colorDepth = 0;
 
     const VSAPI *m_cpVSAPI;
 

@@ -11,6 +11,7 @@
 #include <QStatusBar>
 #include <QLabel>
 #include <QLayout>
+#include <QScreen>
 
 //==============================================================================
 
@@ -102,7 +103,7 @@ bool VSScriptProcessorDialog::initialize(const QString &a_script,
     }
 
     bool initialized = m_pVapourSynthScriptProcessor->initialize(a_script,
-                       a_scriptName);
+                       a_scriptName, screen()->depth());
 
     if (!initialized) {
         if (isVisible()) {

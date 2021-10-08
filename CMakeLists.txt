@@ -9,6 +9,20 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+set(P2P_SRC
+    common-src/libp2p/p2p_api.cpp
+    common-src/libp2p/v210.cpp
+    )
+
+if (CMAKE_SYSTEM_PROCESSOR MATCHES "(x86)|(X86)|(amd64)|(AMD64)")
+    set(P2P_SRC
+        common-src/libp2p/simd/cpuinfo_x86.cpp
+        common-src/libp2p/simd/p2p_simd.cpp
+        common-src/libp2p/simd/p2p_sse41.cpp
+        ${P2P_SRC}
+        )
+endif()
+
 set(COMMON_SRC
     common-src/helpers.cpp
     common-src/settings/settings_definitions_core.cpp
@@ -17,6 +31,7 @@ set(COMMON_SRC
     common-src/log/vs_editor_log_definitions.cpp
     common-src/vapoursynth/vs_script_library.cpp
     common-src/vapoursynth/vs_script_processor_structures.cpp
+    common-src/vapoursynth/vs_pack_rgb.cpp
     common-src/vapoursynth/vapoursynth_script_processor.cpp
     common-src/frame_header_writers/frame_header_writer.cpp
     common-src/frame_header_writers/frame_header_writer_null.cpp
@@ -85,13 +100,23 @@ set(VSEDIT_SRC
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-add_library(common OBJECT ${COMMON_SRC})
+add_library(p2p OBJECT ${P2P_SRC})
+if (CMAKE_SYSTEM_PROCESSOR MATCHES "(x86)|(X86)|(amd64)|(AMD64)")
+    target_compile_definitions(p2p PRIVATE -DP2P_SIMD)
+    if (NOT MSVC)
+        set_target_properties(p2p PROPERTIES COMPILE_FLAGS "-msse4.1")
+    endif()
+endif()
+
+add_library(common OBJECT ${COMMON_SRC}
+    )
 target_link_libraries(common Qt5::Core)
 
 add_library(common-ui OBJECT ${COMMON_UI_SRC})
 target_link_libraries(common-ui Qt5::Core Qt5::Widgets)
 
 add_executable(vsedit ${VSEDIT_SRC}
+    $<TARGET_OBJECTS:p2p>
     $<TARGET_OBJECTS:common>
     $<TARGET_OBJECTS:common-ui>
     )
@@ -107,6 +132,7 @@ add_executable(vsedit-job-server
     vsedit-job-server/src/job_server.cpp
     vsedit-job-server/src/main.cpp
 
+    $<TARGET_OBJECTS:p2p>
     $<TARGET_OBJECTS:common>
 )
 
@@ -127,6 +153,7 @@ add_executable(vsedit-job-server-watcher
 
     resources/vsedit-job-server-watcher.qrc
 
+    $<TARGET_OBJECTS:p2p>
     $<TARGET_OBJECTS:common>
     $<TARGET_OBJECTS:common-ui>
 )
