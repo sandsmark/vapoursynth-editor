@@ -70,7 +70,7 @@ struct FpsBuffer
 private:
     QElapsedTimer m_lastFrameTimer;
     int m_lastFrameCount = 0;
-    std::array<quint64, frameAvgCount> m_fpsBuffer{0};
+    std::array<double, frameAvgCount> m_fpsBuffer{0};
     size_t m_frameTimesSaved = 0;
     double m_fps = 0.;
 
